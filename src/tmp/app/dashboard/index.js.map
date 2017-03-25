@@ -1,1 +1,0 @@
-{"version":3,"sources":["app/dashboard/index.ts"],"names":[],"mappings":";;;;AAAA,2CAAsC;AACtC,+CAA0C;AAC1C,wCAAmC;AACnC,wCAAmC","file":"index.js","sourcesContent":["export * from './dashboard.component';\r\nexport * from './dashboard-event.service';\r\nexport * from './dashboard.routes';\r\nexport * from './dashboard.module';\r\n"]}
