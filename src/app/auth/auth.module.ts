@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { AuthConstants, AuthGuard, AuthService} from './index';
+import { AuthConstants, AuthGuard, AuthService } from './index';
 import { JwtHelper } from 'angular2-jwt';
 
 @NgModule({
@@ -10,4 +10,4 @@ import { JwtHelper } from 'angular2-jwt';
         JwtHelper
     ]
 })
-export class AuthModule {}
+export class AuthModule { }

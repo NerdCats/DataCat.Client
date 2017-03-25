@@ -3,11 +3,13 @@ import { Component, ElementRef, Input, OnInit, ChangeDetectionStrategy, OnChange
 
 @Component({
     moduleId: module.id,
+    // tslint:disable-next-line:component-selector
     selector: 'avatar',
     templateUrl: 'letter-avatar.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LetterAvatarComponent implements OnInit, OnChanges {
+    // tslint:disable-next-line:no-input-rename
     @Input('avatardata') avatarData: any;
     letterSrc: string;
     background: string = 'red';

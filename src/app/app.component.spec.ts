@@ -31,8 +31,8 @@ describe('AppComponent', () => {
                 TestRouterComponent,
                 AppComponent
             ],
-            imports: [ RouterTestingModule, RouterModule ],
-            providers: [ provideRoutes(config) ]
+            imports: [RouterTestingModule, RouterModule],
+            providers: [provideRoutes(config)]
         });
     });
 

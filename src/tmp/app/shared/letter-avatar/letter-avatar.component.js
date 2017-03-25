@@ -105,6 +105,7 @@ __decorate([
 LetterAvatarComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
+        // tslint:disable-next-line:component-selector
         selector: 'avatar',
         templateUrl: 'letter-avatar.html',
         changeDetection: core_1.ChangeDetectionStrategy.OnPush
