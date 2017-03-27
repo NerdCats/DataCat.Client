@@ -21,4 +21,5 @@ after_success:
 - export SSHPASS=$DEPLOY_PASS
 - sshpass -e scp -v -o stricthostkeychecking=no package.tgz $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
 - sshpass -e scp -v -o stricthostkeychecking=no deploy.sh $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
+- sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST chmod 644 $DEPLOY_PATH/deploy.sh
 - sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST $DEPLOY_PATH/deploy.sh
