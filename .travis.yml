@@ -5,6 +5,7 @@ node_js:
   - '6.9.5'
 
 before_script:
+- export NODE_ENV=prod
 - npm install -g karma
 - npm install -g typescript
 - npm install 
