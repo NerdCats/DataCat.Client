@@ -11,7 +11,7 @@ export const DashboardRoutes: Routes = [
         children: [
             { path: '', redirectTo: 'glimpse', pathMatch: 'full' },
             { path: 'glimpse', component: GlimpseComponent },
-            { path: 'attempt-vs-delivery', component: AttemptVsDeliveryComponent }
+            { path: 'attempt-vs-delivery', component: AttemptVsDeliveryComponent, pathMatch: 'full'}
         ]
     }
 ];
