@@ -4,6 +4,11 @@ language: node_js
 node_js:
   - '6.9.5'
 
+addons:
+    apt:
+      packages:
+        - sshpass
+
 before_script:
 - export NODE_ENV=prod
 - npm install -g karma
