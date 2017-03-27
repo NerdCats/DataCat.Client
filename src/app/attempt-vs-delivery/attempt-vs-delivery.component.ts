@@ -9,8 +9,12 @@ import { LoggerService } from '../shared/index';
     templateUrl: 'attempt-vs-delivery.html'
 })
 export class AttemptVsDeliveryComponent implements OnInit {
-    public isDataAvailable: boolean = false;
-    public AttemptVsDeliveryData: any[];
+    public data: any[];
+    public filterQuery = '';
+    public rowsOnPage = 10;
+    public sortBy = '_id';
+    public sortOrder = 'asc';
+
     constructor(
         private dataService: DataService,
         private loggerService: LoggerService,
@@ -49,10 +53,9 @@ export class AttemptVsDeliveryComponent implements OnInit {
         };
         this.dataService.executeAggregation('Jobs', document)
             .subscribe(result => {
-                let jobCountArray: any[] = [];
-                jobCountArray = result;
-                this.AttemptVsDeliveryData = [{ data: jobCountArray, label: 'Attempt VS Delivery' }];
-                this.isDataAvailable = true;
+                if (result) {
+                    this.data = [{ data: result }];
+                }
             },
             error => { this.loggerService.error(error); });
     }
