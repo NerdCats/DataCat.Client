@@ -39,6 +39,10 @@
         'ng2-charts': {
             main: 'ng2-charts.js',
             defaultExtension: 'js'
+        },
+        'angular2-datatable': {
+            main: 'index.js',
+            defaultExtension: 'js'
         }
     };
 
@@ -50,7 +54,8 @@
         'angular2-jwt',
         'angular2-letter-avatar',
         'chart.js',
-        'ng2-charts'
+        'ng2-charts',
+        'angular2-datatable'
     ];
 
     // Add package entries for packages that expose barrels using index.js

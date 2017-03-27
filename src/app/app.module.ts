@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
+import { DataTableModule } from 'angular2-datatable';
 import { APP_PROVIDERS } from './app.providers';
 import { AppComponent } from './app.component';
 import { appRoutingProviders, routing } from './app.routing';
@@ -15,7 +16,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
         HttpModule,
         DashboardModule,
         LoginModule,
-        routing
+        routing,
+        DataTableModule
     ],
     providers: [APP_PROVIDERS, appRoutingProviders],
     bootstrap: [AppComponent]
