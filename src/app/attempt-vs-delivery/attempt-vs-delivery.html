@@ -1,7 +1,33 @@
 <div>
-    <datatable [dataset]=AttemptVsDeliveryData>
-        <column [value]="'_id'" [header]="'Attempts Count'"></column>
-        <column [value]="'DeliveredOrders'" [header]="'Delivered Orders'"></column>
-        <column [value]="'AvgTimeToDelivery'" [header]="'Avg Time To Delivery'"></column>
-    </datatable>
+    <!--Display data in a table-->
+    <!--<table class="table table-striped" [mfData]="AttemptVsDeliveryData" #mf="mfDataTable" [mfRowsOnPage]="5">
+    <thead>
+    <tr>
+        <th style="width: 50%">
+            <mfDefaultSorter by="_id">Attempts</mfDefaultSorter>
+        </th>
+        <th style="width: 50%">
+            <mfDefaultSorter by="DeliveredOrders">Delivered Orders</mfDefaultSorter>
+        </th>
+        <th style="width: 50%">
+            <mfDefaultSorter by="AvgTimeToDelivery">Avg Time To Delivery</mfDefaultSorter>
+        </th>        
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of AttemptVsDeliveryData.data">
+        <td>{{item._id}}</td>
+        <td class="text-right">{{item.DeliveredOrders}}</td>
+        <td class="text-right">{{item.AvgTimeToDelivery}}</td>
+        
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="4">
+            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+        </td>
+    </tr>
+    </tfoot>
+</table>-->
 </div>
