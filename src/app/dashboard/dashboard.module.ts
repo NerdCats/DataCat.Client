@@ -19,6 +19,7 @@ import { FooterComponent } from '../footer/index';
 import { DashviewHeaderComponent } from '../dashview-header/index';
 
 import { GlimpseComponent } from '../glimpse/index';
+import { AttemptVsDeliveryComponent } from '../attempt-vs-delivery/index';
 
 @NgModule({
     declarations: [
@@ -26,7 +27,8 @@ import { GlimpseComponent } from '../glimpse/index';
         SidebarComponent,
         FooterComponent,
         DashviewHeaderComponent,
-        GlimpseComponent
+        GlimpseComponent,
+        AttemptVsDeliveryComponent
     ],
     exports: [
         DashboardComponent,
