@@ -1,8 +1,15 @@
 {
   "ExpandedNodes": [
     "",
+    "\\config",
+    "\\config\\env",
+    "\\config\\gulp",
+    "\\config\\test",
+    "\\e2e",
+    "\\e2e\\home",
+    "\\src",
     "\\src\\app"
   ],
-  "SelectedNode": "\\src",
+  "SelectedNode": "\\src\\app",
   "PreviewInSolutionExplorer": false
 }
