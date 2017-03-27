@@ -6,13 +6,12 @@
     "\\config\\gulp",
     "\\config\\test",
     "\\e2e",
-    "\\e2e\\home",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\dashboard",
-    "\\src\\app\\navbar",
-    "\\src\\app\\shared"
+    "\\src\\app\\attempt-vs-delivery",
+    "\\src\\app\\auth",
+    "\\src\\app\\navbar"
   ],
-  "SelectedNode": "\\config\\test\\karma.conf.js",
+  "SelectedNode": "\\src\\app\\auth\\auth.constants.ts",
   "PreviewInSolutionExplorer": false
 }
