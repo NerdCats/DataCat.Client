@@ -15,3 +15,6 @@ before_script:
 - npm install -g typescript
 - npm install 
 - npm run build
+
+after_success:
+- tar -czf package.tgz build
