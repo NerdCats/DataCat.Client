@@ -5,24 +5,27 @@
                 <span>Attempt VS Delivery</span><br />
             </h1>
         </div>
-
         <div class="panel panel-default">
-            <!--<div class="panel-heading">User information</div>-->
+            <div class="panel-heading">
+                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false" data-bind="sellers">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                    <ul class="dropdown-menu" *ngFor="let item of sellers">
+                        <li><a href="#">{{item._id}}</a></li>
+                    </ul>
+                </button>
+            </div>
             <table class="table table-striped" data-bind="data">
                 <thead>
                     <tr>
-                        <!--<th style="width: 10%"></th>-->
                         <th style="width: 40%">
                             Attempts
-                            <!--<mfDefaultSorter by="_id">Attempts</mfDefaultSorter>-->
                         </th>
                         <th style="width: 40%">
                             Delivered Orders
-                            <!--<mfDefaultSorter by="DeliveredOrders">Delivered Orders</mfDefaultSorter>-->
                         </th>
                         <th style="width: 40%">
                             Time To Delivery (days)
-                            <!--<mfDefaultSorter by="AvgTimeToDelivery">Avg Time To Delivery</mfDefaultSorter>-->
                         </th>
                     </tr>
                     <!--<tr>
@@ -39,7 +42,6 @@
                         <td>{{item.AvgTimeToDelivery}}</td>
                     </tr>
                 </tbody>
-
             </table>
         </div>
     </div>

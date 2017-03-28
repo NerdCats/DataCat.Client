@@ -10,6 +10,7 @@ import { LoggerService } from '../shared/index';
 })
 export class AttemptVsDeliveryComponent implements OnInit {
     public data: any[];
+    public sellers: any[];
     public filterQuery = '';
     public rowsOnPage = 10;
     public sortBy = '_id';
@@ -28,7 +29,8 @@ export class AttemptVsDeliveryComponent implements OnInit {
                 {
                     $project: {
                         _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1, ModifiedTime: 1, CompletionTime: 1, AttemptCount: 1,
-                        Tasks: { $slice: ['$Tasks', -1] }
+                        Tasks: { $slice: ['$Tasks', -1] },
+                        Seller: '$Order.SellerInfo.Name'
                     }
                 },
                 {
@@ -51,6 +53,7 @@ export class AttemptVsDeliveryComponent implements OnInit {
                 { $sort: { _id: 1 } }
             ]
         };
+
         this.dataService.executeAggregation('Jobs', document)
             .subscribe(result => {
                 if (result) {
@@ -58,5 +61,32 @@ export class AttemptVsDeliveryComponent implements OnInit {
                 }
             },
             error => { this.loggerService.error(error); });
+
+        let document2: any = {
+            'aggregate':
+            [
+                {
+                    $project: {
+                        Seller: '$Order.SellerInfo.Name'
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$Seller',
+                    }
+                },
+                { $sort: { _id: 1 } }
+            ]
+        };
+
+        this.dataService.executeAggregation('Jobs', document2)
+            .subscribe(result => {
+                if (result) {
+                    this.sellers = result;
+                }
+            },
+            error => { this.loggerService.error(error); });
+
+
     }
 }
