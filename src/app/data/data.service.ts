@@ -16,7 +16,7 @@ export class DataService {
         private loggerService: LoggerService) { }
 
     executeAggregation(collectionName: string, aggregateDocument: any) {
-        let aggUrl = CONSTANTS.ENV.API_BASE + collectionName + '/a';
+        let aggUrl = CONSTANTS.ENV.API_BASE + 'data/' + collectionName + '/a';
 
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
