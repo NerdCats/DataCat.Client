@@ -54,7 +54,7 @@ export class AttemptVsDeliveryComponent implements OnInit {
         this.dataService.executeAggregation('Jobs', document)
             .subscribe(result => {
                 if (result) {
-                    this.data = [{ data: result }];
+                    this.data = result;
                 }
             },
             error => { this.loggerService.error(error); });

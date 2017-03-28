@@ -2,25 +2,28 @@
     <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
         <div class="page-header">
             <h1>
-                <span>Attempt VS Delivery</span><br />                
+                <span>Attempt VS Delivery</span><br />
             </h1>
         </div>
-      
+
         <div class="panel panel-default">
             <!--<div class="panel-heading">User information</div>-->
-            <table class="table table-striped">
+            <table class="table table-striped" data-bind="data">
                 <thead>
                     <tr>
                         <!--<th style="width: 10%"></th>-->
-                        <th style="width: 40%">Attempts
+                        <th style="width: 40%">
+                            Attempts
                             <!--<mfDefaultSorter by="_id">Attempts</mfDefaultSorter>-->
                         </th>
-                        <th style="width: 40%">Delivered Orders
+                        <th style="width: 40%">
+                            Delivered Orders
                             <!--<mfDefaultSorter by="DeliveredOrders">Delivered Orders</mfDefaultSorter>-->
                         </th>
-                        <th style="width: 40%">Avg Time To Delivery
+                        <th style="width: 40%">
+                            Avg Time To Delivery
                             <!--<mfDefaultSorter by="AvgTimeToDelivery">Avg Time To Delivery</mfDefaultSorter>-->
-                        </th>                        
+                        </th>
                     </tr>
                     <!--<tr>
                         <th colspan="5">
@@ -31,14 +34,12 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of data">
-                        
                         <td>{{item._id}}</td>
-                        <td class="text-right">{{item.DeliveredOrders}}</td>
-                        <td class="text-right">{{item.AvgTimeToDelivery}}</td>
-                        <!--<td>{{item.city | uppercase}}</td>-->
+                        <td>{{item.DeliveredOrders}}</td>
+                        <td>{{item.AvgTimeToDelivery}}</td>
                     </tr>
                 </tbody>
-                
+
             </table>
         </div>
     </div>
