@@ -3,11 +3,8 @@
     "",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\attempt-vs-delivery",
-    "\\src\\app\\dashboard",
-    "\\src\\app\\glimpse",
-    "\\src\\app\\shared",
-    "\\src\\app\\sidebar"
+    "\\src\\app\\data"
   ],
+  "SelectedNode": "\\src\\app\\data\\data.service.ts",
   "PreviewInSolutionExplorer": false
 }
