@@ -1,9 +1,13 @@
 {
   "ExpandedNodes": [
     "",
+    "\\src",
     "\\src\\app",
+    "\\src\\app\\attempt-vs-delivery",
+    "\\src\\app\\dashboard",
+    "\\src\\app\\glimpse",
+    "\\src\\app\\shared",
     "\\src\\app\\sidebar"
   ],
-  "SelectedNode": "\\e2e",
   "PreviewInSolutionExplorer": false
 }
