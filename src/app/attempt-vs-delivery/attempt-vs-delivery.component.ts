@@ -10,11 +10,21 @@ import { LoggerService } from '../shared/index';
 })
 export class AttemptVsDeliveryComponent implements OnInit {
     public data: any[];
-    public items: Array<string> = [];
+    public items: Array<string> = ['Amsterdam', 'Antwerp', 'Athens', 'Barcelona',
+        'Berlin', 'Birmingham', 'Bradford', 'Bremen', 'Brussels', 'Bucharest',
+        'Budapest', 'Cologne', 'Copenhagen', 'Dortmund', 'Dresden', 'Dublin',
+        'Düsseldorf', 'Essen', 'Frankfurt', 'Genoa', 'Glasgow', 'Gothenburg',
+        'Hamburg', 'Hannover', 'Helsinki', 'Kraków', 'Leeds', 'Leipzig', 'Lisbon',
+        'London', 'Madrid', 'Manchester', 'Marseille', 'Milan', 'Munich', 'Málaga',
+        'Naples', 'Palermo', 'Paris', 'Poznań', 'Prague', 'Riga', 'Rome',
+        'Rotterdam', 'Seville', 'Sheffield', 'Sofia', 'Stockholm', 'Stuttgart',
+        'The Hague', 'Turin', 'Valencia', 'Vienna', 'Vilnius', 'Warsaw', 'Wrocław',
+        'Zagreb', 'Zaragoza', 'Łódź'];
     public filterQuery = '';
     public rowsOnPage = 10;
     public sortBy = '_id';
     public sortOrder = 'asc';
+    private value: any = {};
 
     constructor(
         private dataService: DataService,
@@ -86,16 +96,21 @@ export class AttemptVsDeliveryComponent implements OnInit {
         this.dataService.executeAggregation('Jobs', document2)
             .subscribe(result => {
                 if (result) {
+                    let itself = this;
                     for (let entry of result) {
                         if (entry._id != null) {
-                            this.items.push(entry._id);
+                            itself.items.push(entry._id);
                         }
                     }
-                    // this.items = result;
+
                 }
             },
             error => { this.loggerService.error(error); });
 
 
+    }
+
+    public selected(value: any): void {
+        this.value = value;
     }
 }

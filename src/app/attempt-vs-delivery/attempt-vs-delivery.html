@@ -9,9 +9,12 @@
             <div class="panel-heading">
                 <h3>Select a single seller</h3>
                 <ng-select [allowClear]="true"
-                           [items]="items"                                                  
+                           [items]="items"
+                           (selected)="selected($event)"
                            placeholder="No seller selected">
                 </ng-select>
+                <p></p>
+                <pre>{{value.text}}</pre>
             </div>
             <table class="table table-striped" data-bind="data">
                 <thead>
