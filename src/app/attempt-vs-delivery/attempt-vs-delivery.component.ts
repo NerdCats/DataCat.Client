@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { DashboardEventService } from '../dashboard/dashboard-event.service';
 import { DataService } from '../data/index';
 import { LoggerService } from '../shared/index';
@@ -10,7 +10,7 @@ import { LoggerService } from '../shared/index';
 })
 export class AttemptVsDeliveryComponent implements OnInit {
     public data: any[];
-    public sellers: any[];
+    public items: Array<string> = [];
     public filterQuery = '';
     public rowsOnPage = 10;
     public sortBy = '_id';
@@ -67,12 +67,16 @@ export class AttemptVsDeliveryComponent implements OnInit {
             [
                 {
                     $project: {
+                        // _id: '$_id',
                         Seller: '$Order.SellerInfo.Name'
                     }
                 },
                 {
                     $group: {
+                        // _id: { id: '$Seller', text: '$Seller' },
                         _id: '$Seller',
+                        //  text: { $first: '$Seller' }
+
                     }
                 },
                 { $sort: { _id: 1 } }
@@ -82,7 +86,12 @@ export class AttemptVsDeliveryComponent implements OnInit {
         this.dataService.executeAggregation('Jobs', document2)
             .subscribe(result => {
                 if (result) {
-                    this.sellers = result;
+                    for (let entry of result) {
+                        if (entry._id != null) {
+                            this.items.push(entry._id);
+                        }
+                    }
+                    // this.items = result;
                 }
             },
             error => { this.loggerService.error(error); });

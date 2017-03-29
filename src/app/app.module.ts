@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { appRoutingProviders, routing } from './app.routing';
 import { LoginModule } from './login/login.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -17,7 +18,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
         DashboardModule,
         LoginModule,
         routing,
-        DataTableModule
+        DataTableModule,
     ],
     providers: [APP_PROVIDERS, appRoutingProviders],
     bootstrap: [AppComponent]

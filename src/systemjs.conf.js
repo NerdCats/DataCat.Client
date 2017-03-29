@@ -43,7 +43,11 @@
         'angular2-datatable': {
             main: 'index.js',
             defaultExtension: 'js'
-        }
+        },
+        'ng2-select': {
+            main: 'ng2-select.js',
+            defaultExtension: 'js'
+        },
     };
 
     // List npm packages here
@@ -55,7 +59,8 @@
         'angular2-letter-avatar',
         'chart.js',
         'ng2-charts',
-        'angular2-datatable'
+        'angular2-datatable',
+        'ng2-select',
     ];
 
     // Add package entries for packages that expose barrels using index.js

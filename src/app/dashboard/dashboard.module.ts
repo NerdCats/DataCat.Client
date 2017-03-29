@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ChartsModule } from 'ng2-charts';
+import { SelectModule } from 'ng2-select';
 import { HttpModule } from '@angular/http';
 
 // Local Modules
@@ -19,6 +20,7 @@ import { FooterComponent } from '../footer/index';
 import { DashviewHeaderComponent } from '../dashview-header/index';
 import { GlimpseComponent } from '../glimpse/index';
 import { AttemptVsDeliveryComponent } from '../attempt-vs-delivery/index';
+
 
 @NgModule({
     declarations: [
@@ -39,7 +41,8 @@ import { AttemptVsDeliveryComponent } from '../attempt-vs-delivery/index';
         LetterAvatarModule,
         ChartsModule,
         HttpModule,
-        DataModule
+        DataModule,
+        SelectModule
     ],
     providers: [...DASHBOARD_PROVIDERS]
 })
