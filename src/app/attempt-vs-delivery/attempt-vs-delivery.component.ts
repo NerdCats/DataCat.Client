@@ -82,16 +82,7 @@ export class AttemptVsDeliveryComponent implements OnInit {
                 if (result) {
 
                     try {
-                        // let itself = this;
                         let len = result.length;
-                        // for (let entry of result) {
-
-                        //    if (entry._id != null) {
-                        //        // itself.sellerItems.push(entry._id);
-                        //        let element = { value: entry._id, label: entry._id };
-                        //        this.sellerItems.push(element);
-                        //    }
-                        // }
                         for (let i = 0; i < len; i++) {
                             if (result[i]._id as string != null) {
                                 let element = { id: result[i]._id as string, text: result[i]._id as string };
@@ -109,6 +100,10 @@ export class AttemptVsDeliveryComponent implements OnInit {
         this.dataService.executeAggregation('Jobs', this.AttemptVsDeliveryDoc)
             .subscribe(result => {
                 if (result) {
+                    for (let entry of result) {
+                        let AvgTimeToDelivery: number = Math.round(entry.AvgTimeToDelivery as number);
+                        entry.AvgTimeToDelivery = AvgTimeToDelivery;
+                    }
                     this.data = result;
                 }
             },
@@ -153,6 +148,10 @@ export class AttemptVsDeliveryComponent implements OnInit {
             this.dataService.executeAggregation('Jobs', this.AttemptVsDeliveryDoc)
                 .subscribe(result => {
                     if (result) {
+                        for (let entry of result) {
+                            let AvgTimeToDelivery: number = Math.round(entry.AvgTimeToDelivery as number);
+                            entry.AvgTimeToDelivery = AvgTimeToDelivery;
+                        }
                         this.data = result;
                     }
                 },

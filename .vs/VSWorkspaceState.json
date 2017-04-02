@@ -3,14 +3,11 @@
     "",
     "\\config",
     "\\e2e",
-    "\\e2e\\home",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\attempt-vs-delivery",
-    "\\src\\app\\dashboard",
-    "\\src\\app\\data",
-    "\\src\\app\\login"
+    "\\src\\app\\dashview-header",
+    "\\src\\app\\glimpse"
   ],
-  "SelectedNode": "\\src\\app\\dashboard\\dashboard.module.ts",
+  "SelectedNode": "\\src\\app\\glimpse\\glimpse.component.ts",
   "PreviewInSolutionExplorer": false
 }
