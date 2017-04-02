@@ -10,13 +10,7 @@ import { LoggerService } from '../shared/index';
 })
 export class AttemptVsDeliveryComponent implements OnInit {
     public data: any[];
-    public sellerItems: Array<any> = [
-        { id: '0', text: 'Aech' },
-        { id: '1', text: 'Art3mis' },
-        { id: '2', text: 'Daito' },
-        { id: '3', text: 'Parzival' },
-        { id: '4', text: 'Shoto' }
-    ];
+    public sellerItems: Array<any> = [];
     public sellerItemsTemp: Array<any> = [];
     public filterQuery = '';
     public rowsOnPage = 10;
@@ -123,5 +117,49 @@ export class AttemptVsDeliveryComponent implements OnInit {
 
     public selected(value: any): void {
         this.value = value;
+        if (value != null) {
+
+            this.AttemptVsDeliveryDoc = {
+                'aggregate':
+                [
+                    {
+                        $project: {
+                            _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1, ModifiedTime: 1, CompletionTime: 1, AttemptCount: 1,
+                            Tasks: { $slice: ['$Tasks', -1] },
+                            Seller: '$Order.SellerInfo.Name'
+                        }
+                    },
+                    {
+                        $match: {
+                            'AttemptCount': { $gte: 1 },
+                            'State': 'COMPLETED',
+
+                            'Tasks.IsTerminatingTask': true,
+                            'Tasks.State': 'COMPLETED',
+                            'Tasks.Type': 'Delivery',
+                            'Seller': this.value.id as string
+                        }
+                    },
+                    {
+                        $group: {
+                            _id: '$AttemptCount',
+                            DeliveredOrders: { $sum: 1 },
+                            AvgTimeToDelivery: { $avg: { $divide: [{ $subtract: ['$CompletionTime', '$CreateTime'] }, 86400000] } }
+                        }
+                    },
+                    { $sort: { _id: 1 } }
+                ]
+            };
+            this.dataService.executeAggregation('Jobs', this.AttemptVsDeliveryDoc)
+                .subscribe(result => {
+                    if (result) {
+                        this.data = result;
+                    }
+                },
+                error => { this.loggerService.error(error); });
+
+
+        }
+
     }
 }
