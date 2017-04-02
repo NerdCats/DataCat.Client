@@ -6,10 +6,15 @@
             </h1>
         </div>
         <div class="panel panel-default">
+            <!--<div>
+                <h1>Items</h1>
+                <ul>
+                    <li *ngFor="let item of items">{{item}}</li>
+                </ul>
+            </div>-->
             <div class="panel-heading">
                 <h3>Select a single seller</h3>
-                <ng-select [allowClear]="true"
-                           [items]="items"
+                <ng-select [items]="sellerItems"
                            (selected)="selected($event)"
                            placeholder="No seller selected">
                 </ng-select>

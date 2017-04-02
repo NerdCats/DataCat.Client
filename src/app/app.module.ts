@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { appRoutingProviders, routing } from './app.routing';
 import { LoginModule } from './login/login.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { SelectModule } from 'ng2-select';
 
 @NgModule({
     declarations: [
@@ -19,6 +20,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
         LoginModule,
         routing,
         DataTableModule,
+        SelectModule
     ],
     providers: [APP_PROVIDERS, appRoutingProviders],
     bootstrap: [AppComponent]

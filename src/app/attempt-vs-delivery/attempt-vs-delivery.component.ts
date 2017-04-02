@@ -10,104 +10,115 @@ import { LoggerService } from '../shared/index';
 })
 export class AttemptVsDeliveryComponent implements OnInit {
     public data: any[];
-    public items: Array<string> = ['Amsterdam', 'Antwerp', 'Athens', 'Barcelona',
-        'Berlin', 'Birmingham', 'Bradford', 'Bremen', 'Brussels', 'Bucharest',
-        'Budapest', 'Cologne', 'Copenhagen', 'Dortmund', 'Dresden', 'Dublin',
-        'Düsseldorf', 'Essen', 'Frankfurt', 'Genoa', 'Glasgow', 'Gothenburg',
-        'Hamburg', 'Hannover', 'Helsinki', 'Kraków', 'Leeds', 'Leipzig', 'Lisbon',
-        'London', 'Madrid', 'Manchester', 'Marseille', 'Milan', 'Munich', 'Málaga',
-        'Naples', 'Palermo', 'Paris', 'Poznań', 'Prague', 'Riga', 'Rome',
-        'Rotterdam', 'Seville', 'Sheffield', 'Sofia', 'Stockholm', 'Stuttgart',
-        'The Hague', 'Turin', 'Valencia', 'Vienna', 'Vilnius', 'Warsaw', 'Wrocław',
-        'Zagreb', 'Zaragoza', 'Łódź'];
+    public sellerItems: Array<any> = [
+        { id: '0', text: 'Aech' },
+        { id: '1', text: 'Art3mis' },
+        { id: '2', text: 'Daito' },
+        { id: '3', text: 'Parzival' },
+        { id: '4', text: 'Shoto' }
+    ];
+    public sellerItemsTemp: Array<any> = [];
     public filterQuery = '';
     public rowsOnPage = 10;
     public sortBy = '_id';
     public sortOrder = 'asc';
-    private value: any = {};
 
+    public AttemptVsDeliveryDoc: any = {
+        'aggregate':
+        [
+            {
+                $project: {
+                    _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1, ModifiedTime: 1, CompletionTime: 1, AttemptCount: 1,
+                    Tasks: { $slice: ['$Tasks', -1] },
+                    Seller: '$Order.SellerInfo.Name'
+                }
+            },
+            {
+                $match: {
+                    'AttemptCount': { $gte: 1 },
+                    'State': 'COMPLETED',
+
+                    'Tasks.IsTerminatingTask': true,
+                    'Tasks.State': 'COMPLETED',
+                    'Tasks.Type': 'Delivery',
+                }
+            },
+            {
+                $group: {
+                    _id: '$AttemptCount',
+                    DeliveredOrders: { $sum: 1 },
+                    AvgTimeToDelivery: { $avg: { $divide: [{ $subtract: ['$CompletionTime', '$CreateTime'] }, 86400000] } }
+                }
+            },
+            { $sort: { _id: 1 } }
+        ]
+    };
+
+    public SellerNamesDoc: any = {
+        'aggregate':
+        [
+            {
+                $project: {
+                    Seller: '$Order.SellerInfo.Name'
+                }
+            },
+            {
+                $group: {
+                    // _id: { id: '$Seller', text: '$Seller' },
+                    _id: '$Seller',
+                    //  text: { $first: '$Seller' }
+
+                }
+            },
+            { $sort: { _id: 1 } }
+        ]
+    };
+
+    private value: any = {};
     constructor(
         private dataService: DataService,
         private loggerService: LoggerService,
         private dashboarEventService: DashboardEventService) {
         dashboarEventService.componentUpdated({ Event: 'loaded', Name: 'Attempt VS Delivery' });
     }
+
     ngOnInit() {
-        let document: any = {
-            'aggregate':
-            [
-                {
-                    $project: {
-                        _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1, ModifiedTime: 1, CompletionTime: 1, AttemptCount: 1,
-                        Tasks: { $slice: ['$Tasks', -1] },
-                        Seller: '$Order.SellerInfo.Name'
-                    }
-                },
-                {
-                    $match: {
-                        'AttemptCount': { $gte: 1 },
-                        'State': 'COMPLETED',
+        this.dataService.executeAggregation('Jobs', this.SellerNamesDoc)
+            .subscribe(result => {
+                if (result) {
 
-                        'Tasks.IsTerminatingTask': true,
-                        'Tasks.State': 'COMPLETED',
-                        'Tasks.Type': 'Delivery',
-                    }
-                },
-                {
-                    $group: {
-                        _id: '$AttemptCount',
-                        DeliveredOrders: { $sum: 1 },
-                        AvgTimeToDelivery: { $avg: { $divide: [{ $subtract: ['$CompletionTime', '$CreateTime'] }, 86400000] } }
-                    }
-                },
-                { $sort: { _id: 1 } }
-            ]
-        };
+                    try {
+                        // let itself = this;
+                        let len = result.length;
+                        // for (let entry of result) {
 
-        this.dataService.executeAggregation('Jobs', document)
+                        //    if (entry._id != null) {
+                        //        // itself.sellerItems.push(entry._id);
+                        //        let element = { value: entry._id, label: entry._id };
+                        //        this.sellerItems.push(element);
+                        //    }
+                        // }
+                        for (let i = 0; i < len; i++) {
+                            if (result[i]._id as string != null) {
+                                let element = { id: result[i]._id as string, text: result[i]._id as string };
+                                this.sellerItemsTemp[i] = element;
+                            }
+                        }
+                        this.sellerItems = this.sellerItemsTemp;
+                    } catch (e) {
+                        console.log('YO', e);
+                    }
+                }
+            },
+            error => { this.loggerService.error(error); });
+
+        this.dataService.executeAggregation('Jobs', this.AttemptVsDeliveryDoc)
             .subscribe(result => {
                 if (result) {
                     this.data = result;
                 }
             },
             error => { this.loggerService.error(error); });
-
-        let document2: any = {
-            'aggregate':
-            [
-                {
-                    $project: {
-                        // _id: '$_id',
-                        Seller: '$Order.SellerInfo.Name'
-                    }
-                },
-                {
-                    $group: {
-                        // _id: { id: '$Seller', text: '$Seller' },
-                        _id: '$Seller',
-                        //  text: { $first: '$Seller' }
-
-                    }
-                },
-                { $sort: { _id: 1 } }
-            ]
-        };
-
-        this.dataService.executeAggregation('Jobs', document2)
-            .subscribe(result => {
-                if (result) {
-                    let itself = this;
-                    for (let entry of result) {
-                        if (entry._id != null) {
-                            itself.items.push(entry._id);
-                        }
-                    }
-
-                }
-            },
-            error => { this.loggerService.error(error); });
-
-
     }
 
     public selected(value: any): void {
