@@ -24,7 +24,8 @@ export class AuthService {
     login(username: string, password: string) {
         let headers = new Headers();
         let tokenUrl = CONSTANTS.ENV.AUTH_BASE + 'auth/token'; // TODO: Need to definitely load from settings
-
+        console.log(CONSTANTS.ENV);
+        console.log(tokenUrl);
         let urlEncodedParam =
             'grant_type=' + 'password' +
             '&username=' + username +

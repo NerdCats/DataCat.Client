@@ -8,8 +8,9 @@
     "\\src\\app",
     "\\src\\app\\attempt-vs-delivery",
     "\\src\\app\\dashboard",
-    "\\src\\app\\glimpse",
-    "\\src\\extra"
+    "\\src\\app\\data",
+    "\\src\\app\\login"
   ],
+  "SelectedNode": "\\src\\app\\dashboard\\dashboard.module.ts",
   "PreviewInSolutionExplorer": false
 }
