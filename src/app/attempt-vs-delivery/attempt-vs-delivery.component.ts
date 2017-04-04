@@ -156,8 +156,6 @@ export class AttemptVsDeliveryComponent implements OnInit {
                     }
                 },
                 error => { this.loggerService.error(error); });
-
-
         }
 
     }

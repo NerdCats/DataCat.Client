@@ -3,11 +3,7 @@
     "",
     "\\config",
     "\\e2e",
-    "\\src",
-    "\\src\\app",
-    "\\src\\app\\dashview-header",
-    "\\src\\app\\glimpse"
+    "\\src"
   ],
-  "SelectedNode": "\\src\\app\\glimpse\\glimpse.component.ts",
   "PreviewInSolutionExplorer": false
 }
