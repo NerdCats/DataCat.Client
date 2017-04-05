@@ -20,6 +20,7 @@ import { FooterComponent } from '../footer/index';
 import { DashviewHeaderComponent } from '../dashview-header/index';
 import { GlimpseComponent } from '../glimpse/index';
 import { AttemptVsDeliveryComponent } from '../attempt-vs-delivery/index';
+import { VendorOrderFrequencyComponent } from '../vendor-order-frequency/index';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { AttemptVsDeliveryComponent } from '../attempt-vs-delivery/index';
         FooterComponent,
         DashviewHeaderComponent,
         GlimpseComponent,
-        AttemptVsDeliveryComponent
+        AttemptVsDeliveryComponent,
+        VendorOrderFrequencyComponent
     ],
     exports: [
         DashboardComponent,
