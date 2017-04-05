@@ -44,28 +44,9 @@ export class VendorOrderFrequencyComponent implements OnInit {
     // holds selected seller
     public value: any = {};
 
-    // for bar chart
-    // public isDataAvailable: boolean = false;
-    // public barChartLabels: string[] = [];
-    // public barChartType: string = 'bar';
-    // public barChartLegend: boolean = true;
-    // public barChartData: any[];
-    // public barChartOptions: any = {
-    //    scaleShowVerticalLines: false,
-    //    responsive: true,
-    //    scales: {
-    //        yAxes: [{
-    //            display: true,
-    //            ticks: {
-    //                suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
-    //                // OR //
-    //                beginAtZero: true,   // minimum value will be 0.
-    //                suggestedMax: 100,
-    //                max: 150
-    //            }
-    //        }]
-    //    }
-    // };
+    // date range
+    public fromDate = '';
+    public toDate = '';
 
     constructor(
         private dataService: DataService,
@@ -101,54 +82,64 @@ export class VendorOrderFrequencyComponent implements OnInit {
         this.aggregateBy = value;
         if (value != null) {
 
-            this.VendorOrderFrequencyDoc = {
-                'aggregate':
-                [
-                    {
-                        $project: {
-                            _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1,
-                            Tasks: { $slice: ['$Tasks', -1] },
-                            Seller: '$Order.SellerInfo.Name'
-                        }
-                    },
-                    {
-                        $match: {
-                            'Tasks.Type': 'Delivery',
-                            'Seller': this.value.id as string
-                        },
-                    },
-                    {
-                        $group: {
-                            _id: { $dateToString: { format: this.aggregateBy.id as string, date: '$CreateTime' } },
-                            PlacedOrders: { $sum: 1 },
-
-
-                        }
-                    },
-                    { $sort: { _id: 1 } }
-                ]
-            };
+            this.VendorOrderFrequencyDoc = this.prepareVendorOrderFrequencyDoc(this.VendorOrderFrequencyDoc);
             this.dataService.executeAggregation('Jobs', this.VendorOrderFrequencyDoc)
                 .subscribe(result => {
-                    // let jobCountArray: any[] = [];
-                    // this.barChartLabels = [];
-                    // this.barChartData = [];
                     if (result) {
-                        // this.isDataAvailable = true;
                         this.data = result;
-                        // for (let entry of this.data) {
-                        //    this.barChartLabels.push(entry._id as string);
-                        //    jobCountArray.push(entry.PlacedOrders);
-                        // }
                     }
-                    // this.barChartData = [{ data: jobCountArray, label: 'Orders' }];
                 },
                 error => { this.loggerService.error(error); });
         }
     }
 
+    // query: order frequency
+    public prepareVendorOrderFrequencyDoc(value: any): any {
+        return value = {
+            'aggregate':
+            [
+                {
+                    $project: {
+                        _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1,
+                        Tasks: { $slice: ['$Tasks', -1] },
+                        Seller: '$Order.SellerInfo.Name'
+                    }
+                },
+                {
+                    $match: {
+                        'Tasks.Type': 'Delivery',
+                        'Seller': this.value.id as string,
+                        'CreateTime':
+                        {
+                            $gte: ISODate('2017-02-01'),
+                            $lt: ISODate('2017-02-28')
+                        },
+                    },
+                },
+                {
+                    $group: {
+                        _id: { $dateToString: { format: this.aggregateBy.id as string, date: '$CreateTime' } },
+                        PlacedOrders: { $sum: 1 },
+                    }
+                },
+                { $sort: { _id: 1 } }
+            ]
+        };
+    }
+
     // selected item : value cum seller
     public selected(value: any): void {
         this.value = value;
+        if (value != null && this.aggregateBy != null) {
+
+            this.VendorOrderFrequencyDoc = this.prepareVendorOrderFrequencyDoc(this.VendorOrderFrequencyDoc);
+            this.dataService.executeAggregation('Jobs', this.VendorOrderFrequencyDoc)
+                .subscribe(result => {
+                    if (result) {
+                        this.data = result;
+                    }
+                },
+                error => { this.loggerService.error(error); });
+        }
     }
 }
