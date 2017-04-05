@@ -8,6 +8,7 @@ import { appRoutingProviders, routing } from './app.routing';
 import { LoginModule } from './login/login.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { SelectModule } from 'ng2-select';
+import { Daterangepicker } from 'ng2-daterangepicker';
 
 @NgModule({
     declarations: [
@@ -20,7 +21,8 @@ import { SelectModule } from 'ng2-select';
         LoginModule,
         routing,
         DataTableModule,
-        SelectModule
+        SelectModule,
+        Daterangepicker
     ],
     providers: [APP_PROVIDERS, appRoutingProviders],
     bootstrap: [AppComponent]

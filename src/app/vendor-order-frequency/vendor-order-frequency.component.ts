@@ -8,6 +8,7 @@ import { LoggerService } from '../shared/index';
     selector: 'as-vendor-order-frequency',
     templateUrl: 'vendor-order-frequency.html'
 })
+
 export class VendorOrderFrequencyComponent implements OnInit {
 
     // for table
@@ -48,6 +49,11 @@ export class VendorOrderFrequencyComponent implements OnInit {
     // date range
     public fromDate: any;
     public toDate: any;
+    public daterange: any = {};
+    public options: any = {
+        locale: { format: 'YYYY-MM-DD' },
+        alwaysShowCalendars: false,
+    };
 
     constructor(
         private dataService: DataService,
@@ -151,5 +157,12 @@ export class VendorOrderFrequencyComponent implements OnInit {
                 },
                 error => { this.loggerService.error(error); });
         }
+    }
+
+    // selected date range
+    public selectedDate(value: any) {
+        this.daterange.start = value.start;
+        this.daterange.end = value.end;
+        this.daterange.label = value.label;
     }
 }

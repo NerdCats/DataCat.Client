@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 // Load Controls
 import { ChartsModule } from 'ng2-charts';
 import { SelectModule } from 'ng2-select';
+import { Daterangepicker } from 'ng2-daterangepicker';
 
 
 // Local Modules
@@ -47,7 +48,8 @@ import { VendorOrderFrequencyComponent } from '../vendor-order-frequency/index';
         ChartsModule,
         HttpModule,
         DataModule,
-        SelectModule
+        SelectModule,
+        Daterangepicker
     ],
     providers: [...DASHBOARD_PROVIDERS]
 })

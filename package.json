@@ -84,6 +84,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "lodash": "^4.17.4",
     "ng2-charts": "^1.5.0",
+    "ng2-daterangepicker": "^2.0.6",
     "ng2-select": "^1.2.0",
     "phantomjs-prebuilt": "^2.1.14",
     "remap-istanbul": "~0.6.4",

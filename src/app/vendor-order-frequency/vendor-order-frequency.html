@@ -13,7 +13,7 @@
                            placeholder="No seller selected">
                 </ng-select>
                 <p></p>
-                <!--<pre>{{value.text}}</pre>-->
+                <input type="text" name="daterangeInput" daterangepicker [options]="options" (selected)="selectedDate($event)"/>
                 <h3>Aggregate By</h3>
                 <ng-select [items]="aggregateOptions"
                            (selected)="selectedAggreateBy($event)"

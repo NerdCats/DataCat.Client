@@ -12,7 +12,11 @@
     var map = {
         'app': 'src/tmp/app',
         'test': 'src/tmp/test',
-        'ng2-select': 'node_modules/ng2-select'
+        'ng2-select': 'node_modules/ng2-select',
+        'ng2-daterangepicker': 'node_modules/ng2-daterangepicker',
+        'jquery': 'node_modules/jquery/dist/jquery.js',
+        'moment': 'node_modules/moment',
+        'bootstrap-daterangepicker': 'node_modules/bootstrap-daterangepicker/daterangepicker.js'
     };
 
     // packages tells the System loader how to load when no filename and/or no extension
@@ -49,6 +53,14 @@
             main: 'ng2-select.js',
             defaultExtension: 'js'
         },
+        moment: {
+            main: 'moment',
+            defaultExtension: 'js'
+        },
+        'ng2-daterangepicker': {
+            main: 'index',
+            defaultExtension: 'js'
+        }
     };
 
     // List npm packages here
