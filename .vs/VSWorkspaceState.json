@@ -3,11 +3,7 @@
     "",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\attempt-vs-delivery",
-    "\\src\\app\\dashboard",
-    "\\src\\app\\dashview-header",
-    "\\src\\app\\navbar"
+    "\\src\\app\\dashboard"
   ],
-  "SelectedNode": "\\src\\app\\navbar",
   "PreviewInSolutionExplorer": false
 }
