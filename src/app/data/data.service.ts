@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
+import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import { CONSTANTS, LoggerService } from '../shared/index';
+import { CONSTANTS, LoggerService, LocalStorage } from '../shared/index';
+import { AuthConstants } from '../auth/auth.constants';
 
 @Injectable()
 export class DataService {
@@ -13,15 +14,18 @@ export class DataService {
      */
     constructor(
         private http: Http,
-        private loggerService: LoggerService) { }
+        private loggerService: LoggerService,
+        private localStorage: LocalStorage) { }
 
-    executeAggregation(collectionName: string, aggregateDocument: any) {
-        let aggUrl = CONSTANTS.ENV.API_BASE + collectionName + '/a';
+    executeAggregation(connectionId: string, collectionName: string, aggregateDocument: any) {
+        let aggUrl = CONSTANTS.ENV.API_BASE + 'data/' + connectionId + '/' + collectionName + '/a';
 
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'bearer ' + this.localStorage.getObject('currentUser').access_token);
 
-        return this.http.post(aggUrl, aggregateDocument)
+        let options: RequestOptions = new RequestOptions({ headers: headers });
+        return this.http.post(aggUrl, aggregateDocument, options)
             .map((res: Response) => {
                 if (res.status < 200 || res.status >= 300) {
                     throw new Error('Response status: ' + res.status);

@@ -123,7 +123,7 @@ export class GlimpseComponent implements OnInit {
             ]
         };
 
-        this.dataService.executeAggregation('Jobs', document)
+        this.dataService.executeAggregation('58e528fe578309a5b84b3906', 'Jobs', document)
             .subscribe(result => {
                 let jobCountArray: any[] = [];
                 if (result) {
@@ -134,7 +134,7 @@ export class GlimpseComponent implements OnInit {
                         jobCountArray.push(entry.count);
                     }
                 }
-                this.barChartData = [{data: jobCountArray, label: 'Orders'}];
+                this.barChartData = [{ data: jobCountArray, label: 'Orders' }];
                 this.isDataAvailable = true;
             },
             error => { this.loggerService.error(error); });
