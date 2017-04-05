@@ -1,9 +1,13 @@
 {
   "ExpandedNodes": [
     "",
-    "\\config",
-    "\\e2e",
-    "\\src"
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\attempt-vs-delivery",
+    "\\src\\app\\dashboard",
+    "\\src\\app\\dashview-header",
+    "\\src\\app\\navbar"
   ],
+  "SelectedNode": "\\src\\app\\navbar",
   "PreviewInSolutionExplorer": false
 }
