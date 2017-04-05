@@ -10,11 +10,14 @@ import { LoggerService } from '../shared/index';
 })
 export class VendorOrderFrequencyComponent implements OnInit {
     public data: any[];
+
     public sellerItems: Array<any> = [];
     public sellerItemsTemp: Array<any> = [];
+
     public filterQuery = '';
-    public sortBy = '_id';
-    public sortOrder = 'asc';
+
+    public aggregateOptions: Array<any> = [{ id: '%Y-%m-%d', text: 'Day' }, { id: '%Y-%m', text: 'Month' }, { id: '%Y', text: 'Year' }];
+    public aggregateBy: any = {};
 
     public VendorOrderFrequencyDoc: any;
 
@@ -28,22 +31,21 @@ export class VendorOrderFrequencyComponent implements OnInit {
             },
             {
                 $group: {
-                    // _id: { id: '$Seller', text: '$Seller' },
                     _id: '$Seller',
-                    //  text: { $first: '$Seller' }
-
                 }
             },
             { $sort: { _id: 1 } }
         ]
     };
 
-    private value: any = {};
+    // holds selected seller
+    public value: any = {};
+
     constructor(
         private dataService: DataService,
         private loggerService: LoggerService,
         private dashboarEventService: DashboardEventService) {
-        dashboarEventService.componentUpdated({ Event: 'loaded', Name: 'Attempt VS Delivery' });
+        dashboarEventService.componentUpdated({ Event: 'loaded', Name: 'Vendor Order Frequency' });
     }
 
     ngOnInit() {
@@ -68,8 +70,8 @@ export class VendorOrderFrequencyComponent implements OnInit {
             error => { this.loggerService.error(error); });
     }
 
-    public selected(value: any): void {
-        this.value = value;
+    public selectedAggreateBy(value: any): void {
+        this.aggregateBy = value;
         if (value != null) {
 
             this.VendorOrderFrequencyDoc = {
@@ -77,27 +79,23 @@ export class VendorOrderFrequencyComponent implements OnInit {
                 [
                     {
                         $project: {
-                            _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1, ModifiedTime: 1, CompletionTime: 1, AttemptCount: 1,
+                            _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1,
                             Tasks: { $slice: ['$Tasks', -1] },
                             Seller: '$Order.SellerInfo.Name'
                         }
                     },
                     {
                         $match: {
-                            'AttemptCount': { $gte: 1 },
-                            'State': 'COMPLETED',
-
-                            'Tasks.IsTerminatingTask': true,
-                            'Tasks.State': 'COMPLETED',
                             'Tasks.Type': 'Delivery',
                             'Seller': this.value.id as string
-                        }
+                        },
                     },
                     {
                         $group: {
-                            _id: '$AttemptCount',
-                            DeliveredOrders: { $sum: 1 },
-                            AvgTimeToDelivery: { $avg: { $divide: [{ $subtract: ['$CompletionTime', '$CreateTime'] }, 86400000] } }
+                            _id: { $dateToString: { format: this.aggregateBy.id as string, date: '$CreateTime' } },
+                            PlacedOrders: { $sum: 1 },
+
+
                         }
                     },
                     { $sort: { _id: 1 } }
@@ -106,15 +104,14 @@ export class VendorOrderFrequencyComponent implements OnInit {
             this.dataService.executeAggregation('Jobs', this.VendorOrderFrequencyDoc)
                 .subscribe(result => {
                     if (result) {
-                        for (let entry of result) {
-                            let AvgTimeToDelivery: number = Math.round(entry.AvgTimeToDelivery as number);
-                            entry.AvgTimeToDelivery = AvgTimeToDelivery;
-                        }
                         this.data = result;
                     }
                 },
                 error => { this.loggerService.error(error); });
         }
+    }
 
+    public selected(value: any): void {
+        this.value = value;
     }
 }

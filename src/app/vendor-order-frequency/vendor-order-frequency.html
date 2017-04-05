@@ -14,19 +14,24 @@
                 </ng-select>
                 <p></p>
                 <pre>{{value.text}}</pre>
+                <h3>Aggregate By</h3>
+                <ng-select [items]="aggregateOptions"
+                           (selected)="selectedAggreateBy($event)"
+                           placeholder="No aggregation selected">
+                </ng-select>
             </div>
             <table class="table table-striped" data-bind="data">
                 <thead>
                     <tr>
                         <th style="width: 40%">
-                            Attempts
+                            Time Line
                         </th>
                         <th style="width: 40%">
-                            Delivered Orders
+                            Placed Orders
                         </th>
-                        <th style="width: 40%">
+                        <!--<th style="width: 40%">
                             Time To Delivery (days)
-                        </th>
+                        </th>-->
                     </tr>
                     <!--<tr>
                         <th colspan="5">
@@ -38,8 +43,8 @@
                 <tbody>
                     <tr *ngFor="let item of data">
                         <td>{{item._id}}</td>
-                        <td>{{item.DeliveredOrders}}</td>
-                        <td>{{item.AvgTimeToDelivery}}</td>
+                        <td>{{item.PlacedOrders}}</td>
+                        <!--<td>{{item.AvgTimeToDelivery}}</td>-->
                     </tr>
                 </tbody>
             </table>
