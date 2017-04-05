@@ -9,13 +9,16 @@ import { LoggerService } from '../shared/index';
     templateUrl: 'vendor-order-frequency.html'
 })
 export class VendorOrderFrequencyComponent implements OnInit {
-    public data: any[];
 
+    // for table
+    public data: any[];
+    public filterQuery = '';
+
+    // for seller combo
     public sellerItems: Array<any> = [];
     public sellerItemsTemp: Array<any> = [];
 
-    public filterQuery = '';
-
+    // for aggregation combo
     public aggregateOptions: Array<any> = [{ id: '%Y-%m-%d', text: 'Day' }, { id: '%Y-%m', text: 'Month' }, { id: '%Y', text: 'Year' }];
     public aggregateBy: any = {};
 
@@ -40,6 +43,29 @@ export class VendorOrderFrequencyComponent implements OnInit {
 
     // holds selected seller
     public value: any = {};
+
+    // for bar chart
+    // public isDataAvailable: boolean = false;
+    // public barChartLabels: string[] = [];
+    // public barChartType: string = 'bar';
+    // public barChartLegend: boolean = true;
+    // public barChartData: any[];
+    // public barChartOptions: any = {
+    //    scaleShowVerticalLines: false,
+    //    responsive: true,
+    //    scales: {
+    //        yAxes: [{
+    //            display: true,
+    //            ticks: {
+    //                suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+    //                // OR //
+    //                beginAtZero: true,   // minimum value will be 0.
+    //                suggestedMax: 100,
+    //                max: 150
+    //            }
+    //        }]
+    //    }
+    // };
 
     constructor(
         private dataService: DataService,
@@ -70,6 +96,7 @@ export class VendorOrderFrequencyComponent implements OnInit {
             error => { this.loggerService.error(error); });
     }
 
+    // selected item : aggregateBy
     public selectedAggreateBy(value: any): void {
         this.aggregateBy = value;
         if (value != null) {
@@ -103,14 +130,24 @@ export class VendorOrderFrequencyComponent implements OnInit {
             };
             this.dataService.executeAggregation('Jobs', this.VendorOrderFrequencyDoc)
                 .subscribe(result => {
+                    // let jobCountArray: any[] = [];
+                    // this.barChartLabels = [];
+                    // this.barChartData = [];
                     if (result) {
+                        // this.isDataAvailable = true;
                         this.data = result;
+                        // for (let entry of this.data) {
+                        //    this.barChartLabels.push(entry._id as string);
+                        //    jobCountArray.push(entry.PlacedOrders);
+                        // }
                     }
+                    // this.barChartData = [{ data: jobCountArray, label: 'Orders' }];
                 },
                 error => { this.loggerService.error(error); });
         }
     }
 
+    // selected item : value cum seller
     public selected(value: any): void {
         this.value = value;
     }
