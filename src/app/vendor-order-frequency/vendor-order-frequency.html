@@ -6,39 +6,47 @@
             </h1>
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3>Select a single vendor</h3>
-                <ng-select [items]="sellerItems"
-                           (selected)="selected($event)"
-                           placeholder="No seller selected">
-                </ng-select>
-                <p></p>
-                <input type="text" name="daterangeInput" daterangepicker [options]="options" (selected)="selectedDate($event)"/>
-                <h3>Aggregate By</h3>
-                <ng-select [items]="aggregateOptions"
-                           (selected)="selectedAggreateBy($event)"
-                           placeholder="No aggregation selected">
-                </ng-select>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4>Select a vendor</h4>
+                        <ng-select [items]="sellerItems"
+                                   (selected)="selected($event)"
+                                   placeholder="Select a vendor">
+                        </ng-select>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>Select date range</h4>
+                        <input class="form-control" type="text" name="daterangeInput" daterangepicker [options]="options" (selected)="selectedDate($event)"/>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>Select aggregation type</h4>
+                        <ng-select [items]="aggregateOptions"
+                                   (selected)="selectedAggreateBy($event)"
+                                   placeholder="No aggregation type">
+                        </ng-select>
+                    </div>
+                </div>
+                <br />
+                <table class="table table-striped" data-bind="data">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%">
+                                Time Line
+                            </th>
+                            <th style="width: 40%">
+                                Placed Orders
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of data">
+                            <td>{{item._id}}</td>
+                            <td>{{item.PlacedOrders}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <table class="table table-striped" data-bind="data">
-                <thead>
-                    <tr>
-                        <th style="width: 40%">
-                            Time Line
-                        </th>
-                        <th style="width: 40%">
-                            Placed Orders
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of data">
-                        <td>{{item._id}}</td>
-                        <td>{{item.PlacedOrders}}</td>
-                        <!--<td>{{item.AvgTimeToDelivery}}</td>-->
-                    </tr>
-                </tbody>
-            </table>
             <!--<canvas *ngIf="isDataAvailable"
                     baseChart
                     [datasets]="barChartData"

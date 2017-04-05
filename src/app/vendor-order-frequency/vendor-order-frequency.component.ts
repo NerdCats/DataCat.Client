@@ -2,6 +2,7 @@
 import { DashboardEventService } from '../dashboard/dashboard-event.service';
 import { DataService } from '../data/index';
 import { LoggerService } from '../shared/index';
+import { DaterangepickerConfig } from 'ng2-daterangepicker';
 
 @Component({
     moduleId: module.id,
@@ -49,6 +50,7 @@ export class VendorOrderFrequencyComponent implements OnInit {
     // date range
     public fromDate: any;
     public toDate: any;
+
     public daterange: any = {};
     public options: any = {
         locale: { format: 'YYYY-MM-DD' },
@@ -104,8 +106,8 @@ export class VendorOrderFrequencyComponent implements OnInit {
     public prepareVendorOrderFrequencyDoc(value: any): any {
         try {
 
-            this.fromDate = new Date(this.fromDate.toISOString());
-            this.toDate = new Date(this.toDate.toISOString());
+            this.fromDate = new Date(this.daterange.start._d as string);
+            this.toDate = new Date(this.daterange.end._d as string);
 
             return value = {
                 'aggregate':
@@ -123,8 +125,8 @@ export class VendorOrderFrequencyComponent implements OnInit {
                             'Seller': this.value.id as string,
                             'CreateTime':
                             {
-                                $gte: this.fromDate,
-                                $lt: this.toDate
+                                $gte: this.fromDate as Date,
+                                $lt: this.toDate as Date
                             },
                         },
                     },
@@ -163,6 +165,6 @@ export class VendorOrderFrequencyComponent implements OnInit {
     public selectedDate(value: any) {
         this.daterange.start = value.start;
         this.daterange.end = value.end;
-        this.daterange.label = value.label;
+        // this.daterange.label = value.label;
     }
 }
