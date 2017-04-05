@@ -22,6 +22,7 @@ export class VendorOrderFrequencyComponent implements OnInit {
     public aggregateOptions: Array<any> = [{ id: '%Y-%m-%d', text: 'Day' }, { id: '%Y-%m', text: 'Month' }, { id: '%Y', text: 'Year' }];
     public aggregateBy: any = {};
 
+    // for holding query
     public VendorOrderFrequencyDoc: any;
 
     public SellerNamesDoc: any = {
@@ -45,8 +46,8 @@ export class VendorOrderFrequencyComponent implements OnInit {
     public value: any = {};
 
     // date range
-    public fromDate = '';
-    public toDate = '';
+    public fromDate: any;
+    public toDate: any;
 
     constructor(
         private dataService: DataService,
@@ -95,6 +96,9 @@ export class VendorOrderFrequencyComponent implements OnInit {
 
     // query: order frequency
     public prepareVendorOrderFrequencyDoc(value: any): any {
+        this.fromDate = new Date(this.fromDate.toISOString());
+        this.toDate = new Date(this.toDate.toISOString());
+
         return value = {
             'aggregate':
             [
@@ -111,8 +115,8 @@ export class VendorOrderFrequencyComponent implements OnInit {
                         'Seller': this.value.id as string,
                         'CreateTime':
                         {
-                            $gte: ISODate('2017-02-01'),
-                            $lt: ISODate('2017-02-28')
+                            $gte: this.fromDate,
+                            $lt: this.toDate
                         },
                     },
                 },
