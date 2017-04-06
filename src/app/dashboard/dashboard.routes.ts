@@ -10,7 +10,7 @@ export const DashboardRoutes: Routes = [
         component: DashboardComponent,
         children: [
             { path: '', redirectTo: 'glimpse', pathMatch: 'full' },
-            { path: 'glimpse', component: BarChartComponent }
+            { path: 'glimpse', component: GlimpseComponent }
         ]
     }
 ];
