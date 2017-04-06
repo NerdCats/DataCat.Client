@@ -1,4 +1,4 @@
-import { Type, Component, Input, AfterViewInit, ViewChild, ComponentFactoryResolver, OnDestroy } from '@angular/core';
+import { Type, Component, Input, AfterViewInit, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { UiHostDirective } from '../ui-host/ui-host.directive';
 
 export interface IWidgetComponent {
@@ -10,7 +10,7 @@ export interface IWidgetComponent {
     selector: 'as-widget',
     template: ` <template asUiHost></template>`
 })
-export class WidgetComponent implements AfterViewInit, OnDestroy {
+export class WidgetComponent implements AfterViewInit {
     @Input() componentType: Type<any>;
     @Input() data: any;
     @Input() config: any;
@@ -22,11 +22,7 @@ export class WidgetComponent implements AfterViewInit, OnDestroy {
     constructor(private _componentFactoryResolver: ComponentFactoryResolver) { }
 
     ngAfterViewInit(): void {
-        throw new Error('Method not implemented.');
-    }
-
-    ngOnDestroy(): void {
-        throw new Error('Method not implemented.');
+        this.loadComponent();
     }
 
     loadComponent() {
