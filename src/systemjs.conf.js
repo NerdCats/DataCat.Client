@@ -39,6 +39,10 @@
         'ng2-charts': {
             main: 'ng2-charts.js',
             defaultExtension: 'js'
+        },
+        'primeng' : {
+            main: 'primeng.js',
+            defaultExtension: 'js'
         }
     };
 
@@ -50,7 +54,8 @@
         'angular2-jwt',
         'angular2-letter-avatar',
         'chart.js',
-        'ng2-charts'
+        'ng2-charts',
+        'primeng'
     ];
 
     // Add package entries for packages that expose barrels using index.js
