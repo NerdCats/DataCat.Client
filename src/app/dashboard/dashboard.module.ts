@@ -8,7 +8,7 @@ import { HttpModule } from '@angular/http';
 import { NavbarModule } from '../navbar/index';
 import { LetterAvatarModule } from '../shared/letter-avatar/index';
 import { DataModule } from '../data/index';
-
+import { UiToolboxModule } from '../ui-toolbox/index';
 
 import { DASHBOARD_PROVIDERS } from './dashboard-event.service';
 
@@ -38,7 +38,8 @@ import { GlimpseComponent } from '../glimpse/index';
         LetterAvatarModule,
         ChartsModule,
         HttpModule,
-        DataModule
+        DataModule,
+        UiToolboxModule
     ],
     providers: [...DASHBOARD_PROVIDERS]
 })

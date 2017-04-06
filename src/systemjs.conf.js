@@ -11,7 +11,7 @@
     // map tells the System loader where to look for things
     var map = {
         'app': 'src/tmp/app',
-        'test': 'src/tmp/test'
+        'primeng': 'node_modules/primeng'
     };
 
     // packages tells the System loader how to load when no filename and/or no extension
