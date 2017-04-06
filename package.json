@@ -14,13 +14,10 @@
   },
   "scripts": {
     "start": "gulp serve-dev",
-    "test": "gulp test",
-    "e2e": "gulp e2e",
     "env": "gulp env",
     "build": "gulp build",
     "serve-build": "gulp serve-build",
-    "clean": "gulp clean",
-    "coverage": "coveralls < ./report/remap/lcov.info"
+    "clean": "gulp clean"
   },
   "keywords": [
     "angular2",
