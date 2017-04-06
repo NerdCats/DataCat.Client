@@ -23,6 +23,7 @@ import { DashviewHeaderComponent } from '../dashview-header/index';
 import { GlimpseComponent } from '../glimpse/index';
 import { AttemptVsDeliveryComponent } from '../attempt-vs-delivery/index';
 import { VendorOrderFrequencyComponent } from '../vendor-order-frequency/index';
+// import { CalendarModule } from 'primeng/primeng';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { VendorOrderFrequencyComponent } from '../vendor-order-frequency/index';
         HttpModule,
         DataModule,
         SelectModule,
+        // CalendarModule
     ],
     providers: [...DASHBOARD_PROVIDERS]
 })

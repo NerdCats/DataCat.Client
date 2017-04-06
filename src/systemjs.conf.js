@@ -13,6 +13,7 @@
         'app': 'src/tmp/app',
         'test': 'src/tmp/test',
         'ng2-select': 'node_modules/ng2-select',
+        'primeng': 'node_modules/primeng',
     };
 
     // packages tells the System loader how to load when no filename and/or no extension
@@ -48,7 +49,11 @@
         'ng2-select': {
             main: 'ng2-select.js',
             defaultExtension: 'js'
-        },       
+        },  
+        'primeng': {
+            main: 'primeng.js',
+            defaultExtension: 'js'
+        },
     };
 
     // List npm packages here
@@ -62,6 +67,7 @@
         'ng2-charts',
         'angular2-datatable',
         'ng2-select',
+        'primeng',
     ];
 
     // Add package entries for packages that expose barrels using index.js

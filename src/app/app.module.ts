@@ -8,6 +8,7 @@ import { appRoutingProviders, routing } from './app.routing';
 import { LoginModule } from './login/login.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { SelectModule } from 'ng2-select';
+// import { CalendarModule } from 'primeng/primeng';
 
 @NgModule({
     declarations: [
@@ -21,6 +22,7 @@ import { SelectModule } from 'ng2-select';
         routing,
         DataTableModule,
         SelectModule,
+        // CalendarModule
     ],
     providers: [APP_PROVIDERS, appRoutingProviders],
     bootstrap: [AppComponent]

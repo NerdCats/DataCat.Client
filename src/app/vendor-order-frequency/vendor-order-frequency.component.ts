@@ -49,6 +49,7 @@ export class VendorOrderFrequencyComponent implements OnInit {
     // date range
     public fromDate: any;
     public toDate: any;
+    public selectedDate: any;
 
     // constructor
     constructor(
