@@ -2,7 +2,6 @@
 import { DashboardEventService } from '../dashboard/dashboard-event.service';
 import { DataService } from '../data/index';
 import { LoggerService } from '../shared/index';
-// import { CalendarModule } from 'primeng/primeng';
 
 @Component({
     moduleId: module.id,
@@ -48,8 +47,6 @@ export class VendorOrderFrequencyComponent implements OnInit {
     public value: any = {};
 
     // date range
-    public fromDate: any;
-    public toDate: any;
     public selectedFromDate: any;
     public selectedToDate: any;
 
@@ -103,9 +100,6 @@ export class VendorOrderFrequencyComponent implements OnInit {
     public prepareVendorOrderFrequencyDoc(value: any): any {
         try {
 
-            // this.fromDate = new Date(this.daterange.start._d as string);
-            // this.toDate = new Date(this.daterange.end._d as string);
-
             return value = {
                 'aggregate':
                 [
@@ -120,11 +114,11 @@ export class VendorOrderFrequencyComponent implements OnInit {
                         $match: {
                             'Tasks.Type': 'Delivery',
                             'Seller': this.value.id as string,
-                            // 'CreateTime':
-                            // {
-                            //    $gte: this.fromDate as Date,
-                            //    $lt: this.toDate as Date
-                            // },
+                            'CreateTime':
+                            {
+                                $gte: this.selectedFromDate as Date,
+                                $lt: this.selectedToDate as Date
+                            },
                         },
                     },
                     {
@@ -155,12 +149,6 @@ export class VendorOrderFrequencyComponent implements OnInit {
                     }
                 },
                 error => { this.loggerService.error(error); });
-        }
-    }
-
-    public selectedDate(value: any): void {
-        if (value != null) {
-            this.selectedFromDate = value;
         }
     }
 }
