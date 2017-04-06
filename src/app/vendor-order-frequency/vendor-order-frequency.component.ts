@@ -2,7 +2,6 @@
 import { DashboardEventService } from '../dashboard/dashboard-event.service';
 import { DataService } from '../data/index';
 import { LoggerService } from '../shared/index';
-import { DaterangepickerConfig } from 'ng2-daterangepicker';
 
 @Component({
     moduleId: module.id,
@@ -51,12 +50,7 @@ export class VendorOrderFrequencyComponent implements OnInit {
     public fromDate: any;
     public toDate: any;
 
-    public daterange: any = {};
-    public options: any = {
-        locale: { format: 'YYYY-MM-DD' },
-        alwaysShowCalendars: false,
-    };
-
+    // constructor
     constructor(
         private dataService: DataService,
         private loggerService: LoggerService,
@@ -106,8 +100,8 @@ export class VendorOrderFrequencyComponent implements OnInit {
     public prepareVendorOrderFrequencyDoc(value: any): any {
         try {
 
-            this.fromDate = new Date(this.daterange.start._d as string);
-            this.toDate = new Date(this.daterange.end._d as string);
+            // this.fromDate = new Date(this.daterange.start._d as string);
+            // this.toDate = new Date(this.daterange.end._d as string);
 
             return value = {
                 'aggregate':
@@ -123,11 +117,11 @@ export class VendorOrderFrequencyComponent implements OnInit {
                         $match: {
                             'Tasks.Type': 'Delivery',
                             'Seller': this.value.id as string,
-                            'CreateTime':
-                            {
-                                $gte: this.fromDate as Date,
-                                $lt: this.toDate as Date
-                            },
+                            // 'CreateTime':
+                            // {
+                            //    $gte: this.fromDate as Date,
+                            //    $lt: this.toDate as Date
+                            // },
                         },
                     },
                     {
@@ -159,12 +153,5 @@ export class VendorOrderFrequencyComponent implements OnInit {
                 },
                 error => { this.loggerService.error(error); });
         }
-    }
-
-    // selected date range
-    public selectedDate(value: any) {
-        this.daterange.start = value.start;
-        this.daterange.end = value.end;
-        // this.daterange.label = value.label;
     }
 }
