@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 // Load Controls
 import { ChartsModule } from 'ng2-charts';
 import { SelectModule } from 'ng2-select';
+// import { CalendarModule } from 'primeng/primeng';
 
 // Local Modules
 import { NavbarModule } from '../navbar/index';
@@ -23,8 +24,6 @@ import { DashviewHeaderComponent } from '../dashview-header/index';
 import { GlimpseComponent } from '../glimpse/index';
 import { AttemptVsDeliveryComponent } from '../attempt-vs-delivery/index';
 import { VendorOrderFrequencyComponent } from '../vendor-order-frequency/index';
-// import { CalendarModule } from 'primeng/primeng';
-
 
 @NgModule({
     declarations: [
@@ -48,7 +47,7 @@ import { VendorOrderFrequencyComponent } from '../vendor-order-frequency/index';
         HttpModule,
         DataModule,
         SelectModule,
-        // CalendarModule
+        // CalendarModule,
     ],
     providers: [...DASHBOARD_PROVIDERS]
 })
