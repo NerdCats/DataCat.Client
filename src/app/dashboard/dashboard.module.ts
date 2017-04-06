@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
+import { FormsModule } from '@angular/forms';
 
 // Load Controls
 import { ChartsModule } from 'ng2-charts';
 import { SelectModule } from 'ng2-select';
-// import { CalendarModule } from 'primeng/primeng';
+import { CalendarModule } from 'primeng/primeng';
 
 // Local Modules
 import { NavbarModule } from '../navbar/index';
@@ -39,6 +40,7 @@ import { VendorOrderFrequencyComponent } from '../vendor-order-frequency/index';
         DashboardComponent,
     ],
     imports: [
+        FormsModule,
         RouterModule,
         CommonModule,
         NavbarModule,
@@ -47,7 +49,7 @@ import { VendorOrderFrequencyComponent } from '../vendor-order-frequency/index';
         HttpModule,
         DataModule,
         SelectModule,
-        // CalendarModule,
+        CalendarModule,
     ],
     providers: [...DASHBOARD_PROVIDERS]
 })

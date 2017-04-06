@@ -2,6 +2,7 @@
 import { DashboardEventService } from '../dashboard/dashboard-event.service';
 import { DataService } from '../data/index';
 import { LoggerService } from '../shared/index';
+// import { CalendarModule } from 'primeng/primeng';
 
 @Component({
     moduleId: module.id,
@@ -49,7 +50,8 @@ export class VendorOrderFrequencyComponent implements OnInit {
     // date range
     public fromDate: any;
     public toDate: any;
-    public selectedDate: any;
+    public selectedFromDate: any;
+    public selectedToDate: any;
 
     // constructor
     constructor(
@@ -153,6 +155,12 @@ export class VendorOrderFrequencyComponent implements OnInit {
                     }
                 },
                 error => { this.loggerService.error(error); });
+        }
+    }
+
+    public selectedDate(value: any): void {
+        if (value != null) {
+            this.selectedFromDate = value;
         }
     }
 }
