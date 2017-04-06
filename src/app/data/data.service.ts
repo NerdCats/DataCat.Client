@@ -19,6 +19,7 @@ export class DataService {
         let aggUrl = CONSTANTS.ENV.API_BASE + 'data/' + collectionName + '/a';
 
         let headers = new Headers();
+        // append('Content-Type', 'application/json');
         headers.append('Content-Type', 'application/json');
 
         return this.http.post(aggUrl, aggregateDocument)

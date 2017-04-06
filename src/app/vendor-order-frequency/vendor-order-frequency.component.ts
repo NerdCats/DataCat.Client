@@ -100,36 +100,64 @@ export class VendorOrderFrequencyComponent implements OnInit {
     public prepareVendorOrderFrequencyDoc(value: any): any {
         try {
 
-            return value = {
-                'aggregate':
-                [
-                    {
-                        $project: {
-                            _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1,
-                            Tasks: { $slice: ['$Tasks', -1] },
-                            Seller: '$Order.SellerInfo.Name'
-                        }
-                    },
-                    {
-                        $match: {
-                            'Tasks.Type': 'Delivery',
-                            'Seller': this.value.id as string,
-                            'CreateTime':
-                            {
-                                $gte: this.selectedFromDate as Date,
-                                $lt: this.selectedToDate as Date
+            if (this.selectedFromDate == null || this.selectedToDate == null) {
+                return value = {
+                    'aggregate':
+                    [
+                        {
+                            $project: {
+                                _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1,
+                                Tasks: { $slice: ['$Tasks', -1] },
+                                Seller: '$Order.SellerInfo.Name'
+                            }
+                        },
+                        {
+                            $match: {
+                                'Tasks.Type': 'Delivery',
+                                'Seller': this.value.id as string,
+                                'CreateTime':
+                                {
+                                    $gte: (this.selectedFromDate as Date).toDateString(),
+                                    $lt: (this.selectedToDate as Date).toDateString()
+                                },
                             },
                         },
-                    },
-                    {
-                        $group: {
-                            _id: { $dateToString: { format: this.aggregateBy.id as string, date: '$CreateTime' } },
-                            PlacedOrders: { $sum: 1 },
-                        }
-                    },
-                    { $sort: { _id: 1 } }
-                ]
-            };
+                        {
+                            $group: {
+                                _id: { $dateToString: { format: this.aggregateBy.id as string, date: '$CreateTime' } },
+                                PlacedOrders: { $sum: 1 },
+                            }
+                        },
+                        { $sort: { _id: 1 } }
+                    ]
+                };
+            }            else {
+                return value = {
+                    'aggregate':
+                    [
+                        {
+                            $project: {
+                                _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1,
+                                Tasks: { $slice: ['$Tasks', -1] },
+                                Seller: '$Order.SellerInfo.Name'
+                            }
+                        },
+                        {
+                            $match: {
+                                'Tasks.Type': 'Delivery',
+                                'Seller': this.value.id as string,
+                            },
+                        },
+                        {
+                            $group: {
+                                _id: { $dateToString: { format: this.aggregateBy.id as string, date: '$CreateTime' } },
+                                PlacedOrders: { $sum: 1 },
+                            }
+                        },
+                        { $sort: { _id: 1 } }
+                    ]
+                };
+            }
         } catch (e) {
             console.log(e);
             return null;
