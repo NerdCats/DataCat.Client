@@ -39,7 +39,7 @@ export class DataService {
     }
 
     // INFO: Temporary test method to test out how a widget could have behaved.
-    getSampleWidgetConfig(): WidgetConfig {
+    getSampleWidgetConfig(): any {
         // INLINE query, these needs to be saved in the database of course
         let aggDocument: any = {
             'aggregate': [
@@ -131,7 +131,19 @@ export class DataService {
             query: aggDocument,
             connectionId: connectionId,
             collectionName: collectionName,
-            type: 'bar-chart'
+            type: 'bar-chart',
+            datamap: {
+                'labels': {
+                    path: 'entry._id.CreateDate.$date', // Can be JSONPath?
+                    type: 'datestring',
+                },
+                'datasets': [
+                    {
+                        label: 'Orders',
+                        path: 'count'
+                    }
+                ]
+            }
         };
     }
 

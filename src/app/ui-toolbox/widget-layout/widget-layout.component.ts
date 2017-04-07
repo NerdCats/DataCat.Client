@@ -27,6 +27,7 @@ export class WidgetLayoutComponent implements OnInit {
                 if (result) {
                     // Need to parse this crap here
                     let res: any[] = result;
+                    console.log(res);
                     for (let entry of res) {
                         barChartLabels.push(new Date(entry._id.CreateDate.$date).toDateString());
                         jobCountArray.push(entry.count);
