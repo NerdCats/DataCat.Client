@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
-import { GlimpseComponent } from '../glimpse/index';
 import { BarChartComponent, WidgetComponent, WidgetLayoutComponent } from '../ui-toolbox/index';
 
 export const DashboardRoutes: Routes = [
@@ -9,8 +8,8 @@ export const DashboardRoutes: Routes = [
         path: 'dashboard',
         component: DashboardComponent,
         children: [
-            { path: '', redirectTo: 'glimpse', pathMatch: 'full' },
-            { path: 'glimpse', component: WidgetLayoutComponent }
+            { path: '', redirectTo: 'widgets', pathMatch: 'full' },
+            { path: 'widgets', component: WidgetLayoutComponent }
         ]
     }
 ];

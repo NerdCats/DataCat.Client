@@ -18,15 +18,12 @@ import { SidebarComponent } from '../sidebar/index';
 import { FooterComponent } from '../footer/index';
 import { DashviewHeaderComponent } from '../dashview-header/index';
 
-import { GlimpseComponent } from '../glimpse/index';
-
 @NgModule({
     declarations: [
         DashboardComponent,
         SidebarComponent,
         FooterComponent,
-        DashviewHeaderComponent,
-        GlimpseComponent
+        DashviewHeaderComponent
     ],
     exports: [
         DashboardComponent,
