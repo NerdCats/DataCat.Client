@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { IWidgetComponent } from '../../ui-toolbox/widget/widget.component';
 
 @Component({
     moduleId: module.id,
     selector: 'as-bar-chart',
     templateUrl: 'bar-chart.html'
 })
-export class BarChartComponent {
+export class BarChartComponent implements IWidgetComponent {
+    config: any;
     data: any;
 
     constructor() {

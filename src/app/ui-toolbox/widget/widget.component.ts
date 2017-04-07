@@ -1,5 +1,6 @@
 import { Type, Component, Input, AfterViewInit, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { UiHostDirective } from '../ui-host/ui-host.directive';
+import { BarChartComponent } from '../bar-chart/bar-chart.component';
 
 export interface IWidgetComponent {
     data: any;
@@ -8,6 +9,7 @@ export interface IWidgetComponent {
 
 @Component({
     selector: 'as-widget',
+    entryComponents: [BarChartComponent],
     template: ` <template asUiHost></template>`
 })
 export class WidgetComponent implements AfterViewInit {
@@ -32,7 +34,7 @@ export class WidgetComponent implements AfterViewInit {
 
         let componentRef = viewContainerRef.createComponent(componentFactory);
         let component: IWidgetComponent = <IWidgetComponent>componentRef.instance;
-        component.data = this.data;
+        // component.data = this.data;
         component.config = this.config;
     }
 }
