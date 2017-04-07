@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Type } from '@angular/core';
 import { BarChartComponent, WidgetComponent } from '../index';
 import { DataService } from '../../data/index';
 import { UiRegistryService } from '../ui-registry.service';
@@ -9,13 +9,14 @@ import { UiRegistryService } from '../ui-registry.service';
     templateUrl: 'widget-layout.html'
 })
 export class WidgetLayoutComponent implements OnInit {
-    componentType = BarChartComponent;
+    componentType: Type<any>;
     data: any;
 
     constructor(private dataService: DataService, private uiRegistryService: UiRegistryService) { }
 
     ngOnInit(): void {
         let sampleWidget = this.dataService.getSampleWidgetConfig();
+        this.componentType = this.uiRegistryService.getComponentType(sampleWidget.type);
 
         this.dataService.executeAggregation(sampleWidget.connectionId, sampleWidget.collectionName, sampleWidget.query)
             .subscribe(result => {
