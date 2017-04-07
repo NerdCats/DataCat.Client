@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BarChartComponent, WidgetComponent } from '../index';
 import { DataService } from '../../data/index';
+import { UiRegistryService } from '../ui-registry.service';
 
 @Component({
     moduleId: module.id,
@@ -11,7 +12,7 @@ export class WidgetLayoutComponent implements OnInit {
     componentType = BarChartComponent;
     data: any;
 
-    constructor(private dataService: DataService) { }
+    constructor(private dataService: DataService, private uiRegistryService: UiRegistryService) { }
 
     ngOnInit(): void {
         let sampleWidget = this.dataService.getSampleWidget();

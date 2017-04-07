@@ -3,3 +3,4 @@ export * from './ui-toolbox.module';
 export * from './widget/widget.component';
 export * from './ui-host/ui-host.directive';
 export * from './widget-layout/widget-layout.component';
+export * from './ui-registry.service';
