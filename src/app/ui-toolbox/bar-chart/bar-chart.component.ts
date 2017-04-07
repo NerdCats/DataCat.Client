@@ -18,7 +18,13 @@ export class BarChartComponent implements Widget {
     setData(data: any) {
         this.data = data;
         this.isDataAvailable = true;
+    }
 
+    setConfig(config: any) {
+        this.config = config;
+    }
+
+    private _refreshChart() {
         if (this.chart) {
             this.chart.refresh();
         }

@@ -41,5 +41,8 @@ export class WidgetComponent implements AfterViewInit, OnChanges {
         if (this.currentComponent && changes.data) {
             this.currentComponent.setData(changes.data.currentValue);
         }
+        if (this.currentComponent && changes.date) {
+            this.currentComponent.setConfig(changes.config.currentValue);
+        }
     }
 }

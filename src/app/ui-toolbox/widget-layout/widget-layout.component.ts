@@ -35,7 +35,6 @@ export class WidgetLayoutComponent implements OnInit {
                     jobCountArray = jsonpath.query(res, '$[*].count');
                     barChartLabels = jsonpath.query(res, '$[*]._id.CreateDate[\'$date\']');
                     barChartLabels = barChartLabels.map(x => this.dataConverterService.convert(x, 'datestring'));
-                    console.log(jobCountArray);
                 }
                 barChartData = [{ data: jobCountArray, label: 'Orders' }];
                 this.data = { labels: barChartLabels, datasets: barChartData };
