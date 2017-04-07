@@ -28,12 +28,9 @@ export class WidgetLayoutComponent implements OnInit {
                 if (result) {
                     // Need to parse this crap here
                     let res: any[] = result;
-                    let resolve = jsonpath.query(res, '$[*].count');
-                    console.log(resolve);
-                    for (let entry of res) {
-                        barChartLabels.push(new Date(entry._id.CreateDate.$date).toDateString());
-                        jobCountArray.push(entry.count);
-                    }
+                    jobCountArray = jsonpath.query(res, '$[*].count');
+                    barChartLabels = jsonpath.query(res, '$[*]._id.CreateDate[\'$date\']');
+                    console.log(jobCountArray);
                 }
                 barChartData = [{ data: jobCountArray, label: 'Orders' }];
                 this.data = { labels: barChartLabels, datasets: barChartData };
