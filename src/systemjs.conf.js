@@ -10,8 +10,7 @@
 
     // map tells the System loader where to look for things
     var map = {
-        'app': 'src/tmp/app',
-        'primeng': 'node_modules/primeng'
+        'app': 'src/tmp/app'
     };
 
     // packages tells the System loader how to load when no filename and/or no extension
@@ -36,10 +35,6 @@
             main: 'dist/Chart.js',
             defaultExtension: 'js'
         },
-        'ng2-charts': {
-            main: 'ng2-charts.js',
-            defaultExtension: 'js'
-        },
         'primeng' : {
             main: 'primeng.js',
             defaultExtension: 'js'
@@ -54,7 +49,6 @@
         'angular2-jwt',
         'angular2-letter-avatar',
         'chart.js',
-        'ng2-charts',
         'primeng'
     ];
 

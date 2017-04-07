@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ChartsModule } from 'ng2-charts';
 import { HttpModule } from '@angular/http';
 
 // Local Modules
@@ -33,7 +32,6 @@ import { DashviewHeaderComponent } from '../dashview-header/index';
         CommonModule,
         NavbarModule,
         LetterAvatarModule,
-        ChartsModule,
         HttpModule,
         DataModule,
         UiToolboxModule
