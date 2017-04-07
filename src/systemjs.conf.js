@@ -38,6 +38,10 @@
         'primeng' : {
             main: 'primeng.js',
             defaultExtension: 'js'
+        },
+        'jsonpath' :{
+            main: 'jsonpath.js',
+            defaultExtension: 'js'
         }
     };
 
@@ -49,7 +53,8 @@
         'angular2-jwt',
         'angular2-letter-avatar',
         'chart.js',
-        'primeng'
+        'primeng',
+        'jsonpath'
     ];
 
     // Add package entries for packages that expose barrels using index.js

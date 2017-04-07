@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Type } from '@angular/core';
 import { BarChartComponent, WidgetComponent } from '../index';
 import { DataService } from '../../data/index';
 import { UiRegistryService } from '../ui-registry.service';
+import * as jsonpath from 'jsonpath';
 
 @Component({
     moduleId: module.id,
@@ -27,7 +28,8 @@ export class WidgetLayoutComponent implements OnInit {
                 if (result) {
                     // Need to parse this crap here
                     let res: any[] = result;
-                    console.log(res);
+                    let resolve = jsonpath.query(res, '$[*].count');
+                    console.log(resolve);
                     for (let entry of res) {
                         barChartLabels.push(new Date(entry._id.CreateDate.$date).toDateString());
                         jobCountArray.push(entry.count);

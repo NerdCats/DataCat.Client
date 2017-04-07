@@ -134,13 +134,13 @@ export class DataService {
             type: 'bar-chart',
             datamap: {
                 'labels': {
-                    path: 'entry._id.CreateDate.$date', // Can be JSONPath?
+                    path: '$[*]._id.CreateDate.$date', // Can be JSONPath?
                     type: 'datestring',
                 },
                 'datasets': [
                     {
                         label: 'Orders',
-                        path: 'count'
+                        path: '$[*].count'
                     }
                 ]
             }
