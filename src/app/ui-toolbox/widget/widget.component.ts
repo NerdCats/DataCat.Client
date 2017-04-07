@@ -1,12 +1,7 @@
 import { Type, Component, Input, AfterViewInit, ViewChild, ComponentFactoryResolver, OnChanges, SimpleChanges } from '@angular/core';
 import { UiHostDirective } from '../ui-host/ui-host.directive';
 import { BarChartComponent } from '../bar-chart/bar-chart.component';
-
-export interface IWidgetComponent {
-    data: any;
-    config: any;
-    setData(data: any);
-}
+import { Widget } from './widget';
 
 @Component({
     selector: 'as-widget',
@@ -19,7 +14,7 @@ export class WidgetComponent implements AfterViewInit, OnChanges {
     @Input() config: any;
     @ViewChild(UiHostDirective) uiHost: UiHostDirective;
 
-    private currentComponent: IWidgetComponent;
+    private currentComponent: Widget;
 
     /**
      * The widget component to host dynamic components
@@ -36,7 +31,7 @@ export class WidgetComponent implements AfterViewInit, OnChanges {
         viewContainerRef.clear();
 
         let componentRef = viewContainerRef.createComponent(componentFactory);
-        let component: IWidgetComponent = <IWidgetComponent>componentRef.instance;
+        let component: Widget = <Widget>componentRef.instance;
         // component.data = this.data;
         component.config = this.config;
         this.currentComponent = component;

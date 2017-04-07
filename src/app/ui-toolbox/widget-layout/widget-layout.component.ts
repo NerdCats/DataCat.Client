@@ -15,7 +15,7 @@ export class WidgetLayoutComponent implements OnInit {
     constructor(private dataService: DataService, private uiRegistryService: UiRegistryService) { }
 
     ngOnInit(): void {
-        let sampleWidget = this.dataService.getSampleWidget();
+        let sampleWidget = this.dataService.getSampleWidgetConfig();
 
         this.dataService.executeAggregation(sampleWidget.connectionId, sampleWidget.collectionName, sampleWidget.query)
             .subscribe(result => {

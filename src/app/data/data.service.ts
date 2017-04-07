@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { CONSTANTS, LoggerService, LocalStorage } from '../shared/index';
 import { AuthConstants } from '../auth/auth.constants';
+import { WidgetConfig } from '../ui-toolbox/widget/widget-config';
 
 @Injectable()
 export class DataService {
@@ -38,7 +39,7 @@ export class DataService {
     }
 
     // INFO: Temporary test method to test out how a widget could have behaved.
-    getSampleWidget(): any {
+    getSampleWidgetConfig(): WidgetConfig {
         // INLINE query, these needs to be saved in the database of course
         let aggDocument: any = {
             'aggregate': [
@@ -129,7 +130,8 @@ export class DataService {
         return {
             query: aggDocument,
             connectionId: connectionId,
-            collectionName: collectionName
+            collectionName: collectionName,
+            type: 'bar-chart'
         };
     }
 

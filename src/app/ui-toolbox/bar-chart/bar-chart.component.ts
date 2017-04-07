@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { IWidgetComponent } from '../../ui-toolbox/widget/widget.component';
+import { Widget } from '../../ui-toolbox/widget/widget';
 import { UIChart } from 'primeng/primeng';
 
 @Component({
@@ -7,7 +7,7 @@ import { UIChart } from 'primeng/primeng';
     selector: 'as-bar-chart',
     templateUrl: 'bar-chart.html'
 })
-export class BarChartComponent implements IWidgetComponent {
+export class BarChartComponent implements Widget {
     config: any;
     data: any;
 
