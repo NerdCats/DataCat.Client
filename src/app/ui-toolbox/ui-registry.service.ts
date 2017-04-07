@@ -23,7 +23,3 @@ export class UiRegistryService {
         this.registry['bar-chart'] = BarChartComponent;
     }
 }
-
-export const UI_TOOLBOX_PROVIDERS: any[] = [
-    { provide: UiRegistryService, useClass: UiRegistryService }
-];

@@ -6,3 +6,5 @@ export * from './widget/widget-config';
 export * from './ui-host/ui-host.directive';
 export * from './widget-layout/widget-layout.component';
 export * from './ui-registry.service';
+export * from './data-converter.service';
+export * from './ui-toolbox.providers';

@@ -3,6 +3,7 @@ import { BarChartComponent, WidgetComponent } from '../index';
 import { DataService } from '../../data/index';
 import { UiRegistryService } from '../ui-registry.service';
 import * as jsonpath from 'jsonpath';
+import { DataConverterService } from '../data-converter.service';
 
 @Component({
     moduleId: module.id,
@@ -13,7 +14,10 @@ export class WidgetLayoutComponent implements OnInit {
     componentType: Type<any>;
     data: any;
 
-    constructor(private dataService: DataService, private uiRegistryService: UiRegistryService) { }
+    constructor(
+        private dataService: DataService,
+        private uiRegistryService: UiRegistryService,
+        private dataConverterService: DataConverterService) { }
 
     ngOnInit(): void {
         let sampleWidget = this.dataService.getSampleWidgetConfig();
@@ -30,6 +34,7 @@ export class WidgetLayoutComponent implements OnInit {
                     let res: any[] = result;
                     jobCountArray = jsonpath.query(res, '$[*].count');
                     barChartLabels = jsonpath.query(res, '$[*]._id.CreateDate[\'$date\']');
+                    barChartLabels = barChartLabels.map(x => this.dataConverterService.convert(x, 'datestring'));
                     console.log(jobCountArray);
                 }
                 barChartData = [{ data: jobCountArray, label: 'Orders' }];

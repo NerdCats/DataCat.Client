@@ -7,7 +7,7 @@ import { WidgetComponent } from './widget/widget.component';
 import { UiHostDirective } from './ui-host/ui-host.directive';
 import { WidgetLayoutComponent } from './widget-layout/widget-layout.component';
 
-import { UI_TOOLBOX_PROVIDERS } from './ui-registry.service';
+import { UI_TOOLBOX_PROVIDERS } from './ui-toolbox.providers';
 
 @NgModule({
     declarations: [
