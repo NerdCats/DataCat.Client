@@ -1,10 +1,11 @@
-import { Type, Component, Input, AfterViewInit, ViewChild, ComponentFactoryResolver } from '@angular/core';
+import { Type, Component, Input, AfterViewInit, ViewChild, ComponentFactoryResolver, OnChanges, SimpleChanges } from '@angular/core';
 import { UiHostDirective } from '../ui-host/ui-host.directive';
 import { BarChartComponent } from '../bar-chart/bar-chart.component';
 
 export interface IWidgetComponent {
     data: any;
     config: any;
+    setData(data: any);
 }
 
 @Component({
@@ -12,11 +13,13 @@ export interface IWidgetComponent {
     entryComponents: [BarChartComponent],
     template: ` <template asUiHost></template>`
 })
-export class WidgetComponent implements AfterViewInit {
+export class WidgetComponent implements AfterViewInit, OnChanges {
     @Input() componentType: Type<any>;
-    @Input() data: any;
+    @Input('data') data: any;
     @Input() config: any;
     @ViewChild(UiHostDirective) uiHost: UiHostDirective;
+
+    private currentComponent: IWidgetComponent;
 
     /**
      * The widget component to host dynamic components
@@ -36,5 +39,12 @@ export class WidgetComponent implements AfterViewInit {
         let component: IWidgetComponent = <IWidgetComponent>componentRef.instance;
         // component.data = this.data;
         component.config = this.config;
+        this.currentComponent = component;
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (this.currentComponent && changes.data) {
+            this.currentComponent.setData(changes.data.currentValue);
+        }
     }
 }

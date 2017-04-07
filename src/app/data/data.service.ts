@@ -37,6 +37,102 @@ export class DataService {
             });
     }
 
+    // INFO: Temporary test method to test out how a widget could have behaved.
+    getSampleWidget(): any {
+        // INLINE query, these needs to be saved in the database of course
+        let aggDocument: any = {
+            'aggregate': [
+                { '$sort': { 'CreateTime': -1 } },
+                {
+                    '$project': {
+                        '_id': 1,
+                        'HRID': 1,
+                        'CreateTime': 1,
+                        'Order.Type': 1,
+                        'Order.Variant': 1,
+                        'User.Type': 1,
+                        'User.UserName': 1,
+                        'h': {
+                            '$hour': '$CreateTime'
+                        },
+                        'm': {
+                            '$minute': '$CreateTime'
+                        },
+                        's': {
+                            '$second': '$CreateTime'
+                        },
+                        'ml': {
+                            '$millisecond': '$CreateTime'
+                        }
+                    }
+                },
+                {
+                    '$project': {
+                        '_id': 1,
+                        'HRID': 1,
+                        'Order.Type': 1,
+                        'Order.Variant': 1,
+                        'User.Type': 1,
+                        'User.UserName': 1,
+                        'CreateTime': {
+                            '$subtract': [
+                                '$CreateTime',
+                                {
+                                    '$add': [
+                                        '$ml',
+                                        {
+                                            '$multiply': [
+                                                '$s',
+                                                1000
+                                            ]
+                                        },
+                                        {
+                                            '$multiply': [
+                                                '$m',
+                                                60,
+                                                1000
+                                            ]
+                                        },
+                                        {
+                                            '$multiply': [
+                                                '$h',
+                                                60,
+                                                60,
+                                                1000
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    '$group': {
+                        '_id': {
+                            'CreateDate': '$CreateTime'
+                        },
+                        'count': {
+                            '$sum': 1
+                        },
+                        'jobs': {
+                            '$push': '$HRID'
+                        }
+                    }
+                }
+            ]
+        };
+
+        let connectionId = '58e528fe578309a5b84b3906';
+        let collectionName = 'Jobs';
+
+        return {
+            query: aggDocument,
+            connectionId: connectionId,
+            collectionName: collectionName
+        };
+    }
+
     private _extractAndSaveData(res: Response) {
         let body = res.json();
         return body || {};

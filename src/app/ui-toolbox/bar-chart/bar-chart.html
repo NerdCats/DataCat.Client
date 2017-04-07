@@ -1,1 +1,1 @@
-<p-chart type="line" [data]="data"></p-chart>
+<p-chart #chart *ngIf="isDataAvailable" type="bar" [data]="data"></p-chart>
