@@ -140,7 +140,15 @@ export class DataService {
                 'datasets': [
                     {
                         label: 'Orders',
-                        path: '$[*].count'
+                        path: '$[*].count',
+                        backgroundColor: '#42A5F5',
+                        borderColor: '#1E88E5',
+                    },
+                    {
+                        label: 'Orders 2',
+                        path: '$[*].count',
+                        backgroundColor: '#9CCC65',
+                        borderColor: '#7CB342',
                     }
                 ]
             },
