@@ -134,7 +134,7 @@ export class DataService {
             type: 'bar-chart',
             datamap: {
                 'labels': {
-                    path: '$[*]._id.CreateDate.$date', // Can be JSONPath?
+                    path: '$[*]._id.CreateDate[\'$date\']', // Can be JSONPath?
                     type: 'datestring',
                 },
                 'datasets': [
@@ -143,6 +143,16 @@ export class DataService {
                         path: '$[*].count'
                     }
                 ]
+            },
+            config: {
+                title: {
+                    display: true,
+                    text: 'Orders from last couple of days',
+                    fontSize: 16
+                },
+                legend: {
+                    position: 'bottom'
+                }
             }
         };
     }

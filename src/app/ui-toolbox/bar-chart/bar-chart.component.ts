@@ -13,7 +13,7 @@ import { LoggerService } from '../../shared/index';
     templateUrl: 'bar-chart.html'
 })
 export class BarChartComponent implements Widget {
-    config: any;
+    options: any;
     data: any;
 
     isDataAvailable: boolean = false;
@@ -30,6 +30,12 @@ export class BarChartComponent implements Widget {
 
     setWidgetConfig(widgetConfig: any) {
         if (widgetConfig) {
+            if (!this.options && widgetConfig.config) {
+                this.options = widgetConfig.config;
+            }
+
+            let datamap = widgetConfig.datamap;
+
             this.dataService.executeAggregation(widgetConfig.connectionId, widgetConfig.collectionName, widgetConfig.query)
                 .subscribe(result => {
                     let barChartLabels: string[] = [];
@@ -38,12 +44,16 @@ export class BarChartComponent implements Widget {
 
                     if (result) {
                         let res: any[] = result;
-                        jobCountArray = jsonpath.query(res, '$[*].count');
-                        barChartLabels = jsonpath.query(res, '$[*]._id.CreateDate[\'$date\']');
-                        barChartLabels = barChartLabels.map(x => this.dataConverterService.convert(x, 'datestring'));
+
+                        // Currently we only support a single dataset
+                        jobCountArray = jsonpath.query(res, datamap.datasets[0].path);
+                        barChartLabels = jsonpath.query(res, datamap.labels.path);
+                        if (datamap.labels.type) {
+                            barChartLabels = barChartLabels.map(x => this.dataConverterService.convert(x, datamap.labels.type));
+                        }
                     }
 
-                    barChartData = [{ data: jobCountArray, label: 'Orders' }];
+                    barChartData = [{ data: jobCountArray, label: datamap.datasets[0].label }];
                     this.data = { labels: barChartLabels, datasets: barChartData };
                     this.isDataAvailable = true;
                 }, error => {

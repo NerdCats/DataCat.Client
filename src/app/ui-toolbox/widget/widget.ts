@@ -1,5 +1,5 @@
 export interface Widget {
     data: any;
-    config: any;
+    options: any;
     setWidgetConfig(widgetConfig: any);
 }
