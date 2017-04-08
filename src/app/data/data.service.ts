@@ -43,16 +43,11 @@ export class DataService {
         // INLINE query, these needs to be saved in the database of course
         let aggDocument: any = {
             'aggregate': [
-                { '$sort': { 'CreateTime': -1 } },
                 {
                     '$project': {
                         '_id': 1,
                         'HRID': 1,
                         'CreateTime': 1,
-                        'Order.Type': 1,
-                        'Order.Variant': 1,
-                        'User.Type': 1,
-                        'User.UserName': 1,
                         'h': {
                             '$hour': '$CreateTime'
                         },
@@ -71,11 +66,7 @@ export class DataService {
                     '$project': {
                         '_id': 1,
                         'HRID': 1,
-                        'Order.Type': 1,
-                        'Order.Variant': 1,
-                        'User.Type': 1,
-                        'User.UserName': 1,
-                        'CreateTime': {
+                        'CreateDate': {
                             '$subtract': [
                                 '$CreateTime',
                                 {
@@ -110,15 +101,20 @@ export class DataService {
                 },
                 {
                     '$group': {
-                        '_id': {
-                            'CreateDate': '$CreateTime'
-                        },
+                        '_id': '$CreateDate',
                         'count': {
                             '$sum': 1
-                        },
-                        'jobs': {
-                            '$push': '$HRID'
                         }
+                    }
+                },
+                { '$sort': { '_id': -1 } },
+                {
+                    '$project': {
+                        '_id': 0,
+                        'Date': {
+                            '$dateToString': { 'format': '%d-%m-%Y', 'date': '$_id' }
+                        },
+                        'count': 1
                     }
                 }
             ]
@@ -134,8 +130,7 @@ export class DataService {
             type: 'bar-chart',
             datamap: {
                 'labels': {
-                    path: '$[*]._id.CreateDate[\'$date\']', // Can be JSONPath?
-                    type: 'datestring',
+                    path: '$[*].Date' // Can be JSONPath
                 },
                 'datasets': [
                     {
