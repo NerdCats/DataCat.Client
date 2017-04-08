@@ -39,7 +39,7 @@ export class DataService {
     }
 
     // INFO: Temporary test method to test out how a widget could have behaved.
-    getSampleWidgetConfig(): any {
+    getSampleWidgetConfig(): WidgetConfig {
         // INLINE query, these needs to be saved in the database of course
         let aggDocument: any = {
             'aggregate': [

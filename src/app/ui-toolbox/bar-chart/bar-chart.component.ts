@@ -40,20 +40,23 @@ export class BarChartComponent implements Widget {
                 .subscribe(result => {
                     let barChartLabels: string[] = [];
                     let barChartData: any[];
-                    let jobCountArray: any[] = [];
+                    let barChartDataArray: any[] = [];
 
                     if (result) {
                         let res: any[] = result;
 
-                        // Currently we only support a single dataset
-                        jobCountArray = jsonpath.query(res, datamap.datasets[0].path);
                         barChartLabels = jsonpath.query(res, datamap.labels.path);
                         if (datamap.labels.type) {
                             barChartLabels = barChartLabels.map(x => this.dataConverterService.convert(x, datamap.labels.type));
                         }
+
+                        for (let i = 0; i < datamap.datasets.length; i++) {
+                            let jobCountArray = jsonpath.query(res, datamap.datasets[i].path);
+                            barChartDataArray.push({ data: jobCountArray, label: datamap.datasets[i].label });
+                        }
                     }
 
-                    barChartData = [{ data: jobCountArray, label: datamap.datasets[0].label }];
+                    barChartData = barChartDataArray;
                     this.data = { labels: barChartLabels, datasets: barChartData };
                     this.isDataAvailable = true;
                 }, error => {
