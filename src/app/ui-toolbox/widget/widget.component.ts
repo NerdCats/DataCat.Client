@@ -2,6 +2,7 @@ import { Type, Component, Input, AfterViewInit, ViewChild, ComponentFactoryResol
 import { UiHostDirective } from '../ui-host/ui-host.directive';
 import { BarChartComponent } from '../bar-chart/bar-chart.component';
 import { Widget } from './widget';
+import { UiRegistryService } from '../ui-registry.service';
 
 @Component({
     selector: 'as-widget',
@@ -9,9 +10,9 @@ import { Widget } from './widget';
     template: ` <template asUiHost></template>`
 })
 export class WidgetComponent implements AfterViewInit, OnChanges {
-    @Input() componentType: Type<any>;
-    @Input('data') data: any;
-    @Input() config: any;
+    // This should be the widget configuration
+    @Input('config') config: any;
+
     @ViewChild(UiHostDirective) uiHost: UiHostDirective;
 
     private currentComponent: Widget;
@@ -19,30 +20,31 @@ export class WidgetComponent implements AfterViewInit, OnChanges {
     /**
      * The widget component to host dynamic components
      */
-    constructor(private _componentFactoryResolver: ComponentFactoryResolver) { }
+    constructor(
+        private uiRegistryService: UiRegistryService,
+        private _componentFactoryResolver: ComponentFactoryResolver) { }
 
     ngAfterViewInit(): void {
         this.loadComponent();
     }
 
     loadComponent() {
-        let componentFactory = this._componentFactoryResolver.resolveComponentFactory(this.componentType);
-        let viewContainerRef = this.uiHost.viewContainerRef;
-        viewContainerRef.clear();
+        if (this.config) {
+            let componentType = this.uiRegistryService.getComponentType(this.config.type);
+            let componentFactory = this._componentFactoryResolver.resolveComponentFactory(componentType);
+            let viewContainerRef = this.uiHost.viewContainerRef;
+            viewContainerRef.clear();
 
-        let componentRef = viewContainerRef.createComponent(componentFactory);
-        let component: Widget = <Widget>componentRef.instance;
-        // component.data = this.data;
-        component.config = this.config;
-        this.currentComponent = component;
+            let componentRef = viewContainerRef.createComponent(componentFactory);
+            let component: Widget = <Widget>componentRef.instance;
+            component.setWidgetConfig(this.config);
+            this.currentComponent = component;
+        }
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (this.currentComponent && changes.data) {
-            this.currentComponent.setData(changes.data.currentValue);
-        }
-        if (this.currentComponent && changes.date) {
-            this.currentComponent.setConfig(changes.config.currentValue);
+        if (this.currentComponent && changes.config) {
+            this.currentComponent.setWidgetConfig(changes.config.currentValue);
         }
     }
 }
