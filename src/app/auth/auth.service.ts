@@ -23,13 +23,15 @@ export class AuthService {
 
     login(username: string, password: string) {
         let headers = new Headers();
-        let tokenUrl = CONSTANTS.ENV.AUTH_BASE + 'auth/token'; // TODO: Need to definitely load from settings
+        let tokenUrl = this._getTokenUrl();
 
         let urlEncodedParam =
             'grant_type=' + 'password' +
             '&username=' + username +
             '&password=' + password +
-            '&client_id=' + 'GoFetchDevWebApp'; // TODO: We need to load this from either environment or settings somewhere.
+            '&client_id=' + CONSTANTS.ENV.CLIENT_ID +
+            '&client_secret=' + CONSTANTS.ENV.CLIENT_SECRET +
+            '&scope=' + CONSTANTS.ENV.SCOPE;
 
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -56,6 +58,12 @@ export class AuthService {
          * to know which would be the proper login route for the app
         */
         this.router.navigate(['/login']);
+    }
+
+    private _getTokenUrl() {
+        let tokenUrl = CONSTANTS.ENV.AUTH_BASE;
+        tokenUrl = CONSTANTS.ENV.AUTH_ENDPOINT ? tokenUrl + CONSTANTS.ENV.AUTH_ENDPOINT : tokenUrl;
+        return tokenUrl;
     }
 
     private _extractAndSaveAuthData(res: Response) {

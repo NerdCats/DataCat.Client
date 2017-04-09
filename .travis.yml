@@ -4,9 +4,22 @@ language: node_js
 node_js:
   - '6.9.5'
 
+addons:
+    apt:
+      packages:
+        - sshpass
+
 before_script:
 - export NODE_ENV=prod
 - npm install -g karma
 - npm install -g typescript
 - npm install 
 - npm run build
+
+after_success:
+- tar -czf package.tgz build
+- export SSHPASS=$DEPLOY_PASS
+- sshpass -e scp -v -o stricthostkeychecking=no package.tgz $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
+- sshpass -e scp -v -o stricthostkeychecking=no deploy.sh $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
+- sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST chmod +777 $DEPLOY_PATH/deploy.sh
+- sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST $DEPLOY_PATH/deploy.sh
