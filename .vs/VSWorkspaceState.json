@@ -3,9 +3,6 @@
     "",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\dashboard",
-    "\\src\\app\\data",
-    "\\src\\app\\glimpse",
     "\\src\\app\\vendor-order-frequency"
   ],
   "PreviewInSolutionExplorer": false

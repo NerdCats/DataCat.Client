@@ -115,7 +115,6 @@ export class VendorOrderFrequencyComponent implements OnInit {
                             $match: {
                                 'Tasks.Type': 'Delivery',
                                 'Seller': this.value.id as string,
-                                
                             },
                         },
                         {
