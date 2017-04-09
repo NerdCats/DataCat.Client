@@ -115,11 +115,7 @@ export class VendorOrderFrequencyComponent implements OnInit {
                             $match: {
                                 'Tasks.Type': 'Delivery',
                                 'Seller': this.value.id as string,
-                                'CreateTime':
-                                {
-                                    $gte: (this.selectedFromDate as Date).toDateString(),
-                                    $lt: (this.selectedToDate as Date).toDateString()
-                                },
+                                
                             },
                         },
                         {
@@ -146,6 +142,11 @@ export class VendorOrderFrequencyComponent implements OnInit {
                             $match: {
                                 'Tasks.Type': 'Delivery',
                                 'Seller': this.value.id as string,
+                                'CreateTime':
+                                {
+                                    $gte: (this.selectedFromDate as Date).toDateString(),
+                                    $lt: (this.selectedToDate as Date).toDateString()
+                                },
                             },
                         },
                         {
