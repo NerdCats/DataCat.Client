@@ -17,10 +17,11 @@
                     </div>
                     <div class="col-md-4">
                         <h4>Select date range</h4> 
-                        <!--<p-calendar (onselect)="selectedDate($event)" [showIcon]="true"></p-calendar>-->
+                        
                         <p-calendar [(ngModel)]="selectedFromDate" [showIcon]="true"></p-calendar>
                         <p-calendar [(ngModel)]="selectedToDate" [showIcon]="true"></p-calendar>
                     </div>
+
                     <div class="col-md-4">
                         <h4>Select aggregation type</h4>
                         <ng-select [items]="aggregateOptions"

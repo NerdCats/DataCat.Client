@@ -126,7 +126,7 @@ export class VendorOrderFrequencyComponent implements OnInit {
                         { $sort: { _id: 1 } }
                     ]
                 };
-            }            else {
+            } else {
                 return value = {
                     'aggregate':
                     [
@@ -143,8 +143,8 @@ export class VendorOrderFrequencyComponent implements OnInit {
                                 'Seller': this.value.id as string,
                                 'CreateTime':
                                 {
-                                    $gte: (this.selectedFromDate as Date).toDateString(),
-                                    $lt: (this.selectedToDate as Date).toDateString()
+                                    $gte: { '$date': (this.selectedFromDate as Date).toISOString() },
+                                    $lt: { '$date': (this.selectedToDate as Date).toISOString() }
                                 },
                             },
                         },
