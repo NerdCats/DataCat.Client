@@ -16,6 +16,7 @@ import { LoggerService } from '../../shared/index';
 export class BarChartComponent implements Widget {
     options: any;
     data: any;
+    title: any;
 
     isDataAvailable: boolean = false;
 
@@ -31,7 +32,9 @@ export class BarChartComponent implements Widget {
 
     setWidgetConfig(widgetConfig: WidgetConfig) {
         if (widgetConfig) {
-            if (!this.options && widgetConfig.config) {
+            if (widgetConfig.config) {
+                this.title = widgetConfig.config.title.text;
+                delete widgetConfig.config.title;
                 this.options = widgetConfig.config;
             }
 
