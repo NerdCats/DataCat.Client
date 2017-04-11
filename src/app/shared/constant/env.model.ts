@@ -8,6 +8,10 @@
  */
 
 export interface AppEnv {
-    API_BASE?: string;
-    AUTH_BASE?: string;
+    API_BASE: string;
+    AUTH_BASE: string;
+    AUTH_ENDPOINT: string;
+    CLIENT_ID: string;
+    CLIENT_SECRET: string;
+    SCOPE: string;
 }
