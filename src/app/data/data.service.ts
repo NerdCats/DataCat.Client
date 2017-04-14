@@ -61,7 +61,7 @@ export class DataService {
     }
 
     getSampleDashboard():  Observable<DashboardConfig> {
-        let sampleDashboardId = '58f0c9b850c6704b3cecbe1a';
+        let sampleDashboardId = '58f116a05e1d730001867cbb';
         let dashboardUrl = CONSTANTS.ENV.API_BASE + 'dashboard/' + sampleDashboardId;
 
         let headers = new Headers();
