@@ -32,10 +32,11 @@ export class BarChartComponent implements Widget {
 
     setWidgetConfig(widgetConfig: WidgetConfig) {
         if (widgetConfig) {
+            console.log(widgetConfig);
             if (widgetConfig.config) {
                 this.title = widgetConfig.config.title.text;
-                delete widgetConfig.config.title;
-                this.options = widgetConfig.config;
+                this.options = { ...widgetConfig.config };
+                delete this.options.title;
             }
 
             this.dataService.executeAggregation(widgetConfig.connectionId, widgetConfig.collectionName, widgetConfig.query)

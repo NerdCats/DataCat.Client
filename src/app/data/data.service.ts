@@ -164,28 +164,30 @@ export class DataService {
         let dashboardConfig = {
             widgets: [
                 {
-                    config: {
-                        width: 1, // this is basically the column size. 1 column = 1/3 of full width
+                    wconfig: {
+                        width: 12,
                         color: 'success',
                         title: 'Widget #1'
                     }
                 },
                 {
-                    config: {
-                        width: 2,
+                    wconfig: {
+                        width: 6,
                         color: 'danger',
                         title: 'Widget #2'
                     }
                 },
                 {
-                    config: {
-                        width: 3,
-                        color: 'warning',
-                        title: 'Widget #3'
+                    wconfig: {
+                        width: 6,
+                        color: 'danger',
+                        title: 'Widget #2'
                     }
                 }
             ]
         };
+
+        return dashboardConfig;
     }
 
     private _extractAndSaveData(res: Response) {

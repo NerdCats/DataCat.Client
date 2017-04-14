@@ -1,1 +1,3 @@
-<as-widget [config]="config"></as-widget>
+<div *ngFor="let widget of widgets" class="col-md-{{widget.wconfig.width}}">
+    <as-widget [config]="config"></as-widget>
+</div>
