@@ -32,14 +32,10 @@ export class BarChartComponent implements Widget {
 
     setWidgetConfig(widgetConfig: WidgetConfig) {
         if (widgetConfig) {
-            console.log(widgetConfig);
-            if (widgetConfig.config) {
-                this.title = widgetConfig.config.title.text;
-                this.options = { ...widgetConfig.config };
-                delete this.options.title;
-            }
-
-            this.dataService.executeAggregation(widgetConfig.connectionId, widgetConfig.collectionName, widgetConfig.query)
+            this.dataService.executeAggregation(
+                widgetConfig.connectionId,
+                widgetConfig.collectionName,
+                JSON.parse(widgetConfig.filter.filterString))
                 .subscribe(result => {
                     this._show(widgetConfig, result);
                 }, error => {
@@ -81,7 +77,16 @@ export class BarChartComponent implements Widget {
 
         barChartData = barChartDataArray;
         this.data = { labels: barChartLabels, datasets: barChartData };
+        this._setOptions(widgetConfig);
         this.isDataAvailable = true;
+    }
+
+    private _setOptions(widgetConfig: WidgetConfig) {
+        console.log(widgetConfig);
+        if (widgetConfig.config) {
+            this.title = widgetConfig.config.title.text;
+            this.options = { ...widgetConfig.config };
+        }
     }
 
     private _refreshChart() {

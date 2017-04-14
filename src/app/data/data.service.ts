@@ -39,125 +39,26 @@ export class DataService {
     }
 
     // INFO: Temporary test method to test out how a widget could have behaved.
-    getSampleWidgetConfig(): WidgetConfig {
-        // INLINE query, these needs to be saved in the database of course
-        let aggDocument: any = {
-            'aggregate': [
-                {
-                    '$project': {
-                        '_id': 1,
-                        'HRID': 1,
-                        'CreateTime': 1,
-                        'h': {
-                            '$hour': '$CreateTime'
-                        },
-                        'm': {
-                            '$minute': '$CreateTime'
-                        },
-                        's': {
-                            '$second': '$CreateTime'
-                        },
-                        'ml': {
-                            '$millisecond': '$CreateTime'
-                        }
-                    }
-                },
-                {
-                    '$project': {
-                        '_id': 1,
-                        'HRID': 1,
-                        'CreateDate': {
-                            '$subtract': [
-                                '$CreateTime',
-                                {
-                                    '$add': [
-                                        '$ml',
-                                        {
-                                            '$multiply': [
-                                                '$s',
-                                                1000
-                                            ]
-                                        },
-                                        {
-                                            '$multiply': [
-                                                '$m',
-                                                60,
-                                                1000
-                                            ]
-                                        },
-                                        {
-                                            '$multiply': [
-                                                '$h',
-                                                60,
-                                                60,
-                                                1000
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    }
-                },
-                {
-                    '$group': {
-                        '_id': '$CreateDate',
-                        'count': {
-                            '$sum': 1
-                        }
-                    }
-                },
-                { '$sort': { '_id': -1 } },
-                {
-                    '$project': {
-                        '_id': 0,
-                        'Date': {
-                            '$dateToString': { 'format': '%d-%m-%Y', 'date': '$_id' }
-                        },
-                        'count': 1
-                    }
-                }
-            ]
-        };
+    getSampleWidgetConfig(): Observable<WidgetConfig> {
+        let sampleWidgetId = '58ece29d4494d50190ea8661';
+        let widgetUrl = CONSTANTS.ENV.API_BASE + 'widget/' + sampleWidgetId;
 
-        let connectionId = '58e528fe578309a5b84b3906';
-        let collectionName = 'Jobs';
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'bearer ' + this.localStorage.getObject('currentUser').access_token);
 
-        return {
-            query: aggDocument,
-            connectionId: connectionId,
-            collectionName: collectionName,
-            type: 'bar-chart',
-            datamap: {
-                'labels': {
-                    path: '$[*].Date' // Can be JSONPath
-                },
-                'datasets': [
-                    {
-                        label: 'Orders',
-                        path: '$[*].count',
-                        backgroundColor: '#42A5F5',
-                        borderColor: '#1E88E5',
-                    },
-                    {
-                        label: 'Orders 2',
-                        path: '$[*].count',
-                        backgroundColor: '#9CCC65',
-                        borderColor: '#7CB342',
-                    }
-                ]
-            },
-            config: {
-                title: {
-                    display: true,
-                    text: 'Orders from last couple of days',
-                    fontSize: 16
-                },
-                legend: {
-                    position: 'bottom'
+        let options: RequestOptions = new RequestOptions({ headers: headers });
+        return this.http.get(widgetUrl, options)
+            .map((res: Response) => {
+                if (res.status < 200 || res.status >= 300) {
+                    throw new Error('Response status: ' + res.status);
                 }
-            }
-        };
+                let widgetConfig = <WidgetConfig>this._extractAndSaveData(res);
+                return widgetConfig;
+            })
+            .catch((error: Response) => {
+                return this._extractError(error);
+            });
     }
 
     getSampleDashboard(): any {
