@@ -1,21 +1,17 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { UIChart } from 'primeng/primeng';
-import * as jsonpath from 'jsonpath';
-
-import { Widget } from '../../ui-toolbox/widget/widget';
-import { WidgetConfig } from '../../ui-toolbox/widget/widget-config';
-import { DataConverterService } from '../data-converter.service';
+import { Widget, DataConverterService, WidgetConfig } from '../index';
 import { DataService } from '../../data/index';
 import { LoggerService } from '../../shared/index';
+import * as jsonpath from 'jsonpath';
 
 @Component({
     moduleId: module.id,
-    selector: 'as-bar-chart',
-    templateUrl: 'bar-chart.html'
+    selector: 'as-line-chart',
+    templateUrl: 'line-chart.html'
 })
-export class BarChartComponent implements Widget {
-    options: any;
+export class LineChartComponent implements Widget {
     data: any;
+    options: any;
     title: any;
 
     isDataAvailable: boolean;
@@ -23,14 +19,13 @@ export class BarChartComponent implements Widget {
     @ViewChild('chart') chart: any;
 
     /**
-     * Basic bar-chart widget constructor
+     * Basic line-chart widget constructor
      */
-    constructor(
-        private dataService: DataService,
+    constructor(private dataService: DataService,
         private dataConverterService: DataConverterService,
         private loggerService: LoggerService) { }
 
-    setWidgetConfig(widgetConfig: WidgetConfig) {
+    setWidgetConfig(widgetConfig: any) {
         if (widgetConfig) {
             this.dataService.executeAggregation(
                 widgetConfig.connectionId,

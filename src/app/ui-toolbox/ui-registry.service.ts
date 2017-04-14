@@ -1,6 +1,7 @@
 import { Injectable, Type } from '@angular/core';
 import { LoggerService } from '../shared/index';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
+import { LineChartComponent } from './line-chart/line-chart.component';
 
 @Injectable()
 export class UiRegistryService {
@@ -21,5 +22,6 @@ export class UiRegistryService {
 
     private initializeRegistry() {
         this.registry['bar-chart'] = BarChartComponent;
+        this.registry['line-chart'] = LineChartComponent;
     }
 }
