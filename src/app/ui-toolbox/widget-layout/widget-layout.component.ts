@@ -4,7 +4,7 @@ import { WidgetConfig } from '../widget/widget-config';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/mergeAll';
-import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/concatMap';
 import 'rxjs/add/operator/map';
 import { LoggerService } from '../../shared/index';
 
@@ -28,8 +28,8 @@ export class WidgetLayoutComponent implements OnInit {
     ngOnInit(): void {
         let sampleDashboardConfig = this.dataService
             .getSampleDashboard()
-            .mergeMap(dash => Observable.from(dash.widgets))
-            .mergeMap(widget => this.dataService.getWidgetConfig(widget.widgetId))
+            .concatMap(dash => Observable.from(dash.widgets))
+            .concatMap(widget => this.dataService.getWidgetConfig(widget.widgetId))
             .subscribe(x => console.log(x));
 
         this.dataService.getWidgetConfig('')
