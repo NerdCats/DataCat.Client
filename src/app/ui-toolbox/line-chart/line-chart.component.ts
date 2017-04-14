@@ -1,8 +1,12 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { Widget, DataConverterService, WidgetConfig } from '../index';
+import { UIChart } from 'primeng/primeng';
+import * as jsonpath from 'jsonpath';
+
+import { Widget } from '../../ui-toolbox/widget/widget';
+import { WidgetConfig } from '../../ui-toolbox/widget/widget-config';
+import { DataConverterService } from '../data-converter.service';
 import { DataService } from '../../data/index';
 import { LoggerService } from '../../shared/index';
-import * as jsonpath from 'jsonpath';
 
 @Component({
     moduleId: module.id,
@@ -21,7 +25,8 @@ export class LineChartComponent implements Widget {
     /**
      * Basic line-chart widget constructor
      */
-    constructor(private dataService: DataService,
+    constructor(
+        private dataService: DataService,
         private dataConverterService: DataConverterService,
         private loggerService: LoggerService) { }
 

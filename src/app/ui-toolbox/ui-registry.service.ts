@@ -25,3 +25,7 @@ export class UiRegistryService {
         this.registry['line-chart'] = LineChartComponent;
     }
 }
+
+export const UI_COMPONENTS: any[] = [
+    BarChartComponent
+];

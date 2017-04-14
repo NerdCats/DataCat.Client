@@ -2,11 +2,12 @@ import { Type, Component, Input, AfterContentInit, ViewChild, ComponentFactoryRe
 import { UiHostDirective } from '../ui-host/ui-host.directive';
 import { BarChartComponent } from '../bar-chart/bar-chart.component';
 import { Widget } from './widget';
-import { UiRegistryService } from '../ui-registry.service';
+import { UiRegistryService, UI_COMPONENTS } from '../ui-registry.service';
+import { LineChartComponent } from '../line-chart/line-chart.component';
 
 @Component({
     selector: 'as-widget',
-    entryComponents: [BarChartComponent],
+    entryComponents: [BarChartComponent, LineChartComponent],
     template: ` <template asUiHost></template>`
 })
 export class WidgetComponent implements AfterContentInit, OnChanges {
