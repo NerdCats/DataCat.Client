@@ -160,6 +160,34 @@ export class DataService {
         };
     }
 
+    getSampleDashboard(): any {
+        let dashboardConfig = {
+            widgets: [
+                {
+                    config: {
+                        width: 1, // this is basically the column size. 1 column = 1/3 of full width
+                        color: 'success',
+                        title: 'Widget #1'
+                    }
+                },
+                {
+                    config: {
+                        width: 2,
+                        color: 'danger',
+                        title: 'Widget #2'
+                    }
+                },
+                {
+                    config: {
+                        width: 3,
+                        color: 'warning',
+                        title: 'Widget #3'
+                    }
+                }
+            ]
+        };
+    }
+
     private _extractAndSaveData(res: Response) {
         let body = res.json();
         return body || {};

@@ -7,7 +7,7 @@
     <title></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">-->
-    <link rel="stylesheet" href="../assets/styles/AdminLTE.min.css">
+    <link rel="stylesheet" href="AdminLTE.min.css">
     <link rel="stylesheet" href="_all-skins.min.css">
 </head>
 
@@ -140,12 +140,13 @@
         return "col-md-" + (width * 4);
     }
 
-    widget_obj.widgets.forEach(function(element, index) {
+    widget_obj.widgets.forEach(function (element, index) {
         rawHtml += template.replace(/{{width}}/g, getBootstrapWidthClass(element.config.width))
             .replace(/{{color}}/g, element.config.color)
             .replace(/{{title}}/g, element.config.title);
     });
     document.getElementById("widget_row").innerHTML = rawHtml;
+
 </script>
 
 </html>
