@@ -18,7 +18,7 @@ export class BarChartComponent implements Widget {
     data: any;
     title: any;
 
-    isDataAvailable: boolean = false;
+    isDataAvailable: boolean;
 
     @ViewChild('chart') chart: any;
 
