@@ -6,6 +6,7 @@ import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/concatMap';
 import { LoggerService } from '../../shared/index';
 import { DashboardWidget } from '../dashboard/dashboard-widget';
+import { DashboardEventService } from '../../dashboard/index';
 
 @Component({
     moduleId: module.id,
@@ -22,14 +23,18 @@ export class WidgetLayoutComponent implements OnInit {
      */
     constructor(
         private dataService: DataService,
-        private loggerService: LoggerService) { }
+        private loggerService: LoggerService,
+        private dashboardEventService: DashboardEventService) { }
 
     ngOnInit(): void {
         this.widgets = [];
 
         this.dataService
             .getSampleDashboard()
-            .concatMap(dash => Observable.from(dash.widgets))
+            .concatMap(dash => {
+                this._setDashboardTitle(dash.title);
+                return Observable.from(dash.widgets);
+            })
             .concatMap(widget => this.dataService.getWidgetConfig(widget.widgetId), (dashw, widget) => {
                 return {
                     windowConf: dashw,
@@ -37,5 +42,9 @@ export class WidgetLayoutComponent implements OnInit {
                 };
             })
             .subscribe(dwidget => this.widgets.push(dwidget));
+    }
+
+    private _setDashboardTitle(title: string) {
+        this.dashboardEventService.componentUpdated({ Event: 'Loaded', Name: title });
     }
 }
