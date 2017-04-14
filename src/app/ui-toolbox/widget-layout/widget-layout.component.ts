@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../data/index';
 import { WidgetConfig } from '../widget/widget-config';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/from';
+import 'rxjs/add/operator/mergeAll';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/map';
+import { LoggerService } from '../../shared/index';
 
 @Component({
     moduleId: module.id,
@@ -16,17 +22,22 @@ export class WidgetLayoutComponent implements OnInit {
      * misnomer, it should be what a traditional single dashboard looks like
      */
     constructor(
-        private dataService: DataService) { }
+        private dataService: DataService,
+        private loggerService: LoggerService) { }
 
     ngOnInit(): void {
-        let sampleDashboardConfig = this.dataService.getSampleDashboard();
-        this.dataService.getSampleWidgetConfig()
+        let sampleDashboardConfig = this.dataService
+            .getSampleDashboard()
+            .mergeMap(dash => Observable.from(dash.widgets))
+            .mergeMap(widget => this.dataService.getWidgetConfig(widget.widgetId))
+            .subscribe(x => console.log(x));
+
+        this.dataService.getWidgetConfig('')
             .subscribe(result => {
                 this.config = result;
-                this.widgets = sampleDashboardConfig.widgets;
+                // this.widgets = sampleDashboardConfig.widgets;
             }, error => {
-                // TODO: Use loggerService here
-                console.error(error);
+                this.loggerService.error(error);
             });
     }
 }

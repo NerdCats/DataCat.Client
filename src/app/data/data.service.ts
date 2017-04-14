@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { CONSTANTS, LoggerService, LocalStorage } from '../shared/index';
 import { AuthConstants } from '../auth/auth.constants';
-import { WidgetConfig } from '../ui-toolbox/widget/widget-config';
+import { DashboardConfig, WidgetConfig } from '../ui-toolbox/index';
 
 @Injectable()
 export class DataService {
@@ -39,9 +39,8 @@ export class DataService {
     }
 
     // INFO: Temporary test method to test out how a widget could have behaved.
-    getSampleWidgetConfig(): Observable<WidgetConfig> {
-        let sampleWidgetId = '58ece29d4494d50190ea8661';
-        let widgetUrl = CONSTANTS.ENV.API_BASE + 'widget/' + sampleWidgetId;
+    getWidgetConfig(widgetId: string): Observable<WidgetConfig> {
+        let widgetUrl = CONSTANTS.ENV.API_BASE + 'widget/' + widgetId;
 
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
@@ -53,7 +52,7 @@ export class DataService {
                 if (res.status < 200 || res.status >= 300) {
                     throw new Error('Response status: ' + res.status);
                 }
-                let widgetConfig = <WidgetConfig>this._extractAndSaveData(res);
+                let widgetConfig = <DashboardConfig>this._extractAndSaveData(res);
                 return widgetConfig;
             })
             .catch((error: Response) => {
@@ -61,34 +60,27 @@ export class DataService {
             });
     }
 
-    getSampleDashboard(): any {
-        let dashboardConfig = {
-            widgets: [
-                {
-                    wconfig: {
-                        width: 12,
-                        color: 'success',
-                        title: 'Widget #1'
-                    }
-                },
-                {
-                    wconfig: {
-                        width: 6,
-                        color: 'danger',
-                        title: 'Widget #2'
-                    }
-                },
-                {
-                    wconfig: {
-                        width: 6,
-                        color: 'danger',
-                        title: 'Widget #2'
-                    }
-                }
-            ]
-        };
+    getSampleDashboard():  Observable<DashboardConfig> {
+        let sampleDashboardId = '58f0c9b850c6704b3cecbe1a';
+        let dashboardUrl = CONSTANTS.ENV.API_BASE + 'dashboard/' + sampleDashboardId;
 
-        return dashboardConfig;
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'bearer ' + this.localStorage.getObject('currentUser').access_token);
+
+        let options: RequestOptions = new RequestOptions({ headers: headers });
+        return this.http.get(dashboardUrl, options)
+            .map((res: Response) => {
+                if (res.status < 200 || res.status >= 300) {
+                    throw new Error('Response status: ' + res.status);
+                }
+                // TODO: Need dashboard types
+                let dashboardConfig = <DashboardConfig>this._extractAndSaveData(res);
+                return dashboardConfig;
+            })
+            .catch((error: Response) => {
+                return this._extractError(error);
+            });
     }
 
     private _extractAndSaveData(res: Response) {
