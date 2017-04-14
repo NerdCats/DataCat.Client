@@ -82,7 +82,6 @@ export class BarChartComponent implements Widget {
     }
 
     private _setOptions(widgetConfig: WidgetConfig) {
-        console.log(widgetConfig);
         if (widgetConfig.config) {
             this.title = widgetConfig.config.title.text;
             this.options = { ...widgetConfig.config };
