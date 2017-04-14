@@ -27,7 +27,7 @@ export class WidgetLayoutComponent implements OnInit {
     ngOnInit(): void {
         this.widgets = [];
 
-        let sampleDashboardConfig = this.dataService
+        this.dataService
             .getSampleDashboard()
             .concatMap(dash => Observable.from(dash.widgets))
             .concatMap(widget => this.dataService.getWidgetConfig(widget.widgetId), (dashw, widget) => {
@@ -37,13 +37,5 @@ export class WidgetLayoutComponent implements OnInit {
                 };
             })
             .subscribe(dwidget => this.widgets.push(dwidget));
-
-        this.dataService.getWidgetConfig('')
-            .subscribe(result => {
-                this.config = result;
-                // this.widgets = sampleDashboardConfig.widgets;
-            }, error => {
-                this.loggerService.error(error);
-            });
     }
 }
