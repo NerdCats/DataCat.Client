@@ -45,7 +45,7 @@ export class BarChartComponent implements Widget {
     }
 
     private _show(widgetConfig: WidgetConfig, result: any) {
-        let datamap = widgetConfig.datamap;
+        let datamap = widgetConfig.dataMap;
 
         let barChartLabels: string[] = [];
         let barChartData: any[];
