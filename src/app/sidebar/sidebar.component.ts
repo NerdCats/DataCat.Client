@@ -24,8 +24,8 @@ export class SidebarComponent {
      */
     constructor(private localStorage: LocalStorage) {
         let userToken = localStorage.getObject(AuthConstants.AUTH_TOKEN_KEY);
-        this.avatarData.text = userToken.userData.sub;
-        this.userInfo.Name = userToken.userData.sub;
+        this.avatarData.text = userToken.userData.name;
+        this.userInfo.Name = userToken.userData.name;
         this.userInfo.Email = userToken.email;
     }
 }

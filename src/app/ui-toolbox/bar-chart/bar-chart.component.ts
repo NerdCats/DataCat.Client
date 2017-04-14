@@ -85,6 +85,7 @@ export class BarChartComponent implements Widget {
         if (widgetConfig.config) {
             this.title = widgetConfig.config.title.text;
             this.options = { ...widgetConfig.config };
+            delete this.options.title;
         }
     }
 
