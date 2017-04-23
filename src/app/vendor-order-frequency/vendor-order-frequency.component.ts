@@ -27,25 +27,8 @@ export class VendorOrderFrequencyComponent implements OnInit {
     public VendorOrderFrequencyDoc: any;
 
     public SellerNamesDoc: any = {
-        'aggregate':
-        [
-            {
-                $project: {
-                    Seller: '$User.UserName', Type: '$User.Type'
-                }
-            },
-            {
-                $match: {
-                    'Type': 'ENTERPRISE',
-                }
-            },
-            {
-                $group: {
-                    _id: '$Seller',
-                }
-            },
-            { $sort: { _id: 1 } }
-        ]
+        'find':
+        [{ Type: 'ENTERPRISE' }, { 'UserName': 1, _id: false }]
     };
 
     // holds selected seller
@@ -64,15 +47,15 @@ export class VendorOrderFrequencyComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.dataService.executeAggregation('Jobs', this.SellerNamesDoc)
+        this.dataService.executeQuery('Users', this.SellerNamesDoc)
             .subscribe(result => {
                 if (result) {
 
                     try {
                         let len = result.length;
                         for (let i = 0; i < len; i++) {
-                            if (result[i]._id as string != null) {
-                                let element = { id: result[i]._id as string, text: result[i]._id as string };
+                            if (result[i].UserName as string != null) {
+                                let element = { id: result[i].UserName as string, text: result[i].UserName as string };
                                 this.sellerItemsTemp[i] = element;
                             }
                         }

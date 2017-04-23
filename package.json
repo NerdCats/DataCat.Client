@@ -96,12 +96,7 @@
     "typescript": "~2.1.5",
     "yargs": "^6.3.0",
     "zone.js": "^0.7.0"
-  },
-  "styles": [
-    "../node_modules/primeng/resources/primeng.min.css",
-    "../node_modules/primeng/resources/themes/omega/theme.css",
-    "../node_modules/font-awesome/css/font-awesome.min.css"
-  ],
+  }, 
   "devDependencies": {
     "browser-sync": "^2.17.5",
     "connect-history-api-fallback": "^1.2.0",

@@ -34,6 +34,25 @@ export class DataService {
             });
     }
 
+    executeQuery(collectionName: string, aggregateDocument: any) {
+        let aggUrl = CONSTANTS.ENV.API_BASE + 'data/' + collectionName + '/q';
+
+        let headers = new Headers();
+        // append('Content-Type', 'application/json');
+        headers.append('Content-Type', 'application/json');
+
+        return this.http.post(aggUrl, aggregateDocument)
+            .map((res: Response) => {
+                if (res.status < 200 || res.status >= 300) {
+                    throw new Error('Response status: ' + res.status);
+                }
+                return this._extractAndSaveData(res);
+            })
+            .catch((error: Response) => {
+                return this._extractError(error);
+            });
+    }
+
     private _extractAndSaveData(res: Response) {
         let body = res.json();
         return body || {};
