@@ -31,7 +31,12 @@ export class VendorOrderFrequencyComponent implements OnInit {
         [
             {
                 $project: {
-                    Seller: '$Order.SellerInfo.Name'
+                    Seller: '$User.UserName', Type: '$User.Type'
+                }
+            },
+            {
+                $match: {
+                    'Type': 'ENTERPRISE',
                 }
             },
             {
@@ -108,7 +113,7 @@ export class VendorOrderFrequencyComponent implements OnInit {
                             $project: {
                                 _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1,
                                 Tasks: { $slice: ['$Tasks', -1] },
-                                Seller: '$Order.SellerInfo.Name'
+                                Seller: '$User.UserName'
                             }
                         },
                         {
@@ -134,7 +139,7 @@ export class VendorOrderFrequencyComponent implements OnInit {
                             $project: {
                                 _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1,
                                 Tasks: { $slice: ['$Tasks', -1] },
-                                Seller: '$Order.SellerInfo.Name'
+                                Seller: '$User.UserName'
                             }
                         },
                         {

@@ -24,14 +24,13 @@ export class AttemptVsDeliveryComponent implements OnInit {
                 $project: {
                     _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1, ModifiedTime: 1, CompletionTime: 1, AttemptCount: 1,
                     Tasks: { $slice: ['$Tasks', -1] },
-                    Seller: '$Order.SellerInfo.Name'
+                    Seller: '$User.UserName'
                 }
             },
             {
                 $match: {
                     'AttemptCount': { $gte: 1 },
                     'State': 'COMPLETED',
-
                     'Tasks.IsTerminatingTask': true,
                     'Tasks.State': 'COMPLETED',
                     'Tasks.Type': 'Delivery',
@@ -53,15 +52,17 @@ export class AttemptVsDeliveryComponent implements OnInit {
         [
             {
                 $project: {
-                    Seller: '$Order.SellerInfo.Name'
+                    Seller: '$User.UserName', Type: '$User.Type'
+                }
+            },
+            {
+                $match: {
+                    'Type': 'ENTERPRISE',
                 }
             },
             {
                 $group: {
-                    // _id: { id: '$Seller', text: '$Seller' },
                     _id: '$Seller',
-                    //  text: { $first: '$Seller' }
-
                 }
             },
             { $sort: { _id: 1 } }
@@ -121,7 +122,7 @@ export class AttemptVsDeliveryComponent implements OnInit {
                         $project: {
                             _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1, ModifiedTime: 1, CompletionTime: 1, AttemptCount: 1,
                             Tasks: { $slice: ['$Tasks', -1] },
-                            Seller: '$Order.SellerInfo.Name'
+                            Seller: '$User.UserName'
                         }
                     },
                     {

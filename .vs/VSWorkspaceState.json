@@ -1,9 +1,11 @@
 {
   "ExpandedNodes": [
     "",
+    "\\config",
+    "\\e2e",
+    "\\e2e\\home",
     "\\src",
-    "\\src\\app",
-    "\\src\\app\\vendor-order-frequency"
+    "\\src\\app"
   ],
   "PreviewInSolutionExplorer": false
 }
