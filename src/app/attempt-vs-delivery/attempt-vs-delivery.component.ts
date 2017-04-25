@@ -48,9 +48,24 @@ export class AttemptVsDeliveryComponent implements OnInit {
     };
 
     public SellerNamesDoc: any = {
-        'find':
+        'aggregate':
         [
-            { Type: 'ENTERPRISE' }, { 'UserName': 1, _id: false }
+            {
+                $project: {
+                    Seller: '$User.UserName', Type: '$User.Type'
+                }
+            },
+            {
+                $match: {
+                    'Type': 'ENTERPRISE',
+                }
+            },
+            {
+                $group: {
+                    _id: '$Seller',
+                }
+            },
+            { $sort: { _id: 1 } }
         ]
     };
 
@@ -63,15 +78,15 @@ export class AttemptVsDeliveryComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.dataService.executeQuery('Users', this.SellerNamesDoc)
+        this.dataService.executeAggregation('Jobs', this.SellerNamesDoc)
             .subscribe(result => {
                 if (result) {
 
                     try {
                         let len = result.length;
                         for (let i = 0; i < len; i++) {
-                            if (result[i].UserName as string != null) {
-                                let element = { id: result[i].UserName as string, text: result[i].UserName as string };
+                            if (result[i]._id as string != null) {
+                                let element = { id: result[i]._id as string, text: result[i]._id as string };
                                 this.sellerItemsTemp[i] = element;
                             }
                         }
