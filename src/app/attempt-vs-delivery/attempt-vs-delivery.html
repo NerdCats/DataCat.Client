@@ -6,49 +6,48 @@
             </h1>
         </div>
         <div class="panel panel-default">
-            <!--<div>
-                <h1>Items</h1>
-                <ul>
-                    <li *ngFor="let item of items">{{item}}</li>
-                </ul>
-            </div>-->
             <div class="panel-heading">
-                <h3>Select a single seller</h3>
+                <h3>Select a vendor</h3>
                 <ng-select [items]="sellerItems"
                            (selected)="selected($event)"
-                           placeholder="No seller selected">
+                           placeholder="Select a vendor">
                 </ng-select>
                 <p></p>
-                <pre>{{value.text}}</pre>                
+                <pre>{{selectedVendorValue.text}}</pre>
             </div>
-            <table class="table table-striped" data-bind="data">
-                <thead>
-                    <tr>
-                        <th style="width: 40%">
-                            Attempts
-                        </th>
-                        <th style="width: 40%">
-                            Delivered Orders
-                        </th>
-                        <th style="width: 40%">
-                            Time To Delivery (days)
-                        </th>
-                    </tr>
-                    <!--<tr>
-                        <th colspan="5">
-                            Filter by _id:
-                            <input class="form-control" [(ngModel)]="filterQuery" />
-                        </th>
-                    </tr>-->
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of data">
-                        <td>{{item._id}}</td>
-                        <td>{{item.DeliveredOrders}}</td>
-                        <td>{{item.AvgTimeToDelivery}}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="panel-heading">
+                <h4>Select date range</h4>
+                <div>
+                    <!--<div class="col-lg-8">-->
+                        <p-calendar class="col-xs-6" [(ngModel)]="selectedFromDate" [showIcon]="true"></p-calendar>
+                    <!--</div>-->
+                    <!--<div class="col-lg-8">-->
+                        <p-calendar class="col-xs-6" [(ngModel)]="selectedToDate" [showIcon]="true"></p-calendar>
+                    <!--</div>-->
+                </div>
+
+                <table class="table table-striped" data-bind="data">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%">
+                                Attempts
+                            </th>
+                            <th style="width: 40%">
+                                Delivered Orders
+                            </th>
+                            <th style="width: 40%">
+                                Time To Delivery (days)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of data">
+                            <td>{{item._id}}</td>
+                            <td>{{item.DeliveredOrders}}</td>
+                            <td>{{item.AvgTimeToDelivery}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>

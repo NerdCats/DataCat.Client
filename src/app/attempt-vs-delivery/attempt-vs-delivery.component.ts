@@ -9,6 +9,7 @@ import { LoggerService } from '../shared/index';
     templateUrl: 'attempt-vs-delivery.html'
 })
 export class AttemptVsDeliveryComponent implements OnInit {
+
     public data: any[];
     public sellerItems: Array<any> = [];
     public sellerItemsTemp: Array<any> = [];
@@ -17,7 +18,12 @@ export class AttemptVsDeliveryComponent implements OnInit {
     public sortBy = '_id';
     public sortOrder = 'asc';
 
-    public AttemptVsDeliveryDoc: any = {
+    // date range
+    public selectedFromDate: any;
+    public selectedToDate: any;
+
+    // attempt VS delivery doc
+    public AttemptVsDeliveryDoc: any = { // this is initialization doc so that UI shows data on init
         'aggregate':
         [
             {
@@ -47,6 +53,7 @@ export class AttemptVsDeliveryComponent implements OnInit {
         ]
     };
 
+    // vendor names
     public SellerNamesDoc: any = {
         'aggregate':
         [
@@ -69,7 +76,9 @@ export class AttemptVsDeliveryComponent implements OnInit {
         ]
     };
 
-    private value: any = {};
+    // holds the selected vendor
+    public selectedVendorValue: any = {};
+
     constructor(
         private dataService: DataService,
         private loggerService: LoggerService,
@@ -78,7 +87,7 @@ export class AttemptVsDeliveryComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.dataService.executeAggregation('Jobs', this.SellerNamesDoc)
+        this.dataService.executeAggregation('Jobs', this.SellerNamesDoc)// get the vendors
             .subscribe(result => {
                 if (result) {
 
@@ -98,11 +107,11 @@ export class AttemptVsDeliveryComponent implements OnInit {
             },
             error => { this.loggerService.error(error); });
 
-        this.dataService.executeAggregation('Jobs', this.AttemptVsDeliveryDoc)
+        this.dataService.executeAggregation('Jobs', this.AttemptVsDeliveryDoc) // get attempt vs delivery for all vendors for all times
             .subscribe(result => {
                 if (result) {
                     for (let entry of result) {
-                        let AvgTimeToDelivery: number = Math.round(entry.AvgTimeToDelivery as number);
+                        let AvgTimeToDelivery: number = entry.AvgTimeToDelivery as number;
                         entry.AvgTimeToDelivery = AvgTimeToDelivery;
                     }
                     this.data = result;
@@ -111,46 +120,16 @@ export class AttemptVsDeliveryComponent implements OnInit {
             error => { this.loggerService.error(error); });
     }
 
+    // slected vendor
     public selected(value: any): void {
-        this.value = value;
+        this.selectedVendorValue = value;
         if (value != null) {
-
-            this.AttemptVsDeliveryDoc = {
-                'aggregate':
-                [
-                    {
-                        $project: {
-                            _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1, ModifiedTime: 1, CompletionTime: 1, AttemptCount: 1,
-                            Tasks: { $slice: ['$Tasks', -1] },
-                            Seller: '$User.UserName'
-                        }
-                    },
-                    {
-                        $match: {
-                            'AttemptCount': { $gte: 1 },
-                            'State': 'COMPLETED',
-
-                            'Tasks.IsTerminatingTask': true,
-                            'Tasks.State': 'COMPLETED',
-                            'Tasks.Type': 'Delivery',
-                            'Seller': this.value.id as string
-                        }
-                    },
-                    {
-                        $group: {
-                            _id: '$AttemptCount',
-                            DeliveredOrders: { $sum: 1 },
-                            AvgTimeToDelivery: { $avg: { $divide: [{ $subtract: ['$CompletionTime', '$CreateTime'] }, 86400000] } }
-                        }
-                    },
-                    { $sort: { _id: 1 } }
-                ]
-            };
+            this.AttemptVsDeliveryDoc = this.prepareAttemptVsDeliveryDoc(this.AttemptVsDeliveryDoc); // get data for selected vendor
             this.dataService.executeAggregation('Jobs', this.AttemptVsDeliveryDoc)
                 .subscribe(result => {
                     if (result) {
                         for (let entry of result) {
-                            let AvgTimeToDelivery: number = Math.round(entry.AvgTimeToDelivery as number);
+                            let AvgTimeToDelivery: number = entry.AvgTimeToDelivery as number;
                             entry.AvgTimeToDelivery = AvgTimeToDelivery;
                         }
                         this.data = result;
@@ -159,5 +138,162 @@ export class AttemptVsDeliveryComponent implements OnInit {
                 error => { this.loggerService.error(error); });
         }
 
+    }
+
+    // query: Attempt Vs Delivery
+    public prepareAttemptVsDeliveryDoc(value: any): any {
+        try {
+            if (this.selectedVendorValue != null) {// vendor selected
+                if (this.selectedFromDate == null || this.selectedToDate == null) {
+                    return value = {
+                        'aggregate':
+                        [
+                            {
+                                $project: {
+                                    _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1, ModifiedTime: 1, CompletionTime: 1, AttemptCount: 1,
+                                    Tasks: { $slice: ['$Tasks', -1] },
+                                    Seller: '$User.UserName'
+                                }
+                            },
+                            {
+                                $match: {
+                                    'AttemptCount': { $gte: 1 },
+                                    'State': 'COMPLETED',
+                                    'Tasks.IsTerminatingTask': true,
+                                    'Tasks.State': 'COMPLETED',
+                                    'Tasks.Type': 'Delivery',
+                                    'Seller': this.selectedVendorValue.id as string
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: '$AttemptCount',
+                                    DeliveredOrders: { $sum: 1 },
+                                    AvgTimeToDelivery: { $avg: { $divide: [{ $subtract: ['$CompletionTime', '$CreateTime'] }, 86400000] } }
+                                }
+                            },
+                            { $sort: { _id: 1 } }
+                        ]
+                    };
+                } else {
+                    return value = {
+                        'aggregate':
+                        [
+                            {
+                                $project: {
+                                    _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1, ModifiedTime: 1, CompletionTime: 1, AttemptCount: 1,
+                                    Tasks: { $slice: ['$Tasks', -1] },
+                                    Seller: '$User.UserName'
+                                }
+                            },
+                            {
+                                $match: {
+                                    'AttemptCount': { $gte: 1 },
+                                    'State': 'COMPLETED',
+                                    'Tasks.IsTerminatingTask': true,
+                                    'Tasks.State': 'COMPLETED',
+                                    'Tasks.Type': 'Delivery',
+                                    'Seller': this.selectedVendorValue.id as string
+                                }
+                            },
+                            {
+                                $match: {
+                                    'AttemptCount': { $gte: 1 },
+                                    'State': 'COMPLETED',
+                                    'Tasks.IsTerminatingTask': true,
+                                    'Tasks.State': 'COMPLETED',
+                                    'Tasks.Type': 'Delivery',
+                                    'CreateTime':
+                                    {
+                                        $gte: { '$date': (this.selectedFromDate as Date).toISOString() },
+                                        $lt: { '$date': (this.selectedToDate as Date).toISOString() }
+                                    },
+                                },
+                            },
+                            {
+                                $group: {
+                                    _id: '$AttemptCount',
+                                    DeliveredOrders: { $sum: 1 },
+                                    AvgTimeToDelivery: { $avg: { $divide: [{ $subtract: ['$CompletionTime', '$CreateTime'] }, 86400000] } }
+                                }
+                            },
+                            { $sort: { _id: 1 } }
+                        ]
+                    };
+                }
+            } else {// vendor not selected
+                if (this.selectedFromDate == null || this.selectedToDate == null) {
+                    return value = {
+                        'aggregate':
+                        [
+                            {
+                                $project: {
+                                    _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1, ModifiedTime: 1, CompletionTime: 1, AttemptCount: 1,
+                                    Tasks: { $slice: ['$Tasks', -1] },
+                                    Seller: '$User.UserName'
+                                }
+                            },
+                            {
+                                $match: {
+                                    'AttemptCount': { $gte: 1 },
+                                    'State': 'COMPLETED',
+                                    'Tasks.IsTerminatingTask': true,
+                                    'Tasks.State': 'COMPLETED',
+                                    'Tasks.Type': 'Delivery',
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: '$AttemptCount',
+                                    DeliveredOrders: { $sum: 1 },
+                                    AvgTimeToDelivery: { $avg: { $divide: [{ $subtract: ['$CompletionTime', '$CreateTime'] }, 86400000] } }
+                                }
+                            },
+                            { $sort: { _id: 1 } }
+                        ]
+                    };
+                } else {
+                    return value = {
+                        'aggregate':
+                        [
+                            {
+                                $project: {
+                                    _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1, ModifiedTime: 1, CompletionTime: 1, AttemptCount: 1,
+                                    Tasks: { $slice: ['$Tasks', -1] },
+                                    Seller: '$User.UserName'
+                                }
+                            },
+                            {
+                                $match: {
+                                    'AttemptCount': { $gte: 1 },
+                                    'State': 'COMPLETED',
+                                    'Tasks.IsTerminatingTask': true,
+                                    'Tasks.State': 'COMPLETED',
+                                    'Tasks.Type': 'Delivery',
+                                    'CreateTime':
+                                    {
+                                        $gte: { '$date': (this.selectedFromDate as Date).toISOString() },
+                                        $lt: { '$date': (this.selectedToDate as Date).toISOString() }
+                                    },
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: '$AttemptCount',
+                                    DeliveredOrders: { $sum: 1 },
+                                    AvgTimeToDelivery: { $avg: { $divide: [{ $subtract: ['$CompletionTime', '$CreateTime'] }, 86400000] } }
+                                }
+                            },
+                            { $sort: { _id: 1 } }
+                        ]
+                    };
+                }
+
+            }
+
+        } catch (e) {
+            console.log(e);
+            return null;
+        }
     }
 }
