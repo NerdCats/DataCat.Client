@@ -1,6 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\dashboard",
+    "\\src\\app\\sidebar",
+    "\\src\\app\\vendor-order-frequency"
   ],
+  "SelectedNode": "\\src\\index.html",
   "PreviewInSolutionExplorer": false
 }
