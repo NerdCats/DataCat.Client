@@ -3,10 +3,9 @@
     "",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\dashboard",
-    "\\src\\app\\sidebar",
-    "\\src\\app\\vendor-order-frequency"
+    "\\src\\app\\attempt-vs-delivery",
+    "\\src\\app\\glimpse",
+    "\\src\\app\\sidebar"
   ],
-  "SelectedNode": "\\src\\index.html",
   "PreviewInSolutionExplorer": false
 }
