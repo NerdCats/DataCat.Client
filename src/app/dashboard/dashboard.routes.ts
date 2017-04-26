@@ -10,7 +10,7 @@ export const DashboardRoutes: Routes = [
         path: 'dashboard',
         component: DashboardComponent,
         children: [
-            { path: '', redirectTo: 'glimpse', pathMatch: 'full' },
+            // { path: '', redirectTo: 'attempt-vs-delivery', pathMatch: 'full' },
             { path: 'glimpse', component: GlimpseComponent },
             { path: 'attempt-vs-delivery', component: AttemptVsDeliveryComponent },
             { path: 'vendor-order-frequency', component: VendorOrderFrequencyComponent }
