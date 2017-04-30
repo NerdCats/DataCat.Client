@@ -60,6 +60,9 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
                 .subscribe(result => {
                     try {
 
+                        this.dataTemp = new Array<DataSegment>();
+                        this.data = new Array<DataSegment>();
+
                         let len = result.length;
                         for (let i = 0; i < len; i++) {
 
@@ -72,7 +75,7 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
                             }
 
                             // get distict dates
-                            if (!this.dates.some(x => x === result[i]._id.Time as string)) {
+                            if (!this.dates.some(x => x.date as string === result[i]._id.Time as string)) {
                                 this.dates.push({ date: result[i]._id.Time as string });
                             }
                         }
