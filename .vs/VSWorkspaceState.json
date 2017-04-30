@@ -1,6 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\glimpse",
+    "\\src\\app\\periodic-order-frequency",
+    "\\src\\app\\vendor-order-frequency"
   ],
+  "SelectedNode": "\\src\\app\\vendor-order-frequency\\vendor-order-frequency.component.ts",
   "PreviewInSolutionExplorer": false
 }

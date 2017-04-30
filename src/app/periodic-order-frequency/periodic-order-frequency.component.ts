@@ -13,12 +13,18 @@ import { LoggerService } from '../shared/index';
 export class PeriodicOrderFrequencyComponent implements OnInit {
 
     // for table
-    public data: any[];
+    public data: Array<DataSegment> = new Array<DataSegment>();
+    public dataTemp: Array<DataSegment> = new Array<DataSegment>();
     public filterQuery = '';
-    public dataSegment: any;
+    public dataSegment: DataSegment = new DataSegment();
+    public vendorSegment: VendorSegment = new VendorSegment();
 
-    public vendors: any[];
+    public vendors: Array<VendorSegment> = new Array<VendorSegment>();
+    public vendorsTemp: Array<VendorSegment> = new Array<VendorSegment>();
+    public dateCount: DateCount = new DateCount();
+
     public dates: any[];
+    public datesTemp: any[];
 
     // for aggregation combo
     public aggregateOptions: Array<any> = [{ id: '%Y-%m-%d', text: 'Day' }, { id: '%Y-%m', text: 'Month' }, { id: '%Y', text: 'Year' }];
@@ -51,11 +57,51 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
             this.PeriodicOrderFrequencyDoc = this.preparePeriodicOrderFrequencyDoc(this.PeriodicOrderFrequencyDoc);
             this.dataService.executeAggregation('Jobs', this.PeriodicOrderFrequencyDoc)
                 .subscribe(result => {
-                    if (result) {
-                        
-                        // this.prepObj(result);
-                        // this.data = result;
+                    try {
+
+                        let len = result.length;
+                        for (let i = 0; i < len; i++) {
+
+                            if (!this.vendorsTemp.some(x => x.id === result[i]._id.Vendor as string)) {
+
+                                let vs = new VendorSegment();
+                                vs.id = result[i]._id.Vendor as string;
+                                this.vendorsTemp.push(vs);
+                            }
+                        }
+
+                        this.vendors = this.vendorsTemp;
+                        let lenVendors = this.vendors.length;
+
+                        console.log(this.vendors);
+
+                        for (let j = 0; j < lenVendors; j++) {
+
+                            this.dataSegment = new DataSegment();
+                            this.dataSegment.Vendor = this.vendors[j].id;
+
+                            for (let i = 0; i < len; i++) {
+
+                                if (result[i]._id.Vendor as string === this.vendors[j].id) {
+
+                                    this.dateCount = new DateCount();
+                                    this.dateCount.count = result[i].PlacedOrders as number;
+                                    this.dateCount.date = result[i]._id.Time as string;
+
+                                    this.dataSegment.DateCounts.push(this.dateCount);
+                                }
+                            }
+                            this.dataTemp.push(this.dataSegment);
+                        }
+
+                        this.data = this.dataTemp;
+
+                        console.log(this.data);
+
+                    } catch (e) {
+                        console.log('YO', e);
                     }
+
                 },
                 error => { this.loggerService.error(error); });
         }
@@ -70,33 +116,33 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
                     'aggregate':
                     [
                         {
-                                $project: {
-                                    _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1,
-                                    Tasks: { $slice: ['$Tasks', -1] },
-                                    Vendor: '$User.UserName'
-                                }
+                            $project: {
+                                _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1,
+                                Tasks: { $slice: ['$Tasks', -1] },
+                                Vendor: '$User.UserName'
+                            }
+                        },
+                        {
+                            $match: {
+                                'Tasks.Type': 'Delivery',
                             },
-                            {
-                                $match: {
-                                    'Tasks.Type': 'Delivery',
-                                },
-                            },
-                            {
-                                $group: {
+                        },
+                        {
+                            $group: {
                                 _id: {
-                                        Vendor: '$Vendor',
-                                        Time:
-                                            {
-                                                $dateToString:
-                                                {
-                                                     format: this.aggregateBy.id as string, date: '$CreateTime'
-                                                }
-                                            }
-                                    },
-                                    PlacedOrders: { $sum: 1 },
-                                }
-                            },
-                            { $sort: { _id: 1 } }
+                                    Vendor: '$Vendor',
+                                    Time:
+                                    {
+                                        $dateToString:
+                                        {
+                                            format: this.aggregateBy.id as string, date: '$CreateTime'
+                                        }
+                                    }
+                                },
+                                PlacedOrders: { $sum: 1 },
+                            }
+                        },
+                        { $sort: { _id: 1 } }
                     ]
                 };
             } else {
@@ -105,10 +151,10 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
                     [
                         {
                             $project: {
-                                    _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1,
-                                    Tasks: { $slice: ['$Tasks', -1] },
-                                    Vendor: '$User.UserName'
-                                }
+                                _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1,
+                                Tasks: { $slice: ['$Tasks', -1] },
+                                Vendor: '$User.UserName'
+                            }
                         },
                         {
                             $match: {
@@ -122,17 +168,18 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
                         },
                         {
                             $group: {
-                                    _id: { Vendor: '$Vendor',
-                                            Time:
-                                                {
-                                                    $dateToString:
-                                                    {
-                                                        format: this.aggregateBy.id as string, date: '$CreateTime'
-                                                    }
-                                                }
-                                         },
-                                    PlacedOrders: { $sum: 1 },
-                                }
+                                _id: {
+                                    Vendor: '$Vendor',
+                                    Time:
+                                    {
+                                        $dateToString:
+                                        {
+                                            format: this.aggregateBy.id as string, date: '$CreateTime'
+                                        }
+                                    }
+                                },
+                                PlacedOrders: { $sum: 1 },
+                            }
                         },
                         { $sort: { _id: 1 } }
                     ]
@@ -143,16 +190,20 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
             return null;
         }
     }
+}
 
-    // private prepObj(result:any): any{
-    //     let preppedObj = {};
-    //     for (let oitem in result)
-    //     {
-    //         if(preppedObj[oitem["_id"]["Vendor"]] === undefined){
-    //             preppedObj[oitem["_id"]["Vendor"]] = {};
-    //         }
-    //     }
-    //     console.log(preppedObj);
-    //     return preppedObj;
-    // }
+class VendorSegment {
+
+    id: string = null;
+}
+
+class DataSegment {
+
+    Vendor: string = null;
+    DateCounts: Array<DateCount> = new Array<DateCount>();
+}
+
+class DateCount {
+
+    date: string; count: Number;
 }
