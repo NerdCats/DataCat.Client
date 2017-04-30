@@ -24,7 +24,7 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
     public vendorsTemp: Array<VendorSegment> = new Array<VendorSegment>();
     public vendorSegment: VendorSegment = new VendorSegment();
 
-    public dates: any[];
+    public dates: any[] = [];
 
     // for aggregation combo
     public aggregateOptions: Array<any> = [{ id: '%Y-%m-%d', text: 'Day' }, { id: '%Y-%m', text: 'Month' }, { id: '%Y', text: 'Year' }];
@@ -72,7 +72,7 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
 
                             // get distict dates
                             if (!this.dates.some(x => x === result[i]._id.Time as string)) {
-                                this.dates.push(result[i]._id.Time as string);
+                                this.dates.push({ date: result[i]._id.Time as string });
                             }
                         }
 
@@ -83,38 +83,31 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
                         console.log(this.vendors);
                         console.log(this.dates);
 
-                        for (let j = 0; j < lenVendors; j++) {// for each vendors
+                        for (let j = 0; j < lenVendors; j++) { // for each vendors
 
                             this.dataSegment = new DataSegment();
                             this.dataSegment.Vendor = this.vendors[j].id; // set vendor
 
-                            for (let i = 0; i < len; i++) {// for each record
+                            for (let z = 0; z < lenDates; z++) { // for each date
 
-                                if (result[i]._id.Vendor as string === this.vendors[j].id) { // if for set vendor
+                                this.dateCount = new DateCount();
+                                this.dateCount.date = this.dates[z].date as string;
+                                this.dateCount.count = 0;
 
-                                    for (var z = 0; z < lenDates; z++) {
+                                for (let i = 0; i < len; i++) { // for each record
 
-                                        if (this.dates[z] == result[i]._id.Time) {
+                                    if (result[i]._id.Vendor as string === this.vendors[j].id) {
 
-                                            this.dateCount = new DateCount();
-                                            this.dateCount.count = result[i].PlacedOrders as number;
-                                            this.dateCount.date = result[i]._id.Time as string;
-
-                                            this.dataSegment.DateCounts.push(this.dateCount);// append dateCount array
-                                        }
-                                        else {
-
-                                            this.dateCount = new DateCount();
-                                            this.dateCount.count = 0;
-                                            this.dateCount.date = this.dates[z] as string;
-                                            this.dataSegment.DateCounts.push(this.dateCount);// append dateCount array
-
+                                        if (result[i]._id.Time as string === this.dates[z].date) {
+                                            this.dateCount.count += result[i].PlacedOrders as number; break;
                                         }
                                     }
-
                                 }
+
+                                this.dataSegment.DateCounts.push(this.dateCount); // push into DateCounts array
                             }
-                            this.dataTemp.push(this.dataSegment);// finally push it to the list
+
+                            this.dataTemp.push(this.dataSegment); // finally push it to the list
                         }
 
                         this.data = this.dataTemp;
@@ -228,5 +221,5 @@ class DataSegment {
 
 class DateCount {
 
-    date: string; count: Number;
+    date: string; count: number;
 }
