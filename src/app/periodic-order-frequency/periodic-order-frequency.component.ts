@@ -13,6 +13,7 @@ import { LoggerService } from '../shared/index';
 export class PeriodicOrderFrequencyComponent implements OnInit {
 
     // for table
+    public dataFinal: any[];
     public data: Array<DataSegment> = new Array<DataSegment>();
     public dataTemp: Array<DataSegment> = new Array<DataSegment>();
     public filterQuery = '';

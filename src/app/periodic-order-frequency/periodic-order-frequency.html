@@ -7,10 +7,10 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-body">
-                <div class="row">                    
+                <div class="row">
                     <div class="col-md-4">
-                        <h4>Select date range</h4> 
-                        
+                        <h4>Select date range</h4>
+
                         <p-calendar [(ngModel)]="selectedFromDate" [showIcon]="true"></p-calendar>
                         <p-calendar [(ngModel)]="selectedToDate" [showIcon]="true"></p-calendar>
                     </div>
@@ -24,24 +24,22 @@
                     </div>
                 </div>
                 <br />
-                <!--<table class="table table-striped" data-bind="data">
+                <table class="table table-striped" data-bind="data">
                     <thead>
                         <tr>
                             <th style="width: 40%">
-                                Time Line
+                                Vendor
                             </th>
-                            <th style="width: 40%">
-                                Placed Orders
-                            </th>
+                            <th style="width: 40%" *ngFor="let item of dates">{{item.date}}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of data">
-                            <td>{{item._id.Vendor}}</td>
-                            <td>{{item.PlacedOrders}}</td>
+                            <td>{{item.Vendor}}</td>
+                            <td *ngFor="let dc of item.DateCounts">{{dc.count}}</td>
                         </tr>
                     </tbody>
-                </table>-->
+                </table>
             </div>
         </div>
     </div>
