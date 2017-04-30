@@ -56,74 +56,80 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
         if (value != null) {
 
             this.PeriodicOrderFrequencyDoc = this.preparePeriodicOrderFrequencyDoc(this.PeriodicOrderFrequencyDoc);
-            this.dataService.executeAggregation('Jobs', this.PeriodicOrderFrequencyDoc)
-                .subscribe(result => {
-                    try {
 
-                        this.dataTemp = new Array<DataSegment>();
-                        this.data = new Array<DataSegment>();
+            if (this.PeriodicOrderFrequencyDoc != null) {
+                this.dataService.executeAggregation('Jobs', this.PeriodicOrderFrequencyDoc)
+                    .subscribe(result => {
+                        try {
 
-                        let len = result.length;
-                        for (let i = 0; i < len; i++) {
+                            this.dataTemp = new Array<DataSegment>();
+                            this.data = new Array<DataSegment>();
+                            this.vendorsTemp = new Array<VendorSegment>();
+                            this.vendors = new Array<VendorSegment>();
+                            this.dates = [];
 
-                            if (!this.vendorsTemp.some(x => x.id === result[i]._id.Vendor as string)) {
+                            let len = result.length;
+                            for (let i = 0; i < len; i++) {
 
-                                // get distinct vendor list
-                                let vs = new VendorSegment();
-                                vs.id = result[i]._id.Vendor as string;
-                                this.vendorsTemp.push(vs);
-                            }
+                                if (!this.vendorsTemp.some(x => x.id === result[i]._id.Vendor as string)) {
 
-                            // get distict dates
-                            if (!this.dates.some(x => x.date as string === result[i]._id.Time as string)) {
-                                this.dates.push({ date: result[i]._id.Time as string });
-                            }
-                        }
-
-                        this.vendors = this.vendorsTemp;
-                        let lenVendors = this.vendors.length;
-                        let lenDates = this.dates.length;
-
-                        console.log(this.vendors);
-                        console.log(this.dates);
-
-                        for (let j = 0; j < lenVendors; j++) { // for each vendors
-
-                            this.dataSegment = new DataSegment();
-                            this.dataSegment.Vendor = this.vendors[j].id; // set vendor
-
-                            for (let z = 0; z < lenDates; z++) { // for each date
-
-                                this.dateCount = new DateCount();
-                                this.dateCount.date = this.dates[z].date as string;
-                                this.dateCount.count = 0;
-
-                                for (let i = 0; i < len; i++) { // for each record
-
-                                    if (result[i]._id.Vendor as string === this.vendors[j].id) {
-
-                                        if (result[i]._id.Time as string === this.dates[z].date) {
-                                            this.dateCount.count += result[i].PlacedOrders as number; break;
-                                        }
-                                    }
+                                    // get distinct vendor list
+                                    let vs = new VendorSegment();
+                                    vs.id = result[i]._id.Vendor as string;
+                                    this.vendorsTemp.push(vs);
                                 }
 
-                                this.dataSegment.DateCounts.push(this.dateCount); // push into DateCounts array
+                                // get distict dates
+                                if (!this.dates.some(x => x.date as string === result[i]._id.Time as string)) {
+                                    this.dates.push({ date: result[i]._id.Time as string });
+                                }
                             }
 
-                            this.dataTemp.push(this.dataSegment); // finally push it to the list
+                            this.vendors = this.vendorsTemp;
+                            let lenVendors = this.vendors.length;
+                            let lenDates = this.dates.length;
+
+                            console.log(this.vendors);
+                            console.log(this.dates);
+
+                            for (let j = 0; j < lenVendors; j++) { // for each vendors
+
+                                this.dataSegment = new DataSegment();
+                                this.dataSegment.Vendor = this.vendors[j].id; // set vendor
+
+                                for (let z = 0; z < lenDates; z++) { // for each date
+
+                                    this.dateCount = new DateCount();
+                                    this.dateCount.date = this.dates[z].date as string;
+                                    this.dateCount.count = 0;
+
+                                    for (let i = 0; i < len; i++) { // for each record
+
+                                        if (result[i]._id.Vendor as string === this.vendors[j].id) {
+
+                                            if (result[i]._id.Time as string === this.dates[z].date) {
+                                                this.dateCount.count += result[i].PlacedOrders as number; break;
+                                            }
+                                        }
+                                    }
+
+                                    this.dataSegment.DateCounts.push(this.dateCount); // push into DateCounts array
+                                }
+
+                                this.dataTemp.push(this.dataSegment); // finally push it to the list
+                            }
+
+                            this.data = this.dataTemp;
+
+                            console.log(this.data);
+
+                        } catch (e) {
+                            console.log('YO', e);
                         }
 
-                        this.data = this.dataTemp;
-
-                        console.log(this.data);
-
-                    } catch (e) {
-                        console.log('YO', e);
-                    }
-
-                },
-                error => { this.loggerService.error(error); });
+                    },
+                    error => { this.loggerService.error(error); });
+            }
         }
     }
 
@@ -131,41 +137,10 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
     public preparePeriodicOrderFrequencyDoc(value: any): any {
         try {
 
-            if (this.selectedFromDate == null || this.selectedToDate == null) {
-                return value = {
-                    'aggregate':
-                    [
-                        {
-                            $project: {
-                                _id: 1, HRID: 1, Name: 1, State: 1, CreateTime: 1,
-                                Tasks: { $slice: ['$Tasks', -1] },
-                                Vendor: '$User.UserName'
-                            }
-                        },
-                        {
-                            $match: {
-                                'Tasks.Type': 'Delivery',
-                            },
-                        },
-                        {
-                            $group: {
-                                _id: {
-                                    Vendor: '$Vendor',
-                                    Time:
-                                    {
-                                        $dateToString:
-                                        {
-                                            format: this.aggregateBy.id as string, date: '$CreateTime'
-                                        }
-                                    }
-                                },
-                                PlacedOrders: { $sum: 1 },
-                            }
-                        },
-                        { $sort: { _id: 1 } }
-                    ]
-                };
+            if (this.selectedToDate == null) {
+                return value = null;
             } else {
+                this.selectedFromDate = this.selectedToDate;
                 return value = {
                     'aggregate':
                     [
@@ -181,7 +156,9 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
                                 'Tasks.Type': 'Delivery',
                                 'CreateTime':
                                 {
-                                    $gte: { '$date': (this.selectedFromDate as Date).toISOString() },
+                                    $gte: {
+                                        '$date': this.addDays(this.selectedToDate as Date, 7).toISOString()
+                                    },
                                     $lt: { '$date': (this.selectedToDate as Date).toISOString() }
                                 },
                             },
@@ -209,6 +186,22 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
             console.log(e);
             return null;
         }
+    }
+
+    private addDays(date, days) {
+        let result = new Date(date);
+        switch (this.aggregateBy.text as string) {
+
+            case 'Day': { result.setDate(result.getDate() - days); } break;
+            case 'Month': { result.setDate(result.getMonth() - days); } break;
+            case 'Year': { result.setDate(result.getFullYear() - days); } break;
+
+            default: {
+                result.setDate(result.getDate() - days);
+            } break;
+        }
+
+        return result;
     }
 }
 

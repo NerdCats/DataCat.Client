@@ -8,14 +8,13 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-4">
-                        <h4>Select date range</h4>
-
-                        <p-calendar [(ngModel)]="selectedFromDate" [showIcon]="true"></p-calendar>
+                    <div>
+                        <h4>Select date (last 7 days data will be shown)</h4>
+                        <!--<p-calendar [(ngModel)]="selectedFromDate" [showIcon]="true"></p-calendar>-->
                         <p-calendar [(ngModel)]="selectedToDate" [showIcon]="true"></p-calendar>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="panel-body">
                         <h4>Select aggregation type</h4>
                         <ng-select [items]="aggregateOptions"
                                    (selected)="selectedAggreateBy($event)"
