@@ -25,6 +25,7 @@ import { DashviewHeaderComponent } from '../dashview-header/index';
 import { GlimpseComponent } from '../glimpse/index';
 import { AttemptVsDeliveryComponent } from '../attempt-vs-delivery/index';
 import { VendorOrderFrequencyComponent } from '../vendor-order-frequency/index';
+import { PeriodicOrderFrequencyComponent } from '../periodic-order-frequency/index';
 
 @NgModule({
     declarations: [
@@ -34,7 +35,8 @@ import { VendorOrderFrequencyComponent } from '../vendor-order-frequency/index';
         DashviewHeaderComponent,
         GlimpseComponent,
         AttemptVsDeliveryComponent,
-        VendorOrderFrequencyComponent
+        VendorOrderFrequencyComponent,
+        PeriodicOrderFrequencyComponent
     ],
     exports: [
         DashboardComponent,

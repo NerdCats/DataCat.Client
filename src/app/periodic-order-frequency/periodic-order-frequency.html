@@ -1,0 +1,48 @@
+<div class="container-fluid">
+    <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+        <div class="page-header">
+            <h1>
+                <span>Periodic Order Frequency</span><br />
+            </h1>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">                    
+                    <div class="col-md-4">
+                        <h4>Select date range</h4> 
+                        
+                        <p-calendar [(ngModel)]="selectedFromDate" [showIcon]="true"></p-calendar>
+                        <p-calendar [(ngModel)]="selectedToDate" [showIcon]="true"></p-calendar>
+                    </div>
+
+                    <div class="col-md-4">
+                        <h4>Select aggregation type</h4>
+                        <ng-select [items]="aggregateOptions"
+                                   (selected)="selectedAggreateBy($event)"
+                                   placeholder="No aggregation type">
+                        </ng-select>
+                    </div>
+                </div>
+                <br />
+                <table class="table table-striped" data-bind="data">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%">
+                                Time Line
+                            </th>
+                            <th style="width: 40%">
+                                Placed Orders
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of data">
+                            <td>{{item._id.Vendor}}</td>
+                            <td>{{item.PlacedOrders}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
