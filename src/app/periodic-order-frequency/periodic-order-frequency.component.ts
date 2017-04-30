@@ -17,14 +17,14 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
     public dataTemp: Array<DataSegment> = new Array<DataSegment>();
     public filterQuery = '';
     public dataSegment: DataSegment = new DataSegment();
-    public vendorSegment: VendorSegment = new VendorSegment();
-
-    public vendors: Array<VendorSegment> = new Array<VendorSegment>();
-    public vendorsTemp: Array<VendorSegment> = new Array<VendorSegment>();
     public dateCount: DateCount = new DateCount();
 
+    // for vendors
+    public vendors: Array<VendorSegment> = new Array<VendorSegment>();
+    public vendorsTemp: Array<VendorSegment> = new Array<VendorSegment>();
+    public vendorSegment: VendorSegment = new VendorSegment();
+
     public dates: any[];
-    public datesTemp: any[];
 
     // for aggregation combo
     public aggregateOptions: Array<any> = [{ id: '%Y-%m-%d', text: 'Day' }, { id: '%Y-%m', text: 'Month' }, { id: '%Y', text: 'Year' }];
@@ -64,34 +64,57 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
 
                             if (!this.vendorsTemp.some(x => x.id === result[i]._id.Vendor as string)) {
 
+                                // get distinct vendor list
                                 let vs = new VendorSegment();
                                 vs.id = result[i]._id.Vendor as string;
                                 this.vendorsTemp.push(vs);
+                            }
+
+                            // get distict dates
+                            if (!this.dates.some(x => x === result[i]._id.Time as string)) {
+                                this.dates.push(result[i]._id.Time as string);
                             }
                         }
 
                         this.vendors = this.vendorsTemp;
                         let lenVendors = this.vendors.length;
+                        let lenDates = this.dates.length;
 
                         console.log(this.vendors);
+                        console.log(this.dates);
 
-                        for (let j = 0; j < lenVendors; j++) {
+                        for (let j = 0; j < lenVendors; j++) {// for each vendors
 
                             this.dataSegment = new DataSegment();
-                            this.dataSegment.Vendor = this.vendors[j].id;
+                            this.dataSegment.Vendor = this.vendors[j].id; // set vendor
 
-                            for (let i = 0; i < len; i++) {
+                            for (let i = 0; i < len; i++) {// for each record
 
-                                if (result[i]._id.Vendor as string === this.vendors[j].id) {
+                                if (result[i]._id.Vendor as string === this.vendors[j].id) { // if for set vendor
 
-                                    this.dateCount = new DateCount();
-                                    this.dateCount.count = result[i].PlacedOrders as number;
-                                    this.dateCount.date = result[i]._id.Time as string;
+                                    for (var z = 0; z < lenDates; z++) {
 
-                                    this.dataSegment.DateCounts.push(this.dateCount);
+                                        if (this.dates[z] == result[i]._id.Time) {
+
+                                            this.dateCount = new DateCount();
+                                            this.dateCount.count = result[i].PlacedOrders as number;
+                                            this.dateCount.date = result[i]._id.Time as string;
+
+                                            this.dataSegment.DateCounts.push(this.dateCount);// append dateCount array
+                                        }
+                                        else {
+
+                                            this.dateCount = new DateCount();
+                                            this.dateCount.count = 0;
+                                            this.dateCount.date = this.dates[z] as string;
+                                            this.dataSegment.DateCounts.push(this.dateCount);// append dateCount array
+
+                                        }
+                                    }
+
                                 }
                             }
-                            this.dataTemp.push(this.dataSegment);
+                            this.dataTemp.push(this.dataSegment);// finally push it to the list
                         }
 
                         this.data = this.dataTemp;
