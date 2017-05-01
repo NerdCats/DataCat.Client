@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Http, Headers, Response, RequestOptions, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
@@ -7,7 +7,7 @@ import { CONSTANTS, LoggerService, LocalStorage } from '../shared/index';
 import { AuthConstants } from '../auth/auth.constants';
 import { Feed } from './feed';
 import { DashboardConfig } from './dashboard/dashboard-config';
-import { HttpUtility } from './http-utility';
+import { HttpUtility, DefaultPageConfig } from './http-utility';
 
 @Injectable()
 export class DashboardService {
@@ -21,7 +21,9 @@ export class DashboardService {
         private loggerService: LoggerService,
         private localStorage: LocalStorage) { }
 
-    getDashboardList(user: string): Observable<Feed<DashboardConfig>> {
+    getDashboardList(
+        page = DefaultPageConfig.DEFAULT_PAGE,
+        pageSize = DefaultPageConfig.DEFAULT_PAGE_SIZE): Observable<Feed<DashboardConfig>> {
         let url = this.urlBase;
 
         // May be we should write a utility method for this.
@@ -29,7 +31,13 @@ export class DashboardService {
         HttpUtility.setContentTypeAsJson(headers);
         HttpUtility.setAuthHeaders(headers, this.localStorage);
 
-        let options: RequestOptions = new RequestOptions({ headers: headers });
+        let params: URLSearchParams = new URLSearchParams();
+        params.set(DefaultPageConfig.PAGE_PARAM, page.toString());
+        params.set(DefaultPageConfig.PAGE_SIZE_PARAM, pageSize.toString());
+
+        let options: RequestOptions = new RequestOptions();
+        options.headers = headers;
+        options.search = params;
 
         return this.http.get(url, options)
             .map((res: Response) => {
@@ -42,7 +50,7 @@ export class DashboardService {
             });
     }
 
-    getDashboard(id: string) {
+    getDashboard(id: string): Observable<DashboardConfig> {
         if (!id) {
             throw new Error('invalid/empty/null id provided');
         }
@@ -51,5 +59,17 @@ export class DashboardService {
         let headers = new Headers();
         HttpUtility.setContentTypeAsJson(headers);
         HttpUtility.setAuthHeaders(headers, this.localStorage);
+
+        let options: RequestOptions = new RequestOptions({ headers: headers });
+
+        return this.http.get(url, options)
+            .map((res: Response) => {
+                HttpUtility.ensureSuccessStatus(res);
+                let body = res.json() || {};
+                return <DashboardConfig>body;
+            })
+            .catch((error: Response) => {
+                return HttpUtility.extractError(error);
+            });
     }
 }

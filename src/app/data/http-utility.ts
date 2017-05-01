@@ -3,6 +3,13 @@ import { Response, Headers } from '@angular/http';
 import { AuthConstants } from '../auth/auth.constants';
 import { CONSTANTS, LoggerService, LocalStorage } from '../shared/index';
 
+export const DefaultPageConfig = {
+    DEFAULT_PAGE_SIZE: 20,
+    DEFAULT_PAGE: 0,
+    PAGE_PARAM: 'page',
+    PAGE_SIZE_PARAM: 'pageSize'
+};
+
 export class HttpUtility {
     static extractError(error: Response | any) {
         let errMsg: string;
