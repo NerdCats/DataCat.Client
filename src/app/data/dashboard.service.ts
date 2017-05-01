@@ -19,7 +19,9 @@ export class DashboardService {
     constructor(
         private http: Http,
         private loggerService: LoggerService,
-        private localStorage: LocalStorage) { }
+        private localStorage: LocalStorage) {
+        this.loggerService.info('dashboard service initialized');
+    }
 
     getDashboardList(
         page = DefaultPageConfig.DEFAULT_PAGE,

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
+import { BrowseDashboardComponent } from '../browse-dashboard/browse-dashboard.component';
 import { BarChartComponent, WidgetComponent, WidgetLayoutComponent } from '../ui-toolbox/index';
 
 export const DashboardRoutes: Routes = [
@@ -8,7 +9,8 @@ export const DashboardRoutes: Routes = [
         path: 'dashboard',
         component: DashboardComponent,
         children: [
-            { path: '', redirectTo: 'widgets', pathMatch: 'full' },
+            { path: '', redirectTo: 'browse', pathMatch: 'full' },
+            { path: 'browse', component: BrowseDashboardComponent},
             { path: 'widgets', component: WidgetLayoutComponent }
         ]
     }

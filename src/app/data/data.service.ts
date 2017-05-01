@@ -19,7 +19,9 @@ export class DataService {
     constructor(
         private http: Http,
         private loggerService: LoggerService,
-        private localStorage: LocalStorage) { }
+        private localStorage: LocalStorage) {
+        this.loggerService.info('data service initialized');
+    }
 
     executeAggregation(connectionId: string, collectionName: string, aggregateDocument: any) {
         let aggUrl = CONSTANTS.ENV.API_BASE + 'data/' + connectionId + '/' + collectionName + '/a';
