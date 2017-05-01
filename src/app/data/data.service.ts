@@ -9,7 +9,7 @@ import { CONSTANTS, LoggerService, LocalStorage } from '../shared/index';
 import { AuthConstants } from '../auth/auth.constants';
 import { DashboardConfig } from './dashboard/dashboard-config';
 import { WidgetConfig } from '../ui-toolbox/index';
-import { extractError, ensureSuccessStatus } from './http-utility';
+import { HttpUtility } from './http-utility';
 
 @Injectable()
 export class DataService {
@@ -31,11 +31,11 @@ export class DataService {
         let options: RequestOptions = new RequestOptions({ headers: headers });
         return this.http.post(aggUrl, aggregateDocument, options)
             .map((res: Response) => {
-                ensureSuccessStatus(res);
-                return this._extractAndSaveData(res);
+                HttpUtility.ensureSuccessStatus(res);
+                return this._extractData(res);
             })
             .catch((error: Response) => {
-                return extractError(error);
+                return HttpUtility.extractError(error);
             });
     }
 
@@ -50,12 +50,12 @@ export class DataService {
         let options: RequestOptions = new RequestOptions({ headers: headers });
         return this.http.get(widgetUrl, options)
             .map((res: Response) => {
-                ensureSuccessStatus(res);
-                let widgetConfig = <DashboardConfig>this._extractAndSaveData(res);
+                HttpUtility.ensureSuccessStatus(res);
+                let widgetConfig = <DashboardConfig>this._extractData(res);
                 return widgetConfig;
             })
             .catch((error: Response) => {
-                return extractError(error);
+                return HttpUtility.extractError(error);
             });
     }
 
@@ -70,17 +70,17 @@ export class DataService {
         let options: RequestOptions = new RequestOptions({ headers: headers });
         return this.http.get(dashboardUrl, options)
             .map((res: Response) => {
-                ensureSuccessStatus(res);
+                HttpUtility.ensureSuccessStatus(res);
                 // TODO: Need dashboard types
-                let dashboardConfig = <DashboardConfig>this._extractAndSaveData(res);
+                let dashboardConfig = <DashboardConfig>this._extractData(res);
                 return dashboardConfig;
             })
             .catch((error: Response) => {
-                return extractError(error);
+                return HttpUtility.extractError(error);
             });
     }
 
-    private _extractAndSaveData(res: Response) {
+    private _extractData(res: Response) {
         let body = res.json();
         return body || {};
     }
