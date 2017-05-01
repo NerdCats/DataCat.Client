@@ -24,7 +24,7 @@ export class DataService {
 
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', 'bearer ' + this.localStorage.getObject('currentUser').access_token);
+        headers.append('Authorization', 'bearer ' + this.localStorage.getObject(AuthConstants.AUTH_TOKEN_KEY).access_token);
 
         let options: RequestOptions = new RequestOptions({ headers: headers });
         return this.http.post(aggUrl, aggregateDocument, options)
@@ -45,7 +45,7 @@ export class DataService {
 
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', 'bearer ' + this.localStorage.getObject('currentUser').access_token);
+        headers.append('Authorization', 'bearer ' + this.localStorage.getObject(AuthConstants.AUTH_TOKEN_KEY).access_token);
 
         let options: RequestOptions = new RequestOptions({ headers: headers });
         return this.http.get(widgetUrl, options)
@@ -67,7 +67,7 @@ export class DataService {
 
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', 'bearer ' + this.localStorage.getObject('currentUser').access_token);
+        headers.append('Authorization', 'bearer ' + this.localStorage.getObject(AuthConstants.AUTH_TOKEN_KEY).access_token);
 
         let options: RequestOptions = new RequestOptions({ headers: headers });
         return this.http.get(dashboardUrl, options)
