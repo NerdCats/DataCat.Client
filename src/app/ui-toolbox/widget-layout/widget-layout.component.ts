@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../../data/index';
+import { DataService, DashboardWidget } from '../../data/index';
 import { WidgetConfig } from '../widget/widget-config';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/concatMap';
 import { LoggerService } from '../../shared/index';
-import { DashboardWidget } from '../dashboard/dashboard-widget';
 import { DashboardEventService } from '../../dashboard/index';
 
 @Component({

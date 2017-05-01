@@ -10,4 +10,3 @@ export * from './widget-layout/widget-layout.component';
 export * from './ui-registry.service';
 export * from './data-converter.service';
 export * from './ui-toolbox.providers';
-export * from './dashboard/dashboard-config';

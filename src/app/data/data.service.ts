@@ -6,7 +6,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { CONSTANTS, LoggerService, LocalStorage } from '../shared/index';
 import { AuthConstants } from '../auth/auth.constants';
-import { DashboardConfig, WidgetConfig } from '../ui-toolbox/index';
+import { DashboardConfig } from './dashboard/dashboard-config';
+import { WidgetConfig } from '../ui-toolbox/index';
 
 @Injectable()
 export class DataService {
