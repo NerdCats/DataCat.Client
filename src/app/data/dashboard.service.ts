@@ -26,8 +26,8 @@ export class DashboardService {
 
         // May be we should write a utility method for this.
         let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', 'bearer ' + this.localStorage.getObject(AuthConstants.AUTH_TOKEN_KEY).access_token);
+        HttpUtility.setContentTypeAsJson(headers);
+        HttpUtility.setAuthHeaders(headers, this.localStorage);
 
         let options: RequestOptions = new RequestOptions({ headers: headers });
 
@@ -49,7 +49,7 @@ export class DashboardService {
         let url = this.urlBase + '/' + id;
 
         let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', 'bearer ' + this.localStorage.getObject(AuthConstants.AUTH_TOKEN_KEY).access_token);
+        HttpUtility.setContentTypeAsJson(headers);
+        HttpUtility.setAuthHeaders(headers, this.localStorage);
     }
 }

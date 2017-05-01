@@ -25,8 +25,8 @@ export class DataService {
         let aggUrl = CONSTANTS.ENV.API_BASE + 'data/' + connectionId + '/' + collectionName + '/a';
 
         let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', 'bearer ' + this.localStorage.getObject(AuthConstants.AUTH_TOKEN_KEY).access_token);
+        HttpUtility.setContentTypeAsJson(headers);
+        HttpUtility.setAuthHeaders(headers, this.localStorage);
 
         let options: RequestOptions = new RequestOptions({ headers: headers });
         return this.http.post(aggUrl, aggregateDocument, options)
@@ -44,8 +44,8 @@ export class DataService {
         let widgetUrl = CONSTANTS.ENV.API_BASE + 'widget/' + widgetId;
 
         let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', 'bearer ' + this.localStorage.getObject(AuthConstants.AUTH_TOKEN_KEY).access_token);
+        HttpUtility.setContentTypeAsJson(headers);
+        HttpUtility.setAuthHeaders(headers, this.localStorage);
 
         let options: RequestOptions = new RequestOptions({ headers: headers });
         return this.http.get(widgetUrl, options)
@@ -64,8 +64,8 @@ export class DataService {
         let dashboardUrl = CONSTANTS.ENV.API_BASE + 'dashboard/' + sampleDashboardId;
 
         let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', 'bearer ' + this.localStorage.getObject(AuthConstants.AUTH_TOKEN_KEY).access_token);
+        HttpUtility.setContentTypeAsJson(headers);
+        HttpUtility.setAuthHeaders(headers, this.localStorage);
 
         let options: RequestOptions = new RequestOptions({ headers: headers });
         return this.http.get(dashboardUrl, options)
