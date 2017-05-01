@@ -4,10 +4,12 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+
 import { CONSTANTS, LoggerService, LocalStorage } from '../shared/index';
 import { AuthConstants } from '../auth/auth.constants';
 import { DashboardConfig } from './dashboard/dashboard-config';
 import { WidgetConfig } from '../ui-toolbox/index';
+import { extractError } from './http-utility';
 
 @Injectable()
 export class DataService {
@@ -35,7 +37,7 @@ export class DataService {
                 return this._extractAndSaveData(res);
             })
             .catch((error: Response) => {
-                return this._extractError(error);
+                return extractError(error);
             });
     }
 
@@ -57,7 +59,7 @@ export class DataService {
                 return widgetConfig;
             })
             .catch((error: Response) => {
-                return this._extractError(error);
+                return extractError(error);
             });
     }
 
@@ -80,25 +82,12 @@ export class DataService {
                 return dashboardConfig;
             })
             .catch((error: Response) => {
-                return this._extractError(error);
+                return extractError(error);
             });
     }
 
     private _extractAndSaveData(res: Response) {
         let body = res.json();
         return body || {};
-    }
-
-    private _extractError(error: Response | any) {
-        let errMsg: string;
-        if (error instanceof Response) {
-            const body = error.json() || '';
-            const err = body.error || JSON.stringify(body);
-            errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-        } else {
-            errMsg = error.message ? error.message : error.toString();
-        }
-        this.loggerService.error(errMsg);
-        return Observable.throw(errMsg);
     }
 }
