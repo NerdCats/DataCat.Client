@@ -7,7 +7,7 @@ import { CONSTANTS, LoggerService, LocalStorage } from '../shared/index';
 import { AuthConstants } from '../auth/auth.constants';
 import { Feed } from './feed';
 import { DashboardConfig } from './dashboard/dashboard-config';
-import { extractError } from './http-utility';
+import { extractError, ensureSuccessStatus } from './http-utility';
 
 @Injectable()
 export class DashboardService {
@@ -31,9 +31,7 @@ export class DashboardService {
 
         this.http.get(url, options)
             .map((res: Response) => {
-                if (res.status < 200 || res.status >= 300) {
-                    throw new Error('Response status: ' + res.status);
-                }
+                ensureSuccessStatus(res);
                 let body = res.json() || {};
                 return <Feed<DashboardConfig>>body;
             })

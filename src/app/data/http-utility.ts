@@ -13,3 +13,9 @@ export function extractError(error: Response | any) {
     this.loggerService.error(errMsg);
     return Observable.throw(errMsg);
 }
+
+export function ensureSuccessStatus(res: Response) {
+    if (res.status < 200 || res.status >= 300) {
+        throw new Error('Response status: ' + res.status);
+    }
+}

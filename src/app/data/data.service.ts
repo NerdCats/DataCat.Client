@@ -9,7 +9,7 @@ import { CONSTANTS, LoggerService, LocalStorage } from '../shared/index';
 import { AuthConstants } from '../auth/auth.constants';
 import { DashboardConfig } from './dashboard/dashboard-config';
 import { WidgetConfig } from '../ui-toolbox/index';
-import { extractError } from './http-utility';
+import { extractError, ensureSuccessStatus } from './http-utility';
 
 @Injectable()
 export class DataService {
@@ -31,9 +31,7 @@ export class DataService {
         let options: RequestOptions = new RequestOptions({ headers: headers });
         return this.http.post(aggUrl, aggregateDocument, options)
             .map((res: Response) => {
-                if (res.status < 200 || res.status >= 300) {
-                    throw new Error('Response status: ' + res.status);
-                }
+                ensureSuccessStatus(res);
                 return this._extractAndSaveData(res);
             })
             .catch((error: Response) => {
@@ -52,9 +50,7 @@ export class DataService {
         let options: RequestOptions = new RequestOptions({ headers: headers });
         return this.http.get(widgetUrl, options)
             .map((res: Response) => {
-                if (res.status < 200 || res.status >= 300) {
-                    throw new Error('Response status: ' + res.status);
-                }
+                ensureSuccessStatus(res);
                 let widgetConfig = <DashboardConfig>this._extractAndSaveData(res);
                 return widgetConfig;
             })
@@ -63,7 +59,7 @@ export class DataService {
             });
     }
 
-    getSampleDashboard():  Observable<DashboardConfig> {
+    getSampleDashboard(): Observable<DashboardConfig> {
         let sampleDashboardId = '58f116a05e1d730001867cbb';
         let dashboardUrl = CONSTANTS.ENV.API_BASE + 'dashboard/' + sampleDashboardId;
 
@@ -74,9 +70,7 @@ export class DataService {
         let options: RequestOptions = new RequestOptions({ headers: headers });
         return this.http.get(dashboardUrl, options)
             .map((res: Response) => {
-                if (res.status < 200 || res.status >= 300) {
-                    throw new Error('Response status: ' + res.status);
-                }
+                ensureSuccessStatus(res);
                 // TODO: Need dashboard types
                 let dashboardConfig = <DashboardConfig>this._extractAndSaveData(res);
                 return dashboardConfig;
