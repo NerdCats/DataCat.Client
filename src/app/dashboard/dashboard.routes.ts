@@ -9,7 +9,7 @@ export const DashboardRoutes: Routes = [
         path: 'dashboard',
         component: DashboardComponent,
         children: [
-            { path: '', redirectTo: 'browse', pathMatch: 'full' },
+            { path: '', redirectTo: 'widgets', pathMatch: 'full' },
             { path: 'browse', component: BrowseDashboardComponent},
             { path: 'widgets', component: WidgetLayoutComponent }
         ]
