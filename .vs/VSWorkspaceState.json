@@ -3,10 +3,11 @@
     "",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\glimpse",
+    "\\src\\app\\dashboard",
+    "\\src\\app\\navbar",
     "\\src\\app\\periodic-order-frequency",
+    "\\src\\app\\sidebar",
     "\\src\\app\\vendor-order-frequency"
   ],
-  "SelectedNode": "\\src\\app\\vendor-order-frequency\\vendor-order-frequency.component.ts",
   "PreviewInSolutionExplorer": false
 }

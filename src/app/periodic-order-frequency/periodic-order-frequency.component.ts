@@ -175,7 +175,7 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
                                         }
                                     }
                                 },
-                                PlacedOrders: { $sum: 1 },
+                                PlacedOrders: { $sum: 1 , Time: 1},
                             }
                         },
                         { $sort: { _id: 1 } }
