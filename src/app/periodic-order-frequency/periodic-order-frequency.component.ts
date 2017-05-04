@@ -26,6 +26,7 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
     public vendorSegment: VendorSegment = new VendorSegment();
 
     public dates: any[] = [];
+    public datesTemp: Date[] = [];
 
     // for aggregation combo
     public aggregateOptions: Array<any> = [{ id: '%Y-%m-%d', text: 'Day' }, { id: '%Y-%m', text: 'Month' }, { id: '%Y', text: 'Year' }];
@@ -67,6 +68,7 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
                             this.vendorsTemp = new Array<VendorSegment>();
                             this.vendors = new Array<VendorSegment>();
                             this.dates = [];
+                            this.datesTemp = [];
 
                             let len = result.length;
                             for (let i = 0; i < len; i++) {
@@ -79,10 +81,19 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
                                     this.vendorsTemp.push(vs);
                                 }
 
-                                // get distict dates
-                                if (!this.dates.some(x => x.date as string === result[i]._id.Time as string)) {
-                                    this.dates.push({ date: result[i]._id.Time as string });
+                                // get distict dates                               
+                                if (!this.datesTemp.some(x => x as Date === result[i]._id.Time as Date)) {
+                                    
+                                    this.datesTemp.push(result[i]._id.Time as Date);
                                 }
+                            }
+                            
+                            this.datesTemp = this.datesTemp.sort();
+
+                            let lendatesTemp = this.datesTemp.length;
+
+                            for (let j = 0; j < lendatesTemp; j++) {
+                                this.dates.push({ date: this.datesTemp[j] });
                             }
 
                             this.vendors = this.vendorsTemp;
@@ -100,14 +111,14 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
                                 for (let z = 0; z < lenDates; z++) { // for each date
 
                                     this.dateCount = new DateCount();
-                                    this.dateCount.date = this.dates[z].date as string;
+                                    this.dateCount.date = this.dates[z].date as Date;
                                     this.dateCount.count = 0;
 
                                     for (let i = 0; i < len; i++) { // for each record
 
                                         if (result[i]._id.Vendor as string === this.vendors[j].id) {
 
-                                            if (result[i]._id.Time as string === this.dates[z].date) {
+                                            if (result[i]._id.Time as Date === this.dates[z].date as Date) {
                                                 this.dateCount.count += result[i].PlacedOrders as number; break;
                                             }
                                         }
@@ -178,7 +189,7 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
                                 PlacedOrders: { $sum: 1 },
                             }
                         },
-                        { $sort: { _id: 1 , Time: 1} }
+                        { $sort: { _id: 1, Time: 1 } }
                     ]
                 };
             }
@@ -218,5 +229,5 @@ class DataSegment {
 
 class DateCount {
 
-    date: string; count: number;
+    date: Date; count: number;
 }
