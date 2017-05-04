@@ -74,20 +74,17 @@ export class PeriodicOrderFrequencyComponent implements OnInit {
                             for (let i = 0; i < len; i++) {
 
                                 if (!this.vendorsTemp.some(x => x.id === result[i]._id.Vendor as string)) {
-
                                     // get distinct vendor list
                                     let vs = new VendorSegment();
                                     vs.id = result[i]._id.Vendor as string;
                                     this.vendorsTemp.push(vs);
                                 }
 
-                                // get distict dates                               
+                                // get distict dates
                                 if (!this.datesTemp.some(x => x as Date === result[i]._id.Time as Date)) {
-                                    
                                     this.datesTemp.push(result[i]._id.Time as Date);
                                 }
                             }
-                            
                             this.datesTemp = this.datesTemp.sort();
 
                             let lendatesTemp = this.datesTemp.length;
