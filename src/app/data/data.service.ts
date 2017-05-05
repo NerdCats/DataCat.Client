@@ -4,9 +4,12 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+
 import { CONSTANTS, LoggerService, LocalStorage } from '../shared/index';
 import { AuthConstants } from '../auth/auth.constants';
-import { DashboardConfig, WidgetConfig } from '../ui-toolbox/index';
+import { DashboardConfig } from './dashboard/dashboard-config';
+import { WidgetConfig } from '../ui-toolbox/index';
+import { HttpUtility } from './http-utility';
 
 @Injectable()
 export class DataService {
@@ -16,25 +19,25 @@ export class DataService {
     constructor(
         private http: Http,
         private loggerService: LoggerService,
-        private localStorage: LocalStorage) { }
+        private localStorage: LocalStorage) {
+        this.loggerService.info('data service initialized');
+    }
 
     executeAggregation(connectionId: string, collectionName: string, aggregateDocument: any) {
         let aggUrl = CONSTANTS.ENV.API_BASE + 'data/' + connectionId + '/' + collectionName + '/a';
 
         let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', 'bearer ' + this.localStorage.getObject('currentUser').access_token);
+        HttpUtility.setContentTypeAsJson(headers);
+        HttpUtility.setAuthHeaders(headers, this.localStorage);
 
         let options: RequestOptions = new RequestOptions({ headers: headers });
         return this.http.post(aggUrl, aggregateDocument, options)
             .map((res: Response) => {
-                if (res.status < 200 || res.status >= 300) {
-                    throw new Error('Response status: ' + res.status);
-                }
-                return this._extractAndSaveData(res);
+                HttpUtility.ensureSuccessStatus(res);
+                return this._extractData(res);
             })
             .catch((error: Response) => {
-                return this._extractError(error);
+                return HttpUtility.extractError(error);
             });
     }
 
@@ -43,61 +46,44 @@ export class DataService {
         let widgetUrl = CONSTANTS.ENV.API_BASE + 'widget/' + widgetId;
 
         let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', 'bearer ' + this.localStorage.getObject('currentUser').access_token);
+        HttpUtility.setContentTypeAsJson(headers);
+        HttpUtility.setAuthHeaders(headers, this.localStorage);
 
         let options: RequestOptions = new RequestOptions({ headers: headers });
         return this.http.get(widgetUrl, options)
             .map((res: Response) => {
-                if (res.status < 200 || res.status >= 300) {
-                    throw new Error('Response status: ' + res.status);
-                }
-                let widgetConfig = <DashboardConfig>this._extractAndSaveData(res);
+                HttpUtility.ensureSuccessStatus(res);
+                let widgetConfig = <DashboardConfig>this._extractData(res);
                 return widgetConfig;
             })
             .catch((error: Response) => {
-                return this._extractError(error);
+                return HttpUtility.extractError(error);
             });
     }
 
-    getSampleDashboard():  Observable<DashboardConfig> {
+    getSampleDashboard(): Observable<DashboardConfig> {
         let sampleDashboardId = '58f116a05e1d730001867cbb';
         let dashboardUrl = CONSTANTS.ENV.API_BASE + 'dashboard/' + sampleDashboardId;
 
         let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', 'bearer ' + this.localStorage.getObject('currentUser').access_token);
+        HttpUtility.setContentTypeAsJson(headers);
+        HttpUtility.setAuthHeaders(headers, this.localStorage);
 
         let options: RequestOptions = new RequestOptions({ headers: headers });
         return this.http.get(dashboardUrl, options)
             .map((res: Response) => {
-                if (res.status < 200 || res.status >= 300) {
-                    throw new Error('Response status: ' + res.status);
-                }
+                HttpUtility.ensureSuccessStatus(res);
                 // TODO: Need dashboard types
-                let dashboardConfig = <DashboardConfig>this._extractAndSaveData(res);
+                let dashboardConfig = <DashboardConfig>this._extractData(res);
                 return dashboardConfig;
             })
             .catch((error: Response) => {
-                return this._extractError(error);
+                return HttpUtility.extractError(error);
             });
     }
 
-    private _extractAndSaveData(res: Response) {
+    private _extractData(res: Response) {
         let body = res.json();
         return body || {};
-    }
-
-    private _extractError(error: Response | any) {
-        let errMsg: string;
-        if (error instanceof Response) {
-            const body = error.json() || '';
-            const err = body.error || JSON.stringify(body);
-            errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-        } else {
-            errMsg = error.message ? error.message : error.toString();
-        }
-        this.loggerService.error(errMsg);
-        return Observable.throw(errMsg);
     }
 }

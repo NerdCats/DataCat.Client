@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../../data/index';
+import { DataService, DashboardWidget, DashboardService } from '../../data/index';
 import { WidgetConfig } from '../widget/widget-config';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/concatMap';
 import { LoggerService } from '../../shared/index';
-import { DashboardWidget } from '../dashboard/dashboard-widget';
 import { DashboardEventService } from '../../dashboard/index';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     moduleId: module.id,
@@ -22,15 +22,18 @@ export class WidgetLayoutComponent implements OnInit {
      * misnomer, it should be what a traditional single dashboard looks like
      */
     constructor(
+        private route: ActivatedRoute,
         private dataService: DataService,
+        private dashboardService: DashboardService,
         private loggerService: LoggerService,
         private dashboardEventService: DashboardEventService) { }
 
     ngOnInit(): void {
+        let id = this.route.snapshot.paramMap.get('id');
         this.widgets = [];
 
-        this.dataService
-            .getSampleDashboard()
+        this.dashboardService
+            .getDashboard(id)
             .concatMap(dash => {
                 this._setDashboardTitle(dash.title);
                 return Observable.from(dash.widgets);

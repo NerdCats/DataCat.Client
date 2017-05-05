@@ -16,13 +16,15 @@ import { DashboardComponent } from './index';
 import { SidebarComponent } from '../sidebar/index';
 import { FooterComponent } from '../footer/index';
 import { DashviewHeaderComponent } from '../dashview-header/index';
+import { BrowseDashboardComponent } from '../browse-dashboard/index';
 
 @NgModule({
     declarations: [
         DashboardComponent,
         SidebarComponent,
         FooterComponent,
-        DashviewHeaderComponent
+        DashviewHeaderComponent,
+        BrowseDashboardComponent
     ],
     exports: [
         DashboardComponent,

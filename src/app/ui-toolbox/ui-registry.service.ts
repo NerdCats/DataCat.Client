@@ -27,5 +27,6 @@ export class UiRegistryService {
 }
 
 export const UI_COMPONENTS: any[] = [
-    BarChartComponent
+    BarChartComponent,
+    LineChartComponent
 ];

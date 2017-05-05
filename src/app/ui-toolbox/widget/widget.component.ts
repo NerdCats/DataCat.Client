@@ -7,7 +7,7 @@ import { LineChartComponent } from '../line-chart/line-chart.component';
 
 @Component({
     selector: 'as-widget',
-    entryComponents: [BarChartComponent, LineChartComponent],
+    entryComponents: [...UI_COMPONENTS],
     template: ` <template asUiHost></template>`
 })
 export class WidgetComponent implements AfterContentInit, OnChanges {
