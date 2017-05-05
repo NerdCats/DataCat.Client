@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { NavbarComponent } from './index';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
 import { LetterAvatarModule } from '../shared/letter-avatar/index';
 
 @NgModule({
@@ -12,6 +14,7 @@ import { LetterAvatarModule } from '../shared/letter-avatar/index';
     ],
     imports: [
         CommonModule,
+        RouterModule,
         LetterAvatarModule
     ]
 })
