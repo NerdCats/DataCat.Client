@@ -1,9 +1,3 @@
 <div *ngFor="let dash of dashboardList" class="col-sm-6 col-md-3">
-    <div class="box box-success box-solid">
-        <div class="box-header">
-            <a routerLink="/dashboard/{{dash.id}}" >
-                <h3 class="box-title">{{dash.title}}</h3>
-            </a>
-        </div>
-    </div>
+    <button routerLink="/dashboard/{{dash.id}}" type="button" class="btn bg-olive btn-block margin">{{dash.title}}</button>
 </div>

@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class WidgetLayoutComponent implements OnInit {
     public config: any;
-
+    public loaded: boolean = false;
     public widgets: { windowConf: DashboardWidget, widgetConf: WidgetConfig }[];
 
     /**
@@ -44,7 +44,12 @@ export class WidgetLayoutComponent implements OnInit {
                     widgetConf: widget
                 };
             })
-            .subscribe(dwidget => this.widgets.push(dwidget));
+            .subscribe(dwidget => {
+                if (!this.loaded) {
+                    this.loaded = true;
+                }
+                this.widgets.push(dwidget);
+            });
     }
 
     private _setDashboardTitle(title: string) {
